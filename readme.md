@@ -22,7 +22,7 @@ TODO
         finish register button
         flash bar
 
-     [] Register Page
+     [x] Register Page
         flash bar
         
 
@@ -39,3 +39,4 @@ TODO
     [] Login Functionality
 
     [] Registration functionality
+      loop throgh a dict to check empty form fields and give appropriate error

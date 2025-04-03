@@ -3,14 +3,14 @@
 
     {% if get_flashed_messages() %}
         <header>
-            <div class="w-full bg-red-300">
+            <div class="w-full bg-red-300 text-center text-xl py-2">
                 {{ get_flashed_messages() | join(" ") }}
             </div>
         </header>
     {% endif %}
 
 
-    <div class="flex items-center justify-center h-screen text-center">
+    <div class="flex items-center justify-center h-screen ">
         
         <form action="/register" method="post" class="flex-col w-1/6 h-1/2 justify-center items-center space-y-6">
             <input type="text" placeholder="User Name" class="outline-2 hover:outline-pink-500/35 focus:outline-offset-4 focus:bg-slate-500/35 focus:outline-pink-500 w-full rounded-md text-center" autofocus autocomplete="off" name="username">
