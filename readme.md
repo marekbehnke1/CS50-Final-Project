@@ -18,6 +18,10 @@ TODO
 
      [] Quotes/Live Info page
 
+     [] Login page
+
+     [] Register Page
+
      [] Styling
         Tailwind?
 

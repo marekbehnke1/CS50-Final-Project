@@ -50,10 +50,25 @@ def login():
         return redirect("/")
     else:
         return render_template("login.html")
+    
+@app.route("/register", methods=["GET", "POST"])
+def register():
+
+    if request.method == "POST":
+       u_name = request.form.get("username")
+       f_name = request.form.get("fname")
+       l_name = request.form.get("lname")
+       email = request.form.get("email")
+       password = request.form.get("password")
+       password_check = request.form.get("password_check")
+
+        #todo: submit info to database and add error checks
+       return redirect("/login")
+    else:
+        return render_template("register.html")
 
 @app.route("/logout")
 def logout():
 
-    this = "is for testing"
     session.clear()
     return redirect("/")
