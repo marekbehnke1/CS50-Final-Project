@@ -6,4 +6,4 @@ message = "hello?"
 @app.route("/")
 def main():
 
-    return message
+    return render_template("index.html", message=message)
