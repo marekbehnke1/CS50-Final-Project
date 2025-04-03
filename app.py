@@ -5,7 +5,6 @@ from helpers import login_required
 from flask import Flask, render_template, session, request, redirect, flash
 from flask_session import Session
 
-from sqlalchemy import create_engine
 import sqlite3 
 
 from werkzeug.security import generate_password_hash, check_password_hash
