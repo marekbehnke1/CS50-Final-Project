@@ -4,5 +4,6 @@ CREATE TABLE users(
     fname text not null,
     lname text not null,
     email text not null,
-    balance integer not NULL
+    hash text not null,
+    balance integer 
 );

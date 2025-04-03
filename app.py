@@ -16,6 +16,9 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+# Database connection
+
+
 @app.route("/")
 @login_required
 def index():
@@ -55,17 +58,50 @@ def login():
 def register():
 
     if request.method == "POST":
-       u_name = request.form.get("username")
-       f_name = request.form.get("fname")
-       l_name = request.form.get("lname")
-       email = request.form.get("email")
-       password = request.form.get("password")
-       password_check = request.form.get("password_check")
+        # username check
+        uname = request.form.get("username")
+        if not uname:
+            flash("Please enter a username")
+            return render_template("register.html")
+        
+        # todo - check for unique username
 
-        #todo: submit info to database and add error checks
-       return redirect("/login")
+        # fname check
+        fname = request.form.get("fname")
+        if not fname:
+            flash("Please enter a name")
+            return render_template("register.html")
+        # lname check
+        lname = request.form.get("lname")
+        if not lname:
+            flash("Please enter your last name")
+            return render_template("register.html")
+        # email check
+        email = request.form.get("email")
+        if not email:
+            flash("PLease enter email")
+            return render_template("register.html")
+        # Password Check
+        hash = generate_password_hash(request.form.get("password"))
+        if not hash:
+            flash("Please enter a password")
+            return render_template("register.html")
+        
+        if request.form.get("password") == request.form.get("password_check"):
+
+            db = sqlite3.connect("database.db")
+            curs = db.cursor()
+            curs.execute("INSERT INTO users (username, fname, lname, email, hash) VALUES (?, ?, ?, ?, ?)", (uname, fname, lname, email, hash))
+            db.commit()
+            db.close
+            return redirect("/login")
+        
+        else:
+            flash("Passwords did not match")
+            return render_template("register.html")
+
     else:
-        return render_template("register.html")
+         return render_template("register.html")
 
 @app.route("/logout")
 def logout():

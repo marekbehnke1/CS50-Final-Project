@@ -19,8 +19,12 @@ TODO
      [] Quotes/Live Info page
 
      [] Login page
+        finish register button
+        flash bar
 
      [] Register Page
+        flash bar
+        
 
      [] Styling
         Tailwind?
@@ -33,3 +37,5 @@ TODO
     [] Page Code 
 
     [] Login Functionality
+
+    [] Registration functionality
