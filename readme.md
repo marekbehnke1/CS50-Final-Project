@@ -25,18 +25,18 @@ TODO
      [x] Register Page
         flash bar
         
-
      [] Styling
         Tailwind?
 
 # [] Back End
     [] Database configuration
-        SQL alchemy?
-        or just raw python DB-API? - this returns database data as      objects, dict, list etc
+        raw python db api for now
+        [x] users db
+        [] transaction db
 
     [] Page Code 
 
-    [] Login Functionality
+    [x] Login Functionality
 
     [] Registration functionality
       loop throgh a dict to check empty form fields and give appropriate error

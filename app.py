@@ -58,29 +58,31 @@ def login():
 def register():
 
     if request.method == "POST":
+
         # username check
         uname = request.form.get("username")
         if not uname:
             flash("Please enter a username")
             return render_template("register.html")
-        
-        # todo - check for unique username
 
         # fname check
         fname = request.form.get("fname")
         if not fname:
             flash("Please enter a name")
             return render_template("register.html")
+        
         # lname check
         lname = request.form.get("lname")
         if not lname:
             flash("Please enter your last name")
             return render_template("register.html")
+        
         # email check
         email = request.form.get("email")
         if not email:
-            flash("PLease enter email")
+            flash("Please enter email")
             return render_template("register.html")
+        
         # Password Check
         hash = generate_password_hash(request.form.get("password"))
         if not hash:
@@ -91,10 +93,18 @@ def register():
 
             db = sqlite3.connect("database.db")
             curs = db.cursor()
-            curs.execute("INSERT INTO users (username, fname, lname, email, hash) VALUES (?, ?, ?, ?, ?)", (uname, fname, lname, email, hash))
-            db.commit()
-            db.close
-            return redirect("/login")
+
+            # check if any error occured on db entry
+            try:
+                curs.execute("INSERT INTO users (username, fname, lname, email, hash) VALUES (?, ?, ?, ?, ?)", (uname, fname, lname, email, hash))
+            except:
+                db.close()
+                flash("Username already exists")
+                return render_template("register.html")
+            else:
+                db.commit()
+                db.close
+                return redirect("/login")
         
         else:
             flash("Passwords did not match")
