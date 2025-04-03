@@ -36,21 +36,38 @@ def login():
     session.clear()
 
     if request.method == "POST":
-        if not request.form.get("username"):
+        uname = request.form.get("username")
+        if not uname:
             flash("Please enter a username")
             return render_template("login.html")
-        
-        if not request.form.get("password"):
+        password = request.form.get("password")
+        if not password:
             flash("Please enter a password")
             return render_template("login.html")
         
         # Query database for username
+        db = sqlite3.connect("database.db")
+        cur = db.cursor()
 
+        try:
+            # this is a horrible way of expressing this - need it to return a list or something
+            userid = cur.execute("SELECT userid FROM users WHERE username = ?", (uname,)).fetchone()[0]
+        except TypeError:
+            db.close()
+            flash("Username does not exist")
+            return render_template("login.html")
+        else:
             #if username exists, attempt to match against password
-        
-        # if login details ok - set session id
-        session["user_id"] = 1 #db query userid
-        return redirect("/")
+            hash = cur.execute("SELECT hash FROM users WHERE userid = ?", (userid,)).fetchone()[0] 
+            db.close()
+            
+            if not check_password_hash(hash, password):
+                flash("Incorrect password")
+                return render_template("login.html")
+            
+            # if login details ok - set session id
+            session["user_id"] = userid
+            return redirect("/")
     else:
         return render_template("login.html")
     

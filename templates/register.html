@@ -1,15 +1,5 @@
 {% extends "layout.html" %}
 {% block main %}
-
-    {% if get_flashed_messages() %}
-        <header>
-            <div class="w-full bg-red-300 text-center text-xl py-2">
-                {{ get_flashed_messages() | join(" ") }}
-            </div>
-        </header>
-    {% endif %}
-
-
     <div class="flex items-center justify-center h-screen ">
         
         <form action="/register" method="post" class="flex-col w-1/6 h-1/2 justify-center items-center space-y-6">

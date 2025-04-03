@@ -6,6 +6,13 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <title>Document</title>
 </head>
+{% if get_flashed_messages() %}
+<header>
+    <div class="w-full bg-red-300 text-center text-xl py-2">
+        {{ get_flashed_messages() | join(" ") }}
+    </div>
+</header>
+{% endif %}
 <body class="bg-slate-700">
 
     {% if session["user_id"] %}

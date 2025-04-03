@@ -37,6 +37,7 @@ TODO
     [] Page Code 
 
     [x] Login Functionality
+      []find a better way of returning db results
 
-    [] Registration functionality
+    [x] Registration functionality
       loop throgh a dict to check empty form fields and give appropriate error
