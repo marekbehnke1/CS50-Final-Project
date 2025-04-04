@@ -7,6 +7,8 @@ from flask_session import Session
 
 import sqlite3 
 
+import requests
+
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
@@ -136,3 +138,4 @@ def logout():
 
     session.clear()
     return redirect("/")
+

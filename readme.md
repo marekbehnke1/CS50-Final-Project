@@ -1,5 +1,5 @@
 
-# Stock Game
+# Personal Stock Tracker
 #### Video Demo:  <URL HERE>
 #### Description:
 
@@ -35,6 +35,13 @@ TODO
         [] transaction db
 
     [] Page Code 
+
+    [] Account Services
+
+    [] API Connection 
+         Alpha Vantage?
+         [x]Tiingo
+               https://www.tiingo.com/documentation/general/connecting
 
     [x] Login Functionality
       []find a better way of returning db results
