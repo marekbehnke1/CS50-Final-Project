@@ -24,7 +24,7 @@ Session(app)
 def index():
 
     if session["user_id"]:
-        return render_template("layout.html")
+        return render_template("index.html")
     else:
         redirect("/login")
 

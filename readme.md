@@ -3,8 +3,6 @@
 #### Video Demo:  <URL HERE>
 #### Description:
 
-python -m pip install requests
-
 if i kil terminal
 .venv\scripts\activate\ps1
 
@@ -41,10 +39,9 @@ TODO
     [] Page Code 
          [x] Login Functionality
                []find a better way of returning db results
+
          [x] Registration functionality
                [x] loop throgh a dict to check empty form fields and give appropriate error
-
-  
 
     [] Account Services
          [] password change
