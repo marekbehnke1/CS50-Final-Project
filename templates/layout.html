@@ -4,15 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="static/style.css">
     <title>Document</title>
 </head>
-{% if get_flashed_messages() %}
+{% with message = get_flashed_messages(with_categories=true) %}
+{% if message %}
 <header>
-    <div class="w-full bg-red-300 text-center text-xl py-2">
-        {{ get_flashed_messages() | join(" ") }}
+    <div class="{{ message[0][0] }}">
+        {{ message[0][1] }}
     </div>
 </header>
 {% endif %}
+{% endwith %}
 <body class="bg-slate-700">
 
     {% if session["user_id"] %}

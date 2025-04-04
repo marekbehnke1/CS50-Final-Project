@@ -38,11 +38,11 @@ def login():
     if request.method == "POST":
         uname = request.form.get("username")
         if not uname:
-            flash("Please enter a username")
+            flash("Please enter a username", "error")
             return render_template("login.html")
         password = request.form.get("password")
         if not password:
-            flash("Please enter a password")
+            flash("Please enter a password", "error")
             return render_template("login.html")
         
         # Query database for username
@@ -54,7 +54,7 @@ def login():
             userid = cur.execute("SELECT userid FROM users WHERE username = ?", (uname,)).fetchone()[0]
         except TypeError:
             db.close()
-            flash("Username does not exist")
+            flash("Username does not exist", "error")
             return render_template("login.html")
         else:
             #if username exists, attempt to match against password
@@ -62,7 +62,7 @@ def login():
             db.close()
             
             if not check_password_hash(hash, password):
-                flash("Incorrect password")
+                flash("Incorrect password", "error")
                 return render_template("login.html")
             
             # if login details ok - set session id
@@ -79,31 +79,31 @@ def register():
         # username check
         uname = request.form.get("username")
         if not uname:
-            flash("Please enter a username")
+            flash("Please enter a username", "error")
             return render_template("register.html")
 
         # fname check
         fname = request.form.get("fname")
         if not fname:
-            flash("Please enter a name")
+            flash("Please enter a name", "error")
             return render_template("register.html")
         
         # lname check
         lname = request.form.get("lname")
         if not lname:
-            flash("Please enter your last name")
+            flash("Please enter your last name", "error")
             return render_template("register.html")
         
         # email check
         email = request.form.get("email")
         if not email:
-            flash("Please enter email")
+            flash("Please enter email", "error")
             return render_template("register.html")
         
         # Password Check
         hash = generate_password_hash(request.form.get("password"))
         if not hash:
-            flash("Please enter a password")
+            flash("Please enter a password", "error")
             return render_template("register.html")
         
         if request.form.get("password") == request.form.get("password_check"):
@@ -116,15 +116,16 @@ def register():
                 curs.execute("INSERT INTO users (username, fname, lname, email, hash) VALUES (?, ?, ?, ?, ?)", (uname, fname, lname, email, hash))
             except:
                 db.close()
-                flash("Username already exists")
+                flash("Username already exists", "error")
                 return render_template("register.html")
             else:
                 db.commit()
                 db.close
-                return redirect("/login")
+                flash("Registration Succesfull", "success")
+                return render_template("login.html")
         
         else:
-            flash("Passwords did not match")
+            flash("Passwords did not match", "error")
             return render_template("register.html")
 
     else:

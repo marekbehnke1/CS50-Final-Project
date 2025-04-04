@@ -20,10 +20,10 @@ TODO
 
      [] Login page
         finish register button
-        flash bar
+        [x]flash bar
 
      [x] Register Page
-        flash bar
+        [x]flash bar
         
      [] Styling
         Tailwind?
