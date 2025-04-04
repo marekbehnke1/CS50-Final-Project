@@ -20,7 +20,7 @@ TODO
      [] search for stock info
 
      [] Login page
-        finish register button
+        [x]finish register button
         [x]flash bar
 
      [x] Register Page
