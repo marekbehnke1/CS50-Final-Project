@@ -18,6 +18,7 @@ TODO
      [] Account Page
 
      [] search for stock info
+         [] Autocomplete search when searching for ticker codes
 
      [] Login page
         [x]finish register button
