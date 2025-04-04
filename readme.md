@@ -39,6 +39,12 @@ TODO
         [] transaction table
 
     [] Page Code 
+         [x] Login Functionality
+               []find a better way of returning db results
+         [x] Registration functionality
+               [x] loop throgh a dict to check empty form fields and give appropriate error
+
+  
 
     [] Account Services
          [] password change
@@ -48,8 +54,4 @@ TODO
          [x]Tiingo
                https://www.tiingo.com/documentation/general/connecting
 
-    [x] Login Functionality
-      []find a better way of returning db results
 
-    [x] Registration functionality
-         [] loop throgh a dict to check empty form fields and give appropriate error

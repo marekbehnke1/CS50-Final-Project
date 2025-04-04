@@ -75,58 +75,43 @@ def login():
 def register():
 
     if request.method == "POST":
-
-        # username check
-        uname = request.form.get("username")
-        if not uname:
-            flash("Please enter a username", "error")
-            return render_template("register.html")
-
-        # fname check
-        fname = request.form.get("fname")
-        if not fname:
-            flash("Please enter a name", "error")
-            return render_template("register.html")
-        
-        # lname check
-        lname = request.form.get("lname")
-        if not lname:
-            flash("Please enter your last name", "error")
-            return render_template("register.html")
-        
-        # email check
-        email = request.form.get("email")
-        if not email:
-            flash("Please enter email", "error")
-            return render_template("register.html")
-        
-        # Password Check
-        hash = generate_password_hash(request.form.get("password"))
-        if not hash:
-            flash("Please enter a password", "error")
-            return render_template("register.html")
-        
-        if request.form.get("password") == request.form.get("password_check"):
-
-            db = sqlite3.connect("database.db")
-            curs = db.cursor()
-
-            # check if any error occured on db entry
-            try:
-                curs.execute("INSERT INTO users (username, fname, lname, email, hash) VALUES (?, ?, ?, ?, ?)", (uname, fname, lname, email, hash))
-            except:
-                db.close()
-                flash("Username already exists", "error")
+        # create new user object
+        new_user = {
+            "username" : request.form.get("username"),
+            "first name": request.form.get("fname"),
+            "last name" : request.form.get("lname"),
+            "email" : request.form.get("email"),
+            "password": request.form.get("password")
+        }
+        # check if any values in form are missing, and return appropriate error
+        for key, value in new_user.items():
+            if not value:
+                flash("Please enter " + key, "error")
                 return render_template("register.html")
-            else:
-                db.commit()
-                db.close
-                flash("Registration Succesfull", "success")
-                return render_template("login.html")
-        
-        else:
-            flash("Passwords did not match", "error")
+            
+        # check if passwords match
+        if not new_user["password"] == request.form.get("password_check"):
+            flash("Passwords do not match", "error")
             return render_template("register.html")
+        
+        hash = generate_password_hash(new_user["password"])
+        # connect to database
+        db = sqlite3.connect("database.db")
+        curs = db.cursor()
+
+        # check if any error occured on db entry
+        try:
+            curs.execute("INSERT INTO users (username, fname, lname, email, hash) VALUES (?, ?, ?, ?, ?)",
+                        (new_user["username"], new_user["first name"], new_user["last name"], new_user["email"], hash))
+        except:
+            db.close()
+            flash("Username already exists", "error")
+            return render_template("register.html")
+        else:
+            db.commit()
+            db.close
+            flash("Registration Succesfull", "success")
+            return render_template("login.html")
 
     else:
          return render_template("register.html")
