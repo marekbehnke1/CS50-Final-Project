@@ -3,20 +3,23 @@
 #### Video Demo:  <URL HERE>
 #### Description:
 
+python -m pip install requests
+
 if i kil terminal
 .venv\scripts\activate\ps1
 
 TODO
 # [] Front End
      [] Landing Page
+         [] portfolio summary
 
-     [] Buy Page 
-
-     [] Sell Page
+     [] Portfolio Page
+         [] stocks interested in?
+         [] stocks to watch? 
 
      [] Account Page
 
-     [] Quotes/Live Info page
+     [] search for stock info
 
      [] Login page
         finish register button
@@ -32,14 +35,16 @@ TODO
     [] Database configuration
         raw python db api for now
         [x] users db
-        [] transaction db
+        [x] stocks table
+        [] transaction table
 
     [] Page Code 
 
     [] Account Services
+         [] password change
+         [] update account info
 
     [] API Connection 
-         Alpha Vantage?
          [x]Tiingo
                https://www.tiingo.com/documentation/general/connecting
 
@@ -47,4 +52,4 @@ TODO
       []find a better way of returning db results
 
     [x] Registration functionality
-      loop throgh a dict to check empty form fields and give appropriate error
+         [] loop throgh a dict to check empty form fields and give appropriate error
