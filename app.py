@@ -1,6 +1,6 @@
 import os
 
-from helpers import login_required
+from helpers import login_required, retrieve_iex, sort_iex
 
 from flask import Flask, render_template, session, request, redirect, flash
 from flask_session import Session
@@ -17,6 +17,9 @@ app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+
+# Make initial API call and save data in variable
+IEXdata = retrieve_iex
 
 #### Routes #####
 @app.route("/")
@@ -116,9 +119,17 @@ def register():
     else:
          return render_template("register.html")
 
+@app.route("/account")
+def account():
+
+    return render_template("account.html")
+
+
 @app.route("/logout")
 def logout():
 
     session.clear()
     return redirect("/")
+
+
 

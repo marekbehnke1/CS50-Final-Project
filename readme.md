@@ -49,7 +49,10 @@ TODO
          [] update account info
 
     [] API Connection 
-         [x]Tiingo
+        [x]Tiingo
                https://www.tiingo.com/documentation/general/connecting
+        [x] API call on load and save data in memory to limit api calls
+            []check for any additional api calls needed
+        [] Double check some of the variable naming conventions in the retrieve & sort  functions
 
 
