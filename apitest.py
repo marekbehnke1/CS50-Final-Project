@@ -25,13 +25,30 @@ def sort_iex(option, records, IEXdata):
     for item in IEXdata:
         data[item["ticker"]] = item[option]
         
-    sorted_full_data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
+    sorted_full_data = sorted(data.items(), key=lambda item: item[1], reverse=True)
     
     # creates a list, of the items from the dict, then slices it to 50 entries
     # it is then converted straight into a dict
-    sorted_trimmed_data = dict(list(sorted_full_data.items())[:records])
-    return sorted_trimmed_data
+    #sorted_trimmed_data = dict(list(sorted_full_data.items())[:records])
+    return sorted_full_data
 
 
-print(sort_iex(option, records, IEXdata))
+#print(sort_iex(option, records, IEXdata))
 
+
+########
+#returning a list of dicts, rather than a massive dict
+def dict_iex(option, IEXdata):
+    
+    data = []
+    for item in IEXdata:
+        data.append(
+                {
+                    "ticker" : item["ticker"],
+                    option:item[option]
+                }
+            )
+        
+    return data 
+
+print(dict_iex(option, IEXdata))
