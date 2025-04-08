@@ -50,9 +50,3 @@ def sort_iex(option, records, IEXdata):
             }
         )
     return newList
-
-
-
-
-#for item in sort_iex("volume", 50, retrieve_iex()):
-#    print(item["volume"])

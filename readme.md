@@ -56,3 +56,8 @@ TODO
         [] Double check some of the variable naming conventions in the retrieve & sort  functions
 
 
+https://stackoverflow.com/questions/74808530/send-data-from-javascript-%E2%86%92-python-and-back-without-reloading-the-page
+
+https://flask.palletsprojects.com/en/stable/patterns/javascript/
+
+https://www.makeuseof.com/tag/python-javascript-communicate-json/

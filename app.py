@@ -26,7 +26,7 @@ IEXdata = retrieve_iex()
 @login_required
 def index():
 
-    volumeData = sort_iex("volume", 50, IEXdata)
+    volumeData = sort_iex("volume", 15, IEXdata)
 
     if session["user_id"]:
         return render_template("index.html", volumeData = volumeData)
