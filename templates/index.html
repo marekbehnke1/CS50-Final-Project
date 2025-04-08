@@ -3,20 +3,19 @@
 {% block main %}
 <div class="flex">
     <div class="w-1/8 h-screen items-center justify-center bg-slate-400 text-center">
-        <div class="h-1/2 bg-emerald-200 text-wrap">
-            sorted focus panel Trade Volume
+        <div class="h-1/2 text-wrap justify-center flex">
 
-            <table>
+            <table class="text-center table-fixed w-full">
                 <thead>
                     <tr>
-                        <th>Ticker</th>
-                        <th>Volume</th>
+                        <th class="w-1/2">Ticker</th>
+                        <th class="w-1/2">Volume</th>
                     </tr>
                 </thead>
                 <tbody>
 
                     {% for item in volumeData %}
-                        <tr>
+                        <tr class="border-collapse border-y border-solid">
                             <td>
                                 {{ item.ticker }}
                             </td>
