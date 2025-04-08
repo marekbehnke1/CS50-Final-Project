@@ -1,6 +1,6 @@
 import os
 
-from helpers import login_required, retrieve_iex, sort_data
+from helpers import login_required, retrieve_iex, sort_data, format
 
 from flask import Flask, render_template, session, request, redirect, flash
 from flask_session import Session

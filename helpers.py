@@ -30,6 +30,10 @@ def retrieve_iex():
 # default direction is set to descending order of sort
 def sort_data(option, records, data, direction=True):
 
+    """ Direction is a bool parameter, set to True by default.
+        True = sort descending,
+        False = sort ascending """
+    
     # sorts dict into a list of sorted data    
     sorted_full_data = dict(sorted(data.items(), key=lambda item: item[1], reverse=direction))
     
@@ -47,3 +51,7 @@ def sort_data(option, records, data, direction=True):
             }
         )
     return newList
+
+# format number to return as 2 decimal place
+def format(value):
+    return f"{value:, .2f}"
