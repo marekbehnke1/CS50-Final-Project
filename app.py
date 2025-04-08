@@ -1,6 +1,6 @@
 import os
 
-from helpers import login_required, retrieve_iex, sort_iex
+from helpers import login_required, retrieve_iex, sort_data
 
 from flask import Flask, render_template, session, request, redirect, flash
 from flask_session import Session
@@ -26,10 +26,35 @@ IEXdata = retrieve_iex()
 @login_required
 def index():
 
-    volumeData = sort_iex("volume", 15, IEXdata)
+    # set the data to sort
+    volumeData = {}
+    for item in IEXdata:
+        volumeData[item["ticker"]] = item["volume"]
+
+    volumeDataSorted = sort_data("volume", 15, volumeData)
+
+    # set data to sort
+    differenceData = {}
+    # check if fields are empty & set to 0
+    for item in IEXdata:
+        if item["mid"] == None:
+            midPrice = 0
+        else:
+            midPrice = item["mid"]
+        if item["open"] == None:
+            open = 0
+        else:
+            open = item["open"]
+
+        differenceData[item["ticker"]] = open - midPrice
+
+    differenceDataSorted = sort_data("difference", 20, differenceData)
+    differenceDataReverse = sort_data("difference", 20, differenceData, False)
+
+
 
     if session["user_id"]:
-        return render_template("index.html", volumeData = volumeData)
+        return render_template("index.html", volumeData = volumeDataSorted, differenceData = differenceDataSorted, differenceDataReverse = differenceDataReverse)
     else:
         redirect("/login")
 

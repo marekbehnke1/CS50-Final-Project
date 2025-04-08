@@ -2,21 +2,20 @@
 
 {% block main %}
 <div class="flex">
-    <div class="w-1/8 h-screen items-center justify-center bg-slate-400 text-center">
-        <div class="h-1/2 bg-emerald-200 text-wrap">
-            sorted focus panel Trade Volume
+    <div class="w-1/8 h-screen items-center justify-center text-center">
+        <div class="h-1/2">
 
-            <table>
+            <table class="w-full table-fixed">
                 <thead>
                     <tr>
-                        <th>Ticker</th>
-                        <th>Volume</th>
+                        <th class="w-1/2">Ticker</th>
+                        <th class="w-1/2">Volume</th>
                     </tr>
                 </thead>
                 <tbody>
 
                     {% for item in volumeData %}
-                        <tr>
+                        <tr class="border-y border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700">
                             <td>
                                 {{ item.ticker }}
                             </td>
@@ -30,7 +29,7 @@
             </table>
         </div>
     
-        <div class="h-1/2 bg-slate-500">
+        <div class="h-1/2">
             watched stocks
         </div>
     </div>
@@ -39,8 +38,51 @@
         stock focus panel
     </div>
     
-    <div class=" w-2/8 h-screen bg-blue-200 text-center">
-        overall biggest gain and loss last 24h
+    <div class=" w-2/8 h-screen text-center flex justify-between">
+        <table class="table-fixed">
+            <thead>
+                <tr>
+                    <th>Ticker</th>
+                    <th>Biggest Gain</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for item in differenceData %}
+                    <tr class="border-y border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700">
+                        <td>
+                            {{ item.ticker }}
+                        </td>
+                        <td>
+                            {{ item.difference }}
+                        </td>
+                    </tr>
+                    
+                {% endfor %}
+            </tbody>
+        </table>
+        <table class="table-fixed">
+            <thead>
+                <tr>
+                    <th>Ticker</th>
+                    <th>Biggest Loss</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for item in differenceDataReverse %}
+                    <tr class="border-y border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700">
+                        <td>
+                            {{ item.ticker }}
+                        </td>
+                        <td>
+                            {{ item.difference }}
+                        </td>
+                    </tr>
+                    
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 
