@@ -19,15 +19,17 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Make initial API call and save data in variable
-IEXdata = retrieve_iex
+IEXdata = retrieve_iex()
 
 #### Routes #####
 @app.route("/")
 @login_required
 def index():
 
+    volumeData = sort_iex("volume", 50, IEXdata)
+
     if session["user_id"]:
-        return render_template("index.html")
+        return render_template("index.html", volumeData = volumeData)
     else:
         redirect("/login")
 

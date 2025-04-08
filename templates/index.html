@@ -5,6 +5,29 @@
     <div class="w-1/8 h-screen items-center justify-center bg-slate-400 text-center">
         <div class="h-1/2 bg-emerald-200 text-wrap">
             sorted focus panel Trade Volume
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ticker</th>
+                        <th>Volume</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for item in volumeData %}
+                        <tr>
+                            <td>
+                                {{ volumeData["ticker"] }}
+                            </td>
+                            <td>
+                                {{ volumeData["volume"] }}
+                            </td>
+                        </tr>
+                        
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     
         <div class="h-1/2 bg-slate-500">

@@ -32,10 +32,27 @@ def sort_iex(option, records, IEXdata):
     data = {}
     for item in IEXdata:
         data[item["ticker"]] = item[option]
-        
+
+    # sorts dict into a list of sorted data    
     sorted_full_data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
     
     # creates a list, of the items from the dict, then slices it to 50 entries
     # it is then converted straight into a dict
     sorted_trimmed_data = dict(list(sorted_full_data.items())[:records])
-    return sorted_trimmed_data
+
+    # This then loops through the sorted, trimmed dict & returns a list of dicts.
+    newList = []
+    for k, v in sorted_trimmed_data.items():
+        newList.append(
+            {
+                "ticker" : k,
+                option : v
+            }
+        )
+    return newList
+
+
+
+
+#for item in sort_iex("volume", 50, retrieve_iex()):
+#    print(item["volume"])
