@@ -14,8 +14,8 @@
                 <tbody>
 
                     {% for item in volumeData %}
-                        <tr class="border-y border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700">
-                            <td>
+                        <tr class="border-y border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700 stock-item cursor-pointer">
+                            <td class="ticker-code">
                                 {{ item.ticker }}
                             </td>
                             <td>
@@ -37,8 +37,8 @@
         stock focus panel
     </div>
     
-    <div class=" w-2/8 h-screen text-center flex justify-between">
-        <table class="table-fixed">
+    <div class=" w-2/8 h-screen text-center flex justify-between" id="right-panel">
+        <table class="table-fixed w-1/2">
             <thead>
                 <tr>
                     <th>Ticker</th>
@@ -48,19 +48,19 @@
             <tbody>
 
                 {% for item in differenceData %}
-                    <tr class="border-y border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700">
-                        <td>
+                    <tr class="border-y border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700 stock-item cursor-pointer">
+                        <td class="ticker-code">
                             {{ item.ticker }}
                         </td>
                         <td>
-                            {{ item.difference | format }}
+                            {{ item.difference }}
                         </td>
                     </tr>
                     
                 {% endfor %}
             </tbody>
         </table>
-        <table class="table-fixed">
+        <table class="table-fixed w-1/2">
             <thead>
                 <tr>
                     <th>Ticker</th>
@@ -70,12 +70,12 @@
             <tbody>
 
                 {% for item in differenceDataReverse %}
-                    <tr class="border-y border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700">
-                        <td>
+                    <tr class="border-y border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700 stock-item cursor-pointer">
+                        <td class="ticker-code">
                             {{ item.ticker }}
                         </td>
                         <td>
-                            {{ item.difference | format }}
+                            {{ item.difference }}
                         </td>
                     </tr>
                     
@@ -84,6 +84,19 @@
         </table>
     </div>
 </div>
+
+<script>
+    var stockItems = document.getElementsByClassName("ticker-code");
+
+    for(let i = 0; i < stockItems.length; i++){
+
+        stockItems[i].addEventListener("click", function(){
+            let code = this.textContent
+            console.log(code.trim())
+        })
+    };
+
+</script>
 
 
 {% endblock %}

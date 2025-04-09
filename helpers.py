@@ -47,11 +47,7 @@ def sort_data(option, records, data, direction=True):
         newList.append(
             {
                 "ticker" : k,
-                option : v
+                option : round(v,2)
             }
         )
     return newList
-
-# format number to return as 2 decimal place
-def format(value):
-    return f"{value:, .2f}"
