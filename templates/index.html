@@ -34,7 +34,45 @@
     </div>
     
     <div class="w-5/8 h-screen bg-red-200 text-center" id="main-panel">
-        stock focus panel
+        <table class="table-fixed">
+            <tr>
+                <td>Ticker:</td>
+                <td id="return-ticker"></td>
+            </tr>
+            <tr>
+                <td>Data Timestamp:</td>
+                <td id="return-timestamp"></td>
+            </tr>
+            <tr>
+                <td>Last Price:</td>
+                <td id="return-last"></td>
+            </tr>
+            <tr>
+                <td>Previous Close:</td>
+                <td id="return-prevClose"></td>
+            </tr>
+            <tr>
+                <td>Open Price:</td>
+                <td id="return-open"></td>
+            </tr>
+            <tr>
+                <td>High:</td>
+                <td id="return-high"></td>
+            </tr>
+            <tr>
+                <td>Low:</td>
+                <td id="return-low"></td>
+            </tr>
+            <tr>
+                <td>Mid:</td>
+                <td id="return-mid"></td>
+            </tr>
+            <tr>
+                <td>Volume</td>
+                <td id="return-volume"></td>
+            </tr>
+        </table>
+
     </div>
     
     <div class=" w-2/8 h-screen text-center flex justify-between" id="right-panel">
@@ -90,10 +128,26 @@
 
     for(let i = 0; i < stockItems.length; i++){
 
-        stockItems[i].addEventListener("click", function(){
-            let code = this.textContent
+        stockItems[i].addEventListener("click", async function(){
             // returns the ticker code of the element clicked on
-            console.log(code.trim())
+            let code = this.textContent.trim()
+
+            // this sends the code to the /stock route
+            let response = await fetch('/stock?q=' + code);
+
+            // this waits for the information to come back, and then treats it as json
+            let information = await response.json()
+
+            document.getElementById("return-ticker").innerHTML = information.ticker
+            document.getElementById("return-timestamp").innerHTML = information.timestamp
+            document.getElementById("return-last").innerHTML = information.tngoLast
+            document.getElementById("return-prevClose").innerHTML = information.prevClose
+            document.getElementById("return-open").innerHTML = information.open
+            document.getElementById("return-high").innerHTML = information.high
+            document.getElementById("return-low").innerHTML = information.low
+            document.getElementById("return-mid").innerHTML = information.mid
+            document.getElementById("return-volume").innerHTML = information.volume
+            console.log(information)
         })
     };
 

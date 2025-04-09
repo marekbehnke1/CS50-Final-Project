@@ -2,7 +2,7 @@ import os
 
 from helpers import login_required, retrieve_iex, sort_data
 
-from flask import Flask, render_template, session, request, redirect, flash
+from flask import Flask, render_template, session, request, redirect, flash, jsonify
 from flask_session import Session
 
 import sqlite3 
@@ -21,6 +21,49 @@ Session(app)
 # Make initial API call and save data in variable
 IEXdata = retrieve_iex()
 
+#test data
+#IEXdata = [
+#    {"ticker": "AAPL",
+#     "mid": 200,
+#     "open": 100,
+#     "volume": 1000},
+#     {"ticker": "NVDA",
+#      "mid": 300,
+#      "open": 500,
+#      "volume": 100000},
+#      {"ticker": "TSLA",
+#      "mid": 370,
+#      "open": 120,
+#      "volume": 4540},
+#      {"ticker": "META",
+#      "mid": 254,
+#      "open": 1230,
+#      "volume": 3423},
+#      {"ticker": "COKE",
+#      "mid": 8245,
+#      "open": 3458,
+#      "volume": 45674},
+#      {"ticker": "ORLY",
+#      "mid": 765,
+#      "open": 325,
+#      "volume": 5678},
+#      {"ticker": "SEB",
+#      "mid": 34577,
+#      "open": 3457,
+#      "volume": 87656},
+#      {"ticker": "COST",
+#      "mid": 3456,
+#      "open": 6657,
+#      "volume": 334536},
+#      {"ticker": "BLK",
+#      "mid": 2343,
+#      "open": 5645,
+#      "volume": 3453453},
+#      {"ticker": "INTU",
+#      "mid": 2340,
+#      "open": 2452,
+#      "volume": 780}]
+
 #### Routes #####
 @app.route("/")
 @login_required
@@ -36,17 +79,20 @@ def index():
     # set data to sort
     differenceData = {}
     # check if fields are empty & set to 0
+
+    # this calculation is wrong!
+    # Need to work out a better way
     for item in IEXdata:
-        if item["mid"] == None:
-            midPrice = 0
+        if item["tngoLast"] == None:
+            last = 0
         else:
-            midPrice = item["mid"]
+            last = item["tngoLast"]
         if item["open"] == None:
             open = 0
         else:
             open = item["open"]
 
-        differenceData[item["ticker"]] = open - midPrice
+        differenceData[item["ticker"]] = open - last
 
     differenceDataSorted = sort_data("difference", 20, differenceData)
     differenceDataReverse = sort_data("difference", 20, differenceData, False)
@@ -57,6 +103,28 @@ def index():
         return render_template("index.html", volumeData = volumeDataSorted, differenceData = differenceDataSorted, differenceDataReverse = differenceDataReverse)
     else:
         redirect("/login")
+
+@app.route("/stock")
+def info_page():
+
+    # because the code is being sent via GET, the info is accesible via the below statement
+    query = request.args.get("q")
+
+    db = sqlite3.connect("database.db")
+    cur = db.cursor()
+
+    if query:
+        #result = cur.execute("SELECT * FROM stocks WHERE ticker = ?", (query,)).fetchone()
+
+        # this is a generator expression
+        result = next((item for item in IEXdata if item["ticker"] == query), None)
+
+
+        db.close()
+    else:
+        result = []
+
+    return jsonify(result)
 
 
 @app.route("/login" , methods=["GET", "POST"])

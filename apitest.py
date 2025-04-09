@@ -17,7 +17,7 @@ def retrieve_iex():
 
 IEXdata = retrieve_iex()
 
-#print(IEXdata)
+print(IEXdata)
 
 
 # sorts & trims iex data
