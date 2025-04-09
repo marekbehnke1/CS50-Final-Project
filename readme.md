@@ -53,7 +53,7 @@ TODO
                https://www.tiingo.com/documentation/general/connecting
         [x] API call on load and save data in memory to limit api calls
             []check for any additional api calls needed
-        [] Double check some of the variable naming conventions in the retrieve & sort  functions
+        [x] Double check some of the variable naming conventions in the retrieve & sort  functions
 
 
 https://stackoverflow.com/questions/74808530/send-data-from-javascript-%E2%86%92-python-and-back-without-reloading-the-page
