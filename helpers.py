@@ -27,14 +27,15 @@ def retrieve_iex():
     return Response
 
 # sorts & trims iex data
-def sort_iex(option, records, IEXdata):
+# default direction is set to descending order of sort
+def sort_data(option, records, data, direction=True):
 
-    data = {}
-    for item in IEXdata:
-        data[item["ticker"]] = item[option]
-
+    """ Direction is a bool parameter, set to True by default.
+        True = sort descending,
+        False = sort ascending """
+    
     # sorts dict into a list of sorted data    
-    sorted_full_data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
+    sorted_full_data = dict(sorted(data.items(), key=lambda item: item[1], reverse=direction))
     
     # creates a list, of the items from the dict, then slices it to 50 entries
     # it is then converted straight into a dict
@@ -50,3 +51,7 @@ def sort_iex(option, records, IEXdata):
             }
         )
     return newList
+
+# format number to return as 2 decimal place
+def format(value):
+    return f"{value:, .2f}"

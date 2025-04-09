@@ -17,6 +17,8 @@ def retrieve_iex():
 
 IEXdata = retrieve_iex()
 
+#print(IEXdata)
+
 
 # sorts & trims iex data
 def sort_iex(option, records, IEXdata):
@@ -43,24 +45,35 @@ def sort_iex(option, records, IEXdata):
         )
     return newList
 
-print(sort_iex(option, records, IEXdata))
 
-
-
-
-########
-#returning a list of dicts, rather than a massive dict
-def dict_iex(option, IEXdata):
+def difference(data, records):
     
-    data = []
+    data = {}
     for item in IEXdata:
-        data.append(
-                {
-                    "ticker" : item["ticker"],
-                    option:item[option]
-                }
-            )
-        
-    return data 
 
-#print(dict_iex(option, IEXdata))
+        if item["mid"] == None:
+            midPrice = 0
+        else:
+            midPrice = item["mid"]
+
+        if item["open"] == None:
+            open = 0
+        else:
+            open = item["open"]
+
+        data[item["ticker"]] = open - midPrice
+
+    sorted_full_data = dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
+    sorted_trimmed_data = dict(list(sorted_full_data.items())[:records])
+
+    newList = []
+    for k, v in sorted_trimmed_data.items():
+        newList.append(
+            {
+                "ticker" : k,
+                "difference" : v
+            }
+        )
+
+    return newList
+    
