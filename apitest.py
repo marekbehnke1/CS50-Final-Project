@@ -5,17 +5,28 @@ option = "volume"
 records = 100
 
 # pulls all iex data
-def retrieve_iex():
-    # set api headers
-    APIheaders = {
-        'Content-Type':'application/json',
-        'Authorization':'Token 877c60a71d24e500a3767c3875e6845c35df8564'
-    }
-    # retrieve data from api and convert to json format
-    Response = requests.get("https://api.tiingo.com/iex", headers=APIheaders).json()
-    return Response
+#def retrieve_iex():
+#    # set api headers
+#    APIheaders = {
+#        'Content-Type':'application/json',
+#        'Authorization':'Token 877c60a71d24e500a3767c3875e6845c35df8564'
+#    }
+#    # retrieve data from api and convert to json format
+#    Response = requests.get("https://api.tiingo.com/iex", headers=APIheaders).json()
+#    return Response
 
-IEXdata = retrieve_iex()
+def retrieve_history(ticker, ):
+    headers = {
+    'Content-Type': 'application/json'
+    }
+    requestResponse = requests.get("https://api.tiingo.com/tiingo/daily/" + ticker + "/prices?startDate=2019-01-02&token=877c60a71d24e500a3767c3875e6845c35df8564", headers=headers)
+    return requestResponse.json()
+
+
+
+
+#IEXdata = retrieve_iex()
+IEXdata = retrieve_history()
 
 print(IEXdata)
 
