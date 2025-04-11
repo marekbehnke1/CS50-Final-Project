@@ -80,8 +80,6 @@ def index():
     differenceData = {}
     # check if fields are empty & set to 0
 
-    # this calculation is wrong!
-    # Need to work out a better way
     for item in IEXdata:
         if item["tngoLast"] == None:
             last = 0
