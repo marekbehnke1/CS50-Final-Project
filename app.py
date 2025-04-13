@@ -166,10 +166,8 @@ def chart():
     query = request.args.get("q")
 
     # placeholders for the form which will probvide these values
-    dateFrom = "2024-12-01"
-    dateTo = "2024-12-07"
-
-
+    dateFrom = "2024-03-01"
+    dateTo = "2024-03-31"
 
     data = []
     #Use API to import data 

@@ -51,12 +51,14 @@
                 </div>
             </div>
         <div class="size-full" id="main-panel-center">
-            <div class="w-full h-12 bg-slate-500 flex" id="chart-options-panel">
-                Menu Options for graph
+            <div class="w-full h-12 bg-slate-500 flex justify-evenly" id="chart-options-panel">
+                <input type="text" class="border-slate-950 border-solid rounded-md border my-1" placeholder="" id="dateFrom">
+                <input type="text" class="border-slate-950 border-solid rounded-md border my-1" placeholder="" id="dateTo">
+                <input type="search" class="border-slate-950 border-solid rounded-md border my-1" autofocus placeholder="Search ticker code" id="search">
             </div>
 
-            <div class="h-5/8 w-full bg-slate-200 flex justify-center" id="main-panel-chart">
-                <div id="main-chart" class="w-4/5 h-4/5 bg-slate-500">
+            <div class="h-5/8 w-full bg-slate-700 flex justify-center" id="main-panel-chart">
+                <div id="main-chart" class="w-4/5 h-4/5">
                     <!-- This is where the graph goes -->
                 </div>
 
