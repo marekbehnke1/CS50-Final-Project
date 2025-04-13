@@ -9,17 +9,18 @@ if i kil terminal
 TODO
 # [] Front End
      [] Landing Page
-         [] portfolio summary
+        [] graphs
+        [] search for stock info to generate graphs
+            [] Autocomplete search when searching for ticker codes
 
      [] Portfolio Page
-         [] stocks interested in?
-         [] stocks to watch? 
+        [] stocks interested in?
+        [] stocks to watch? 
 
      [] Account Page
-
-     [] search for stock info
-         [] Autocomplete search when searching for ticker codes
-
+        [] update password
+        [] update account details
+        
      [] Login page
         [x]finish register button
         [x]flash bar
@@ -28,29 +29,28 @@ TODO
         [x]flash bar
         
      [] Styling
-        Tailwind?
+        [] finish styling
 
 # [] Back End
     [] Database configuration
         raw python db api for now
         [x] users db
         [x] stocks table
-        [] transaction table
 
     [] Page Code 
-         [x] Login Functionality
-               []find a better way of returning db results
+        [x] Login Functionality
+            []find a better way of returning db results
 
-         [x] Registration functionality
-               [x] loop throgh a dict to check empty form fields and give appropriate error
+        [x] Registration functionality
+            [x] loop throgh a dict to check empty form fields and give appropriate error
 
-    [] Account Services
-         [] password change
-         [] update account info
+        [] Account page
+            [] password change
+            [] update account info
 
     [] API Connection 
         [x]Tiingo
-               https://www.tiingo.com/documentation/general/connecting
+            https://www.tiingo.com/documentation/general/connecting
         [x] API call on load and save data in memory to limit api calls
             []check for any additional api calls needed
         [x] Double check some of the variable naming conventions in the retrieve & sort  functions
@@ -61,3 +61,5 @@ https://stackoverflow.com/questions/74808530/send-data-from-javascript-%E2%86%92
 https://flask.palletsprojects.com/en/stable/patterns/javascript/
 
 https://www.makeuseof.com/tag/python-javascript-communicate-json/
+
+pip install gviz_api

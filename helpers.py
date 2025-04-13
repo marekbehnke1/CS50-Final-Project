@@ -51,3 +51,11 @@ def sort_data(option, records, data, direction=True):
             }
         )
     return newList
+
+def retrieve_history(ticker, dateFrom, dateTo ):
+    """ Dates are in the form YYYY-MM-DD """
+    headers = {
+    'Content-Type': 'application/json'
+    }
+    requestResponse = requests.get("https://api.tiingo.com/tiingo/daily/" + ticker + "/prices?startDate=" + dateFrom + "&endDate=" + dateTo + "&token=877c60a71d24e500a3767c3875e6845c35df8564", headers=headers)
+    return requestResponse.json()

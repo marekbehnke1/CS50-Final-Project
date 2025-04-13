@@ -6,7 +6,7 @@
         <div class="h-1/2 text-wrap justify-center flex" id="volume-panel">
             <table class="text-center table-fixed w-full">
                 <thead>
-                    <tr>
+                    <tr class="h-12">
                         <th class="w-1/2">Ticker</th>
                         <th class="w-1/2">Volume</th>
                     </tr>
@@ -35,63 +35,72 @@
     
     <div class="w-5/8 h-screen bg-red-200 text-center" id="main-panel">
             <div class="" id="main-panel-top">
-                <div class="flex h-18 w-full">
+                <div class="flex h-12 w-full">
                     <div class="w-1/2 bg-slate-700 flex justify-evenly items-center">
-                        <a href="" class="rounded-lg border w-28 text-center py-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0">Link 1</a>
-                        <a href="" class="rounded-lg border w-28 text-center py-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0">Link 2</a>
-                        <a href="" class="rounded-lg border w-28 text-center py-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0">Link 3</a>
-                        <a href="" class="rounded-lg border w-28 text-center py-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0">Link 4</a>
+
                     </div>
                     <div class="w-1/2 bg-slate-700 flex">
-                        <div class="flex w-1/2 justify-end"></div>
-                        <div class="flex w-1/2 justify-evenly items-center">
-                            <a href="" class="rounded-lg border w-28 text-center py-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0">Account</a>
-                            <a href="/logout" class="rounded-lg border w-28 text-center py-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0">Logout</a>    
+                        <div class="flex w-full justify-end items-center">
+                            <a href="/portfolio" class="rounded-lg border w-28 text-center py-1 mx-4 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0">Portfolio</a>
+                            <a href="/account" class="rounded-lg border w-28 text-center py-1 mx-4 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0">Account</a>
+                            <a href="/logout" class="rounded-lg border w-28 text-center py-1 mx-4 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0">Logout</a>    
                         </div>
                         
                 
                     </div>
                 </div>
             </div>
-        <div class="" id="main-panel-center">
-            <table class="table-fixed">
-                <tr>
-                    <td>Ticker:</td>
-                    <td id="return-ticker"></td>
-                </tr>
-                <tr>
-                    <td>Data Timestamp:</td>
-                    <td id="return-timestamp"></td>
-                </tr>
-                <tr>
-                    <td>Last Price:</td>
-                    <td id="return-last"></td>
-                </tr>
-                <tr>
-                    <td>Previous Close:</td>
-                    <td id="return-prevClose"></td>
-                </tr>
-                <tr>
-                    <td>Open Price:</td>
-                    <td id="return-open"></td>
-                </tr>
-                <tr>
-                    <td>High:</td>
-                    <td id="return-high"></td>
-                </tr>
-                <tr>
-                    <td>Low:</td>
-                    <td id="return-low"></td>
-                </tr>
-                <tr>
-                    <td>Mid:</td>
-                    <td id="return-mid"></td>
-                </tr>
-                <tr>
-                    <td>Volume</td>
-                    <td id="return-volume"></td>
-                </tr>
-            </table>
+        <div class="size-full" id="main-panel-center">
+            <div class="w-full h-12 bg-slate-500 flex" id="chart-options-panel">
+                Menu Options for graph
+            </div>
+
+            <div class="h-5/8 w-full bg-slate-200 flex justify-center" id="main-panel-chart">
+                <div id="main-chart" class="w-4/5 h-4/5 bg-slate-500">
+                    <!-- This is where the graph goes -->
+                </div>
+
+            </div>
+            <div class="w-full justify-center flex" id="table-container">
+                <table class="table-fixed">
+                    <tr>
+                        <td>Ticker:</td>
+                        <td id="return-ticker"></td>
+                    </tr>
+                    <tr>
+                        <td>Data Timestamp:</td>
+                        <td id="return-timestamp"></td>
+                    </tr>
+                    <tr>
+                        <td>Last Price:</td>
+                        <td id="return-last"></td>
+                    </tr>
+                    <tr>
+                        <td>Previous Close:</td>
+                        <td id="return-prevClose"></td>
+                    </tr>
+                    <tr>
+                        <td>Open Price:</td>
+                        <td id="return-open"></td>
+                    </tr>
+                    <tr>
+                        <td>High:</td>
+                        <td id="return-high"></td>
+                    </tr>
+                    <tr>
+                        <td>Low:</td>
+                        <td id="return-low"></td>
+                    </tr>
+                    <tr>
+                        <td>Mid:</td>
+                        <td id="return-mid"></td>
+                    </tr>
+                    <tr>
+                        <td>Volume</td>
+                        <td id="return-volume"></td>
+                    </tr>
+                </table>
+            </div>
         </div>
 
     </div>
@@ -99,7 +108,7 @@
     <div class=" w-2/8 h-screen text-center flex justify-between" id="right-panel">
         <table class="table-fixed w-1/2">
             <thead>
-                <tr>
+                <tr class="h-12">
                     <th>Ticker</th>
                     <th>Biggest Gain</th>
                 </tr>
@@ -107,8 +116,8 @@
             <tbody>
 
                 {% for item in differenceData %}
-                    <tr class="border-y border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700 stock-item cursor-pointer">
-                        <td class="ticker-code">
+                    <tr class="border-y border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700 stock-item">
+                        <td class="ticker-code cursor-pointer">
                             {{ item.ticker }}
                         </td>
                         <td>
@@ -121,7 +130,7 @@
         </table>
         <table class="table-fixed w-1/2">
             <thead>
-                <tr>
+                <tr class="h-12">
                     <th>Ticker</th>
                     <th>Biggest Loss</th>
                 </tr>
@@ -129,8 +138,8 @@
             <tbody>
 
                 {% for item in differenceDataReverse %}
-                    <tr class="border-y border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700 stock-item cursor-pointer">
-                        <td class="ticker-code">
+                    <tr class="border-y border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700 stock-item">
+                        <td class="ticker-code cursor-pointer">
                             {{ item.ticker }}
                         </td>
                         <td>
@@ -168,7 +177,13 @@
             document.getElementById("return-low").innerHTML = information.low
             document.getElementById("return-mid").innerHTML = information.mid
             document.getElementById("return-volume").innerHTML = information.volume
-            console.log(information)
+            
+            let responseChart = await fetch('/chart?q=' + code)
+            let chartData = await responseChart.json()
+            console.log(chartData)
+            
+            drawChart(chartData, code);
+
         })
     };
 

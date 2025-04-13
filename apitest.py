@@ -15,18 +15,22 @@ records = 100
 #    Response = requests.get("https://api.tiingo.com/iex", headers=APIheaders).json()
 #    return Response
 
-def retrieve_history(ticker, ):
+ticker = "NVDA"
+dateFrom = "2023-01-03" 
+dateTo = "2023-01-10"
+
+
+def retrieve_history(ticker, dateFrom, dateTo ):
+    """ Dates are in the form YYYY-MM-DD """
     headers = {
     'Content-Type': 'application/json'
     }
-    requestResponse = requests.get("https://api.tiingo.com/tiingo/daily/" + ticker + "/prices?startDate=2019-01-02&token=877c60a71d24e500a3767c3875e6845c35df8564", headers=headers)
+    requestResponse = requests.get("https://api.tiingo.com/tiingo/daily/" + ticker + "/prices?startDate=" + dateFrom + "&endDate=" + dateTo + "&token=877c60a71d24e500a3767c3875e6845c35df8564", headers=headers)
     return requestResponse.json()
 
 
-
-
 #IEXdata = retrieve_iex()
-IEXdata = retrieve_history()
+IEXdata = retrieve_history(ticker, dateFrom, dateTo)
 
 print(IEXdata)
 

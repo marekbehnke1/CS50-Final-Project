@@ -1,6 +1,8 @@
 import os
 
-from helpers import login_required, retrieve_iex, sort_data
+import gviz_api
+
+from helpers import login_required, retrieve_iex, sort_data, retrieve_history
 
 from flask import Flask, render_template, session, request, redirect, flash, jsonify
 from flask_session import Session
@@ -143,26 +145,58 @@ def index():
         redirect("/login")
 
 @app.route("/stock")
+@login_required
 def info_page():
 
     # because the code is being sent via GET, the info is accesible via the below statement
     query = request.args.get("q")
-
-    db = sqlite3.connect("database.db")
-    cur = db.cursor()
-
     if query:
-        #result = cur.execute("SELECT * FROM stocks WHERE ticker = ?", (query,)).fetchone()
-
         # this is a generator expression
+        # it is looping through IEXdata for an a dict where dict["ticker"] == the query
+        # and returning the dict as json
         result = next((item for item in IEXdata if item["ticker"] == query), None)
-
-
-        db.close()
     else:
         result = []
-
     return jsonify(result)
+
+@app.route("/chart")
+@login_required
+def chart():
+    # get query for the ticker code
+    query = request.args.get("q")
+
+    # placeholders for the form which will probvide these values
+    dateFrom = "2024-12-01"
+    dateTo = "2024-12-07"
+
+
+
+    data = []
+    #Use API to import data 
+    for row in retrieve_history(query, dateFrom, dateTo):
+        data.append({
+            "date" : row["date"][:10],
+            "low" : (row["low"], str(row["low"])),
+            "open" : (row["open"], str(row["open"])),
+            "close" : (row["close"], str(row["close"])),
+            "high" : (row["high"], str(row["high"]))
+        })
+
+    ## set schema for data table
+    description = {"date" : ("string", "Date"),
+                   "low" : ("number", "Low"),
+                   "open" : ("number", "Open"),
+                   "close" : ("number", "Close"),
+                   "high" : ("number", "High")}
+
+    ## initialise datatable
+    data_table = gviz_api.DataTable(description)
+    data_table.LoadData(data)
+#
+    ## convert the data table into a json response
+    chart_data = data_table.ToJSon(columns_order=("date", "low", "open", "close", "high"))
+
+    return chart_data
 
 
 @app.route("/login" , methods=["GET", "POST"])
