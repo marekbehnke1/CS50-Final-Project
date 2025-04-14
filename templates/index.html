@@ -185,7 +185,7 @@
             let responseChart = await fetch('/chart?q=' + code)
             let chartData = await responseChart.json()
             
-            // I need to include something to check if dates already exist in here
+            // TODO: I need to include something to check if dates already exist in here
 
             drawChart(chartData, code);
 
@@ -197,7 +197,7 @@
 
     let chartDates = document.getElementsByClassName("chartDates")
     
-    // if dateFrom & dateTo both exist, then request chart update with those dates
+    // if dateFrom & dateTo && code all exist, then request chart update with those dates
     for(let i = 0; i < chartDates.length; i++){
         chartDates[i].addEventListener("input", function() {
 

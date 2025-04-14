@@ -10,6 +10,9 @@ TODO
 # [] Front End
      [] Landing Page
         [] graphs
+            [x] graph working
+            [x] graph date selection working
+            [] finish default values and error check for graph date update
         [] search for stock info to generate graphs
             [] Autocomplete search when searching for ticker codes
 
@@ -62,4 +65,5 @@ https://flask.palletsprojects.com/en/stable/patterns/javascript/
 
 https://www.makeuseof.com/tag/python-javascript-communicate-json/
 
+google visualisations api 
 pip install gviz_api
