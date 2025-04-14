@@ -12,9 +12,11 @@ TODO
         [] graphs
             [x] graph working
             [x] graph date selection working
-            [] finish default values and error check for graph date update
-        [] search for stock info to generate graphs
+            [x] finish default values and error check for graph date update
+            [] default display for graph
+            [] search for stock info to generate graphs
             [] Autocomplete search when searching for ticker codes
+            [] add to favourite / remove from favourite
 
      [] Portfolio Page
         [] stocks interested in?

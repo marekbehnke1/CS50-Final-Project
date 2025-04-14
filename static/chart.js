@@ -32,6 +32,6 @@ async function updateChart(code, dateTo, dateFrom) {
     let response = await fetch('/chart?q=' + code +'&to=' + dateTo + '&from=' + dateFrom)
 
     let chartData = await response.json()
-
+    console.log(chartData)
     drawChart(chartData, code)
 }

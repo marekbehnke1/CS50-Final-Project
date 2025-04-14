@@ -2,6 +2,8 @@ import os
 
 import gviz_api
 
+import datetime
+
 from helpers import login_required, retrieve_iex, sort_data, retrieve_history
 
 from flask import Flask, render_template, session, request, redirect, flash, jsonify
@@ -152,7 +154,7 @@ def info_page():
     query = request.args.get("q")
     if query:
         # this is a generator expression
-        # it is looping through IEXdata for an a dict where dict["ticker"] == the query
+        # it is looping through IEXdata for a dict where dict["ticker"] == the query
         # and returning the dict as json
         result = next((item for item in IEXdata if item["ticker"] == query), None)
     else:
@@ -170,17 +172,21 @@ def chart():
 
     #include a default date range if date is not set
     if not dateFrom and not dateTo:
+        # set to -7 days ago
+        dateFromInit = datetime.date.today() - datetime.timedelta(days=28)
+        dateFrom = dateFromInit.strftime('%Y-%m-%d')
+
         # set to todays date
-        dateFrom = "2024-01-01"
-        # set to todays date -7
-        dateTo = "2024-01-30"
+        dateToInit = datetime.date.today() 
+        dateTo = dateToInit.strftime('%Y-%m-%d')
+
     else:
         dateFrom = request.args.get("from")
         dateTo = request.args.get("to")
-        
+
 
     data = []
-    #Use API to import data 
+    #Retrive historical date for given dates
     for row in retrieve_history(query, dateFrom, dateTo):
         data.append({
             "date" : row["date"][:10],

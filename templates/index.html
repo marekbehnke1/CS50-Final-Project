@@ -33,27 +33,25 @@
         </div>
     </div>
     
-    <div class="w-5/8 h-screen bg-red-200 text-center" id="main-panel">
+    <div class="w-5/8 h-screen  text-center" id="main-panel">
             <div class="" id="main-panel-top">
                 <div class="flex h-12 w-full">
-                    <div class="w-1/2 bg-slate-700 flex justify-evenly items-center">
-
-                    </div>
+                    <div class="w-1/2"> </div>
                     <div class="w-1/2 bg-slate-700 flex">
                         <div class="flex w-full justify-end items-center">
                             <a href="/portfolio" class="rounded-lg border w-28 text-center py-1 mx-4 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0">Portfolio</a>
                             <a href="/account" class="rounded-lg border w-28 text-center py-1 mx-4 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0">Account</a>
                             <a href="/logout" class="rounded-lg border w-28 text-center py-1 mx-4 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0">Logout</a>    
                         </div>
-                        
-                
                     </div>
                 </div>
             </div>
         <div class="size-full" id="main-panel-center">
-            <div class="w-full h-12 bg-slate-500 flex justify-evenly" id="chart-options-panel">
-
+            <div class="w-full h-12 bg-slate-500 flex justify-evenly relative" id="chart-search-panel">
                 <input type="search" class="border-slate-950 border-solid rounded-md border my-1 text-center" autofocus placeholder="Search ticker code" id="search">
+                <div class="bg-slate-300 w-2/8 h-28 absolute z-10 top-full" id="search-options">
+                    search results
+                </div>
             </div>
 
             <div class="h-5/8 w-full bg-slate-700 flex-col place-items-center" id="main-panel-chart">
@@ -61,48 +59,56 @@
                 <div id="main-chart" class="w-4/5 h-4/5">
                     <!-- This is where the graph goes -->
                 </div>
-                <input type="date" class="chartDates border-slate-950 border-solid rounded-md border my-1" placeholder="" id="dateFrom">
-                <input type="date" class="chartDates border-slate-950 border-solid rounded-md border my-1" placeholder="" id="dateTo">
+                <input type="date" class="chartDates border-slate-950 border-solid rounded-md border my-1" placeholder="Date from" id="dateFrom">
+                <input type="date" class="chartDates border-slate-950 border-solid rounded-md border my-1" placeholder="Date to" id="dateTo">
+
             </div>
-            <div class="w-full justify-center flex" id="table-container">
-                <table class="table-fixed">
-                    <tr>
-                        <td>Ticker:</td>
-                        <td id="return-ticker"></td>
-                    </tr>
-                    <tr>
-                        <td>Data Timestamp:</td>
-                        <td id="return-timestamp"></td>
-                    </tr>
-                    <tr>
-                        <td>Last Price:</td>
-                        <td id="return-last"></td>
-                    </tr>
-                    <tr>
-                        <td>Previous Close:</td>
-                        <td id="return-prevClose"></td>
-                    </tr>
-                    <tr>
-                        <td>Open Price:</td>
-                        <td id="return-open"></td>
-                    </tr>
-                    <tr>
-                        <td>High:</td>
-                        <td id="return-high"></td>
-                    </tr>
-                    <tr>
-                        <td>Low:</td>
-                        <td id="return-low"></td>
-                    </tr>
-                    <tr>
-                        <td>Mid:</td>
-                        <td id="return-mid"></td>
-                    </tr>
-                    <tr>
-                        <td>Volume</td>
-                        <td id="return-volume"></td>
-                    </tr>
-                </table>
+            <div class="w-full justify-center flex" id="data-container">
+                <div class="w-1/2 bg-slate-400 flex justify-center" id="data-left">
+                    <table class="table-fixed">
+                        <tr>
+                            <td>Ticker:</td>
+                            <td id="return-ticker"></td>
+                        </tr>
+                        <tr>
+                            <td>Data Timestamp:</td>
+                            <td id="return-timestamp"></td>
+                        </tr>
+                        <tr>
+                            <td>Last Price:</td>
+                            <td id="return-last"></td>
+                        </tr>
+                        <tr>
+                            <td>Previous Close:</td>
+                            <td id="return-prevClose"></td>
+                        </tr>
+                        <tr>
+                            <td>Open Price:</td>
+                            <td id="return-open"></td>
+                        </tr>
+                        <tr>
+                            <td>High:</td>
+                            <td id="return-high"></td>
+                        </tr>
+                        <tr>
+                            <td>Low:</td>
+                            <td id="return-low"></td>
+                        </tr>
+                        <tr>
+                            <td>Mid:</td>
+                            <td id="return-mid"></td>
+                        </tr>
+                        <tr>
+                            <td>Volume</td>
+                            <td id="return-volume"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="w-1/2 bg-slate-300" id="data-right">
+                    <p>stats from graph go here</p>
+                    <p>change in price over month</p>
+                    <p>avg open/close?</p>
+                </div>
             </div>
         </div>
 
@@ -184,19 +190,12 @@
             document.getElementById("return-mid").innerHTML = information.mid
             document.getElementById("return-volume").innerHTML = information.volume
         
-            let responseChart = await fetch('/chart?q=' + code)
-            let chartData = await responseChart.json()
-            
-            // check if dates exist, if they do - update the chart
+            // have to redeclare these here as their value is assigned after page load
             dateFrom = document.getElementById("dateFrom").value    
             dateTo = document.getElementById("dateTo").value
 
-            if (dateFrom && dateTo){
-                updateChart(code, dateTo, dateFrom)
-            }
-            else{
-                drawChart(chartData, code);
-            }
+            updateChart(code, dateTo, dateFrom)
+        
         })
     };
 
