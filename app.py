@@ -165,9 +165,19 @@ def chart():
     # get query for the ticker code
     query = request.args.get("q")
 
-    # placeholders for the form which will probvide these values
-    dateFrom = "2024-03-01"
-    dateTo = "2024-03-31"
+    dateFrom = request.args.get("from")
+    dateTo = request.args.get("to")
+
+    #include a default date range if date is not set
+    if not dateFrom and not dateTo:
+        # set to todays date
+        dateFrom = "2024-01-01"
+        # set to todays date -7
+        dateTo = "2024-01-30"
+    else:
+        dateFrom = request.args.get("from")
+        dateTo = request.args.get("to")
+        
 
     data = []
     #Use API to import data 

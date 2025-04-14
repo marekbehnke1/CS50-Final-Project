@@ -27,3 +27,11 @@ function drawChart(chartData, code){
     var data = new google.visualization.DataTable(chartData, 0.6);
     chart.draw(data, options);
 };
+
+async function updateChart(code, dateTo, dateFrom) {
+    let response = await fetch('/chart?q=' + code +'&to=' + dateTo + '&from=' + dateFrom)
+
+    let chartData = await response.json()
+
+    drawChart(chartData, code)
+}

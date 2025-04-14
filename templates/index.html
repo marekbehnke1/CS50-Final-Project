@@ -52,16 +52,17 @@
             </div>
         <div class="size-full" id="main-panel-center">
             <div class="w-full h-12 bg-slate-500 flex justify-evenly" id="chart-options-panel">
-                <input type="text" class="border-slate-950 border-solid rounded-md border my-1" placeholder="" id="dateFrom">
-                <input type="text" class="border-slate-950 border-solid rounded-md border my-1" placeholder="" id="dateTo">
-                <input type="search" class="border-slate-950 border-solid rounded-md border my-1" autofocus placeholder="Search ticker code" id="search">
+
+                <input type="search" class="border-slate-950 border-solid rounded-md border my-1 text-center" autofocus placeholder="Search ticker code" id="search">
             </div>
 
-            <div class="h-5/8 w-full bg-slate-700 flex justify-center" id="main-panel-chart">
+            <div class="h-5/8 w-full bg-slate-700 flex-col place-items-center" id="main-panel-chart">
+                <input type="hidden" id="current-ticker">
                 <div id="main-chart" class="w-4/5 h-4/5">
                     <!-- This is where the graph goes -->
                 </div>
-
+                <input type="date" class="chartDates border-slate-950 border-solid rounded-md border my-1" placeholder="" id="dateFrom">
+                <input type="date" class="chartDates border-slate-950 border-solid rounded-md border my-1" placeholder="" id="dateTo">
             </div>
             <div class="w-full justify-center flex" id="table-container">
                 <table class="table-fixed">
@@ -157,13 +158,14 @@
 
 <script>
     var stockItems = document.getElementsByClassName("ticker-code");
+    let code = document.getElementById("current-ticker").value;
 
     for(let i = 0; i < stockItems.length; i++){
 
         stockItems[i].addEventListener("click", async function(){
             // returns the ticker code of the element clicked on
-            let code = this.textContent.trim()
-
+            code = this.textContent.trim();
+            document.getElementById("current-ticker").value = code;
             // this sends the code to the /stock route
             let response = await fetch('/stock?q=' + code);
 
@@ -179,15 +181,34 @@
             document.getElementById("return-low").innerHTML = information.low
             document.getElementById("return-mid").innerHTML = information.mid
             document.getElementById("return-volume").innerHTML = information.volume
-            
+        
             let responseChart = await fetch('/chart?q=' + code)
             let chartData = await responseChart.json()
-            console.log(chartData)
             
+            // I need to include something to check if dates already exist in here
+
             drawChart(chartData, code);
 
         })
     };
+
+    let dateFrom = document.getElementById("dateFrom")
+    let dateTo = document.getElementById("dateTo")
+
+    let chartDates = document.getElementsByClassName("chartDates")
+    
+    // if dateFrom & dateTo both exist, then request chart update with those dates
+    for(let i = 0; i < chartDates.length; i++){
+        chartDates[i].addEventListener("input", function() {
+
+            if(dateTo.value && dateFrom.value && code){
+
+                code = document.getElementById("current-ticker").value
+                updateChart(code, dateTo.value, dateFrom.value)
+            }
+        })
+    }
+
 
 </script>
 
