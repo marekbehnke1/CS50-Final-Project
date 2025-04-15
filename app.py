@@ -123,7 +123,6 @@ def index():
     # set data to sort
     differenceData = {}
     # check if fields are empty & set to 0
-
     for item in IEXdata:
         if item["tngoLast"] == None:
             last = 0
@@ -139,7 +138,7 @@ def index():
     differenceDataSorted = sort_data("difference", 20, differenceData)
     differenceDataReverse = sort_data("difference", 20, differenceData, False)
 
-
+    # todo: set something up for retrieving the list of favourites on login
 
     if session["user_id"]:
         return render_template("index.html", volumeData = volumeDataSorted, differenceData = differenceDataSorted, differenceDataReverse = differenceDataReverse)
@@ -170,8 +169,6 @@ def search():
     curs = db.cursor()
 
     if query:
-        print(query)
-        # will need to include length checking here so it doesnt return 1000000 results
         # have limited to 20 with sql query
         result = curs.execute("SELECT * FROM stocks WHERE ticker LIKE ? LIMIT 20", (query + "%",)).fetchall()
     else:
@@ -231,6 +228,22 @@ def chart():
 
     return chart_data
 
+@app.route("/favourite")
+@login_required
+def favourite():
+
+    user_id = session["userid"]
+    query = request.args.get("q")
+
+    db = sqlite3.connect("database.db")
+    curs = db.cursor()
+
+    if query:
+        curs.execute("INSERT INTO favourites (userid, ticker), VALUES (?, ?)", user_id, query)
+        db.commit()
+        db.close()
+
+    return
 
 @app.route("/login" , methods=["GET", "POST"])
 def login():
