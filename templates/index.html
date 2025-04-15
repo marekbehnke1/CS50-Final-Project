@@ -190,6 +190,11 @@
         updatePage(stockItems, dateFrom, dateTo);
     });
 
+    // close search box when it loses focus
+    searchForm.addEventListener('focusout', function(){
+        document.getElementById("search-results").innerHTML = "";
+    });
+
 
     //updates the graph based on date range changes
     let chartDates = document.getElementsByClassName("chartDates");
