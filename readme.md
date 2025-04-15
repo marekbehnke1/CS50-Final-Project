@@ -14,8 +14,10 @@ TODO
             [x] graph date selection working
             [x] finish default values and error check for graph date update
             [] default display for graph
-            [] search for stock info to generate graphs
-            [] Autocomplete search when searching for ticker codes
+            [x] search for stock info to generate graphs
+            [x] Autocomplete search when searching for ticker codes
+                [] need some error checking here for when a searched stock does not return a valid result
+                [] clear the search box once item has been clicked
             [] add to favourite / remove from favourite
 
      [] Portfolio Page

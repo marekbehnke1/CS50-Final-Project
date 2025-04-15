@@ -48,9 +48,12 @@
             </div>
         <div class="size-full" id="main-panel-center">
             <div class="w-full h-12 bg-slate-500 flex justify-evenly relative" id="chart-search-panel">
-                <input type="search" class="border-slate-950 border-solid rounded-md border my-1 text-center" autofocus placeholder="Search ticker code" id="search">
-                <div class="bg-slate-300 w-2/8 h-28 absolute z-10 top-full" id="search-options">
-                    search results
+                <input type="search" class="border-slate-950 border-solid rounded-md border my-1 text-center" autofocus id="search" placeholder="Search code">
+                <div class="bg-slate-300 w-2/8 h-auto absolute z-10 top-full" id="search-container">
+                    
+                    <ul id="search-results">
+                        <!-- search results go here -->
+                    </ul>
                 </div>
             </div>
 
@@ -167,41 +170,29 @@
     let code = document.getElementById("current-ticker").value;
     let dateFrom = document.getElementById("dateFrom").value    
     let dateTo = document.getElementById("dateTo").value
-
-    for(let i = 0; i < stockItems.length; i++){
-
-        stockItems[i].addEventListener("click", async function(){
-            // returns the ticker code of the element clicked on
-            code = this.textContent.trim();
-            document.getElementById("current-ticker").value = code;
-            // this sends the code to the /stock route
-            let response = await fetch('/stock?q=' + code);
-
-            // this waits for the information to come back, and then treats it as json
-            let information = await response.json()
-
-            document.getElementById("return-ticker").innerHTML = information.ticker
-            document.getElementById("return-timestamp").innerHTML = information.timestamp
-            document.getElementById("return-last").innerHTML = information.tngoLast
-            document.getElementById("return-prevClose").innerHTML = information.prevClose
-            document.getElementById("return-open").innerHTML = information.open
-            document.getElementById("return-high").innerHTML = information.high
-            document.getElementById("return-low").innerHTML = information.low
-            document.getElementById("return-mid").innerHTML = information.mid
-            document.getElementById("return-volume").innerHTML = information.volume
-        
-            // have to redeclare these here as their value is assigned after page load
-            dateFrom = document.getElementById("dateFrom").value    
-            dateTo = document.getElementById("dateTo").value
-
-            updateChart(code, dateTo, dateFrom)
-        
-        })
-    };
-
-
-    let chartDates = document.getElementsByClassName("chartDates")
     
+    // sets the link aspect of the stock items diplayed on page
+    // and updates table & graph when they are clicked
+    updatePage(stockItems, code, dateFrom, dateTo);
+
+
+    // Run search function on input to the search bar
+    let searchForm = document.getElementById("search");
+    searchForm.addEventListener('input', async function(){
+        // need to wait for search results to come back before continuing
+        await search(searchForm.value);
+
+        // refresh the stockitems array now there are new items
+        stockItems = document.getElementsByClassName("ticker-code")
+        
+        // running this again should allow the items created by search
+        // to act as links
+        updatePage(stockItems, dateFrom, dateTo);
+    });
+
+
+    //updates the graph based on date range changes
+    let chartDates = document.getElementsByClassName("chartDates");
     // if dateFrom & dateTo && code all exist, then request chart update with those dates
     for(let i = 0; i < chartDates.length; i++){
         chartDates[i].addEventListener("input", function() {
@@ -214,8 +205,6 @@
 
             console.log(code)
             if(dateTo && dateFrom && code){
-                console.log("both dates & code exist")
-
                 updateChart(code, dateTo, dateFrom)
             }
         })

@@ -161,6 +161,25 @@ def info_page():
         result = []
     return jsonify(result)
 
+@app.route("/search")
+@login_required
+def search():
+
+    query = request.args.get("q")
+    db = sqlite3.connect("database.db")
+    curs = db.cursor()
+
+    if query:
+        print(query)
+        # will need to include length checking here so it doesnt return 1000000 results
+        # have limited to 20 with sql query
+        result = curs.execute("SELECT * FROM stocks WHERE ticker LIKE ? LIMIT 20", (query + "%",)).fetchall()
+    else:
+        result = ()
+    db.close()
+
+    return jsonify(result)
+
 @app.route("/chart")
 @login_required
 def chart():
