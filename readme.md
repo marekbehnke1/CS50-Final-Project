@@ -17,7 +17,7 @@ TODO
             [x] search for stock info to generate graphs
             [x] Autocomplete search when searching for ticker codes
                 [] need some error checking here for when a searched stock does not return a valid result
-                [] clear the search box once item has been clicked
+                [x] clear the search box once item has been clicked
             [] add to favourite / remove from favourite
 
      [] Portfolio Page
@@ -54,6 +54,13 @@ TODO
         [] Account page
             [] password change
             [] update account info
+
+        [] Favourites
+            [x] add to favourites route
+            [] retrieve favourites on login
+
+        [] portfolio page
+            [] retrieve favourites
 
     [] API Connection 
         [x]Tiingo
