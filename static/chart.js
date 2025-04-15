@@ -43,13 +43,26 @@ async function search(code) {
     let html = '';
     
     for (let item of searchItems){
-        // currently unsure what form searchitems will come back to me
-        // hence "item"
-        html += '<li class="ticker-code border-y border-slate-600 bg-slate-400 hover:bg-slate-600 cursor-pointer">' + item[1] + "</li>";
+        html += '<li class="search-link border-y border-slate-600 bg-slate-400 hover:bg-slate-600 cursor-pointer">' + item[1] + "</li>";
+    } 
+    document.getElementById("search-results").innerHTML = html;
+
+    // add event listener to new search box items
+    let searchLink = document.getElementsByClassName("search-link")
+    for(let link of searchLink){
+        link.addEventListener('click', async function () {
+
+            let ticker = link.textContent.trim();
+            document.getElementById("current-ticker").value = ticker
+
+            updateTable(ticker)
+
+            dateFrom = document.getElementById("dateFrom").value    
+            dateTo = document.getElementById("dateTo").value
+            updateChart(ticker, dateTo, dateFrom) 
+        })
     }
     
-    document.getElementById("search-results").innerHTML = html;
-    //stockItems = document.getElementsByClassName("ticker-code")
     
 };
 
@@ -61,21 +74,8 @@ function updatePage(page_items, dateTo, dateFrom){
             // returns the ticker code of the element clicked on
             code = this.textContent.trim();
             document.getElementById("current-ticker").value = code;
-            // this sends the code to the /stock route
-            let response = await fetch('/stock?q=' + code);
-
-            // this waits for the information to come back, and then treats it as json
-            let table_info = await response.json()
-
-            document.getElementById("return-ticker").innerHTML = table_info.ticker
-            document.getElementById("return-timestamp").innerHTML = table_info.timestamp
-            document.getElementById("return-last").innerHTML = table_info.tngoLast
-            document.getElementById("return-prevClose").innerHTML = table_info.prevClose
-            document.getElementById("return-open").innerHTML = table_info.open
-            document.getElementById("return-high").innerHTML = table_info.high
-            document.getElementById("return-low").innerHTML = table_info.low
-            document.getElementById("return-mid").innerHTML = table_info.mid
-            document.getElementById("return-volume").innerHTML = table_info.volume
+            
+            updateTable(code);
         
             // have to redeclare these here as their value is assigned after page load
             dateFrom = document.getElementById("dateFrom").value    
@@ -85,4 +85,22 @@ function updatePage(page_items, dateTo, dateFrom){
         
         })
     };
+}
+
+
+async function updateTable(code){
+
+    // gets table data
+    let response = await fetch('/stock?q=' + code);
+    let table_info = await response.json()
+    // populates table
+    document.getElementById("return-ticker").innerHTML = table_info.ticker
+    document.getElementById("return-timestamp").innerHTML = table_info.timestamp
+    document.getElementById("return-last").innerHTML = table_info.tngoLast
+    document.getElementById("return-prevClose").innerHTML = table_info.prevClose
+    document.getElementById("return-open").innerHTML = table_info.open
+    document.getElementById("return-high").innerHTML = table_info.high
+    document.getElementById("return-low").innerHTML = table_info.low
+    document.getElementById("return-mid").innerHTML = table_info.mid
+    document.getElementById("return-volume").innerHTML = table_info.volume
 }

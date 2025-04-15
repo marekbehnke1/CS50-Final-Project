@@ -68,6 +68,11 @@ TODO
         [x] API call on load and save data in memory to limit api calls
             []check for any additional api calls needed
         [x] Double check some of the variable naming conventions in the retrieve & sort  functions
+# [] Bugs
+    [] makes 10 of the same api call when you click a stock link on the side panels
+        - i think its linked to the updatePage function through the /chart route
+        - doesnt happen if no search, no date, no graph 
+        - happens if you have typed something into the search
 
 
 https://stackoverflow.com/questions/74808530/send-data-from-javascript-%E2%86%92-python-and-back-without-reloading-the-page

@@ -178,21 +178,16 @@
 
     // Run search function on input to the search bar
     let searchForm = document.getElementById("search");
-    searchForm.addEventListener('input', async function(){
-        // need to wait for search results to come back before continuing
-        await search(searchForm.value);
-
-        // refresh the stockitems array now there are new items
-        stockItems = document.getElementsByClassName("ticker-code")
-        
-        // running this again should allow the items created by search
-        // to act as links
-        updatePage(stockItems, dateFrom, dateTo);
+    searchForm.addEventListener('input', function(){
+        search(searchForm.value);
     });
 
-    // close search box when it loses focus
+    // clear search box when it loses focus
     searchForm.addEventListener('focusout', function(){
-        document.getElementById("search-results").innerHTML = "";
+        setTimeout(function(){
+            document.getElementById("search-results").innerHTML = "";
+            document.getElementById("search").value ="";
+        }, 75) 
     });
 
 
@@ -208,7 +203,6 @@
             dateTo = document.getElementById("dateTo").value
             code = document.getElementById("current-ticker").value
 
-            console.log(code)
             if(dateTo && dateFrom && code){
                 updateChart(code, dateTo, dateFrom)
             }
