@@ -38,7 +38,37 @@
         </div>
     
         <div class="h-1/2" id="favourites">
-            watched stocks
+            <table class="text-center table-fixed w-full">
+                <thead>
+                    <tr class="h-12">
+                        <th class="w-4/9">Ticker</th>
+                        <th class="w-4/9">something</th>
+                        <th class="w-1/9"></th>
+                    </tr>
+                </thead>
+
+                {% for item in favouritesList %}
+                <tbody>
+                    <tr class="border-y border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700 stock-item">
+                        <td class="ticker-code cursor-pointer">
+                            {{ item.ticker }}
+                        </td>
+                        <td>
+                            {{ item.volume }}
+                        </td>
+                        <td>
+                            <form action="/favourite" method="get">
+                                
+                                <input type="hidden" name="q" value="{{ item.ticker }}">
+                                <svg class="hover:fill-slate-200 cursor-pointer add_favourite" fill="#475569" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <polygon points="455,212.5 242.5,212.5 242.5,0 212.5,0 212.5,212.5 0,212.5 0,242.5 212.5,242.5 212.5,455 242.5,455 242.5,242.5 455,242.5 "></polygon> </g></svg>
+                                
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
         </div>
     </div>
     

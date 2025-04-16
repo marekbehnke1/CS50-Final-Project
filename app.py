@@ -112,6 +112,7 @@ IEXdata = [
 @app.route("/")
 @login_required
 def index():
+    user_id = session["user_id"]
 
     # set the data to sort
     volumeData = {}
@@ -139,9 +140,16 @@ def index():
     differenceDataReverse = sort_data("difference", 20, differenceData, False)
 
     # todo: set something up for retrieving the list of favourites on login
+    ############
+    db = sqlite3.connect("database.db")
+    curs = db.cursor()
 
-    if session["user_id"]:
-        return render_template("index.html", volumeData = volumeDataSorted, differenceData = differenceDataSorted, differenceDataReverse = differenceDataReverse)
+    #conver this to a useful format
+    favouritesList = curs.execute("SELECT * FROM favourites WHERE userid = ?", (user_id,)).fetchall()
+    db.close()
+
+    if user_id:
+        return render_template("index.html", volumeData = volumeDataSorted, differenceData = differenceDataSorted, differenceDataReverse = differenceDataReverse, favouritesList = favouritesList)
     else:
         redirect("/login")
 
