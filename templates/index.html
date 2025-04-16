@@ -24,10 +24,10 @@
                             </td>
                             <td>
                                 <form action="/favourite" method="get">
+
                                     <input type="hidden" name="q" value="{{ item.ticker }}">
-                                    <button type="submit">
-                                        <svg class="hover:fill-slate-200 cursor-pointer add_favourite" fill="#475569" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <polygon points="455,212.5 242.5,212.5 242.5,0 212.5,0 212.5,212.5 0,212.5 0,242.5 212.5,242.5 212.5,455 242.5,455 242.5,242.5 455,242.5 "></polygon> </g></svg>
-                                    </button>
+                                    <svg class="hover:fill-slate-200 cursor-pointer add_favourite" fill="#475569" height="20px" width="20px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <polygon points="455,212.5 242.5,212.5 242.5,0 212.5,0 212.5,212.5 0,212.5 0,242.5 212.5,242.5 212.5,455 242.5,455 242.5,242.5 455,242.5 "></polygon> </g></svg>
+                                    
                                 </form>
                             </td>
                         </tr>
@@ -224,6 +224,14 @@
                 updateChart(code, dateTo, dateFrom)
             }
         })
+    };
+
+    // add item to favourite
+    let favouriteButton = document.getElementsByClassName("add_favourite");
+    for(let button of favouriteButton){
+        button.addEventListener('click', function(){
+            console.log(button.previousElementSibling.value);
+        });
     };
 
 
