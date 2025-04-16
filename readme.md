@@ -58,7 +58,7 @@ TODO
         [] Favourites
             [x] add to favourites route
             [] retrieve favourites on login
-            [] need to find a way to use the + to add to favourites using JS, so page doesnt have to reload
+            [x] need to find a way to use the + to add to favourites using JS, so page doesnt have to reload
 
         [] portfolio page
             [] retrieve favourites
