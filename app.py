@@ -232,18 +232,25 @@ def chart():
 @login_required
 def favourite():
 
-    user_id = session["userid"]
+    user_id = session["user_id"]
     query = request.args.get("q")
 
     db = sqlite3.connect("database.db")
     curs = db.cursor()
 
+    # If there is something to add, add it to the list
     if query:
-        curs.execute("INSERT INTO favourites (userid, ticker), VALUES (?, ?)", user_id, query)
-        db.commit()
-        db.close()
+        
+        # if item is not in favourites, add to list
+        if not (curs.execute("SELECT * FROM favourites where userid = ? AND ticker = ?", (user_id, query,)).fetchall()):
+            curs.execute("INSERT INTO favourites (userid, ticker) VALUES (?, ?)", (user_id, query,))
+            db.commit()   
+    
+    # return updated list of favourites
+    user_favourites = curs.execute("SELECT ticker FROM favourites where userid = ?", (user_id,)).fetchall()
+    db.close()
 
-    return
+    return jsonify(user_favourites)
 
 @app.route("/login" , methods=["GET", "POST"])
 def login():

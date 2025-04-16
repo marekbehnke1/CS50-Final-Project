@@ -58,6 +58,7 @@ TODO
         [] Favourites
             [x] add to favourites route
             [] retrieve favourites on login
+            [] need to find a way to use the + to add to favourites using JS, so page doesnt have to reload
 
         [] portfolio page
             [] retrieve favourites
@@ -69,7 +70,7 @@ TODO
             []check for any additional api calls needed
         [x] Double check some of the variable naming conventions in the retrieve & sort  functions
 # [] Bugs
-    [] makes 10 of the same api call when you click a stock link on the side panels
+    [x] makes 10 of the same api call when you click a stock link on the side panels
         - i think its linked to the updatePage function through the /chart route
         - doesnt happen if no search, no date, no graph 
         - happens if you have typed something into the search
