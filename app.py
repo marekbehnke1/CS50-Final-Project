@@ -357,6 +357,7 @@ def register():
          return render_template("register.html")
 
 @app.route("/account")
+@login_required
 def account():
 
     return render_template("account.html")
