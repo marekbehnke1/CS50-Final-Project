@@ -85,7 +85,7 @@ function updatePage(page_items, dateTo, dateFrom){
         
         })
     };
-}
+};
 
 
 async function updateTable(code){
@@ -103,4 +103,16 @@ async function updateTable(code){
     document.getElementById("return-low").innerHTML = table_info.low
     document.getElementById("return-mid").innerHTML = table_info.mid
     document.getElementById("return-volume").innerHTML = table_info.volume
-}
+};
+
+async function updateFavourites(){
+    let response = await fetch('/favourite')
+    let result = await response.json()
+
+    let html = ''
+    for(let item of result){
+        html += '<tr class="border-y border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700 stock-item"> <td class="ticker-code cursor-pointer">' + item["ticker"] + '</td><td>DATA</td><td><form action="/favourite" method="get"><input type="hidden" name="q" value="' + item["ticker"] + '"></form>ICON</td></tr>'    
+    }
+
+    document.getElementById("favourite-list").innerHTML = html
+};

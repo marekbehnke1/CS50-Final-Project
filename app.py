@@ -4,7 +4,7 @@ import gviz_api
 
 import datetime
 
-from helpers import login_required, retrieve_iex, sort_data, retrieve_history
+from helpers import login_required, retrieve_iex, sort_data, retrieve_history, dict_factory
 
 from flask import Flask, render_template, session, request, redirect, flash, jsonify
 from flask_session import Session
@@ -139,13 +139,15 @@ def index():
     differenceDataSorted = sort_data("difference", 20, differenceData)
     differenceDataReverse = sort_data("difference", 20, differenceData, False)
 
-    # todo: set something up for retrieving the list of favourites on login
-    ############
+    # retrieve favourites
     db = sqlite3.connect("database.db")
-    curs = db.cursor()
 
-    #conver this to a useful format
-    favouritesList = curs.execute("SELECT * FROM favourites WHERE userid = ?", (user_id,)).fetchall()
+    #convert to list of dict
+    db.row_factory = dict_factory
+    favouritesList = []
+    for row in db.execute("SELECT ticker FROM favourites where userid = ?", (user_id,)):
+        favouritesList.append(row)
+
     db.close()
 
     if user_id:
@@ -245,7 +247,6 @@ def favourite():
 
     db = sqlite3.connect("database.db")
     curs = db.cursor()
-
     # If there is something to add, add it to the list
     if query:
         
@@ -254,9 +255,15 @@ def favourite():
             curs.execute("INSERT INTO favourites (userid, ticker) VALUES (?, ?)", (user_id, query,))
             db.commit()   
     
-    # return updated list of favourites
-    user_favourites = curs.execute("SELECT ticker FROM favourites where userid = ?", (user_id,)).fetchall()
+    
+    #convert query results to dict
+    db.row_factory = dict_factory
+    user_favourites = []
+    for row in db.execute("SELECT ticker FROM favourites where userid = ?", (user_id,)):
+        user_favourites.append(row)
+
     db.close()
+    #print(user_favourites)
 
     return jsonify(user_favourites)
 

@@ -59,3 +59,8 @@ def retrieve_history(ticker, dateFrom, dateTo ):
     }
     requestResponse = requests.get("https://api.tiingo.com/tiingo/daily/" + ticker + "/prices?startDate=" + dateFrom + "&endDate=" + dateTo + "&token=877c60a71d24e500a3767c3875e6845c35df8564", headers=headers)
     return requestResponse.json()
+
+#converts db results into dictionaries
+def dict_factory(cursor, row):
+    fields = [column[0] for column in cursor.description]
+    return {key: value for key, value in zip(fields, row)}
