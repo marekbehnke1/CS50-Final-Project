@@ -243,18 +243,22 @@ def chart():
 def favourite():
 
     user_id = session["user_id"]
-    query = request.args.get("q")
+    qType = request.args.get("q")
+    qCode = request.args.get("ticker")
 
     db = sqlite3.connect("database.db")
     curs = db.cursor()
-    # If there is something to add, add it to the list
-    if query:
-        
+
+    if qType:    
+        # check if query is remove or add
+        if qType == "rm":
+            curs.execute("DELETE FROM favourites WHERE userid = ? AND ticker = ?", (user_id, qCode,))
+            db.commit()
+        elif qType =="ad":
         # if item is not in favourites, add to list
-        if not (curs.execute("SELECT * FROM favourites where userid = ? AND ticker = ?", (user_id, query,)).fetchall()):
-            curs.execute("INSERT INTO favourites (userid, ticker) VALUES (?, ?)", (user_id, query,))
-            db.commit()   
-    
+            if not (curs.execute("SELECT * FROM favourites where userid = ? AND ticker = ?", (user_id, qCode,)).fetchall()):
+                curs.execute("INSERT INTO favourites (userid, ticker) VALUES (?, ?)", (user_id, qCode,))
+                db.commit()   
     
     #convert query results to dict
     db.row_factory = dict_factory
@@ -263,8 +267,6 @@ def favourite():
         user_favourites.append(row)
 
     db.close()
-    #print(user_favourites)
-
     return jsonify(user_favourites)
 
 @app.route("/login" , methods=["GET", "POST"])

@@ -18,7 +18,7 @@ TODO
             [x] Autocomplete search when searching for ticker codes
                 [] need some error checking here for when a searched stock does not return a valid result
                 [x] clear the search box once item has been clicked
-            [] add to favourite / remove from favourite
+            [x] add to favourite / remove from favourite
 
      [] Portfolio Page
         [] stocks interested in?
@@ -57,7 +57,7 @@ TODO
 
         [] Favourites
             [x] add to favourites route
-            [] retrieve favourites on login
+            [x] retrieve favourites on login
             [x] need to find a way to use the + to add to favourites using JS, so page doesnt have to reload
 
         [] portfolio page

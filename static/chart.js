@@ -111,8 +111,30 @@ async function updateFavourites(){
 
     let html = ''
     for(let item of result){
-        html += '<tr class="border-y border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700 stock-item"> <td class="ticker-code cursor-pointer">' + item["ticker"] + '</td><td>DATA</td><td><form action="/favourite" method="get"><input type="hidden" name="q" value="' + item["ticker"] + '"></form>ICON</td></tr>'    
+        html += '<tr class="border-y border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700 stock-item">' + 
+                    '<td class="ticker-code cursor-pointer">' + item["ticker"] + '</td>' + 
+                    '<td>DATA</td>' +
+                    '<td>' + 
+                        '<form action="/favourite" method="get">' + 
+                            '<input type="hidden" name="q" value="' + item["ticker"] + '">' + 
+                            '<svg class="cursor-pointer remove_favourite" width="20px" height="20px" viewBox="0 0 24 24" fill="" xmlns="http://www.w3.org/2000/svg"><g> <path class="hover:stroke-slate-200" d="M6 12L18 12" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>' + 
+                        '</form>' + 
+                    '</td>'+
+                '</tr>'    
     }
-
     document.getElementById("favourite-list").innerHTML = html
+
+    let removeFavourites = document.getElementsByClassName("remove_favourite")
+    for(let item of removeFavourites){
+
+        item.addEventListener('click', async function(){
+            await fetch('/favourite?q=rm&ticker=' + item.previousElementSibling.value)
+            updateFavourites()
+        })
+    }
+    stockItems = document.getElementsByClassName("ticker-code")
+    dateFrom = document.getElementById("dateFrom").value    
+    dateTo = document.getElementById("dateTo").value
+    
+    updatePage(stockItems, dateFrom, dateTo)
 };
