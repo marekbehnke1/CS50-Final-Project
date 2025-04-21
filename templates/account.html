@@ -5,12 +5,16 @@
         <div class="w-1/3 text-right" id="menu">
             <a class="mx-2 p-2" href="/"> Home </a>
             <a class="mx-2 p-2" href=""> Portfolio </a>
-            <a class="mx-2 p-2" href=""> Logout </a>
+            <a class="mx-2 p-2" href="/logout"> Logout </a>
         </div>
     </div>
-    <div class="w-full">
-        <div class="w-1/3 bg-slate-400 m-auto text-center">
-            account tools
+    <div class="w-full h-9/10">
+        <div class="w-1/3 h-4/6 bg-slate-400 m-auto text-center block rounded-3xl">
+            
+            <p>Hello, {{ userInfo[0].fname}}</p>
+            <p>email: {{ userInfo[0].email }}</p>
+            
+
         </div>
     </div>
 </div>

@@ -360,7 +360,14 @@ def register():
 @login_required
 def account():
 
-    return render_template("account.html")
+    db = sqlite3.connect("database.db")
+    db.row_factory = dict_factory
+
+    userInfo = []
+    for row in db.execute("SELECT username, fname, lname, email FROM users WHERE userid = ?", (session["user_id"],)):
+        userInfo.append(row)
+
+    return render_template("account.html", userInfo = userInfo)
 
 
 @app.route("/logout")
