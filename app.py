@@ -25,6 +25,9 @@ Session(app)
 # Make initial API call and save data in variable
 #IEXdata = retrieve_iex()
 
+# global userinfo
+userInfo = []
+
 #test data
 IEXdata = [
     {"ticker": "AAPL",
@@ -363,11 +366,18 @@ def account():
     db = sqlite3.connect("database.db")
     db.row_factory = dict_factory
 
-    userInfo = []
+    # set userinfo to be stired ub a a session variable
+    session["user_info"] = []
     for row in db.execute("SELECT username, fname, lname, email FROM users WHERE userid = ?", (session["user_id"],)):
-        userInfo.append(row)
+        session["user_info"].append(row)
 
-    return render_template("account.html", userInfo = userInfo)
+    return render_template("account.html", userInfo = session["user_info"])
+
+@app.route("/password")
+@login_required
+def change_password():
+
+    return render_template("/password.html", userInfo = session["user_info"])
 
 
 @app.route("/logout")

@@ -9,12 +9,44 @@
         </div>
     </div>
     <div class="w-full h-9/10">
-        <div class="w-1/3 h-4/6 bg-slate-400 m-auto text-center block rounded-3xl">
+        <div class="w-2/5 h-4/6 bg-slate-400 m-auto text-center rounded-3xl">
             
-            <p>Hello, {{ userInfo[0].fname}}</p>
-            <p>email: {{ userInfo[0].email }}</p>
-            
+            <p>Account Information</p>
+            <p>Hello, {{ userInfo[0].fname }}</p>
 
+            <div class="flex w-full">
+                <div class="w-1/3 border-r-1 border-solid border-slate-500 text-center" id="accountMenu">
+                    <table class="table-fixed w-full"> 
+                        <tbody>
+                            <tr class="">
+                                <td>
+                                    <a href="/password" class="block py-1 my-1 hover:bg-slate-500"> Change Password</a>
+                                </td>
+                            </tr>
+                            <tr class="">
+                                <td>
+                                    <a href="/accdetails" class="block py-1 my-1 hover:bg-slate-500">Update Details</a>
+                                </td>
+                            </tr>
+                            <tr class="">
+                                <td>
+                                    <a href="/" class="block py-1 my-1 hover:bg-slate-500">Link</a>
+                                </td>
+                            </tr>
+                            <tr class="">
+                                <td>
+                                    <a href="/" class="block py-1 my-1 hover:bg-slate-500">Link</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="2-2/3" id="accountInfo">
+                    {% block info %}
+
+                    {% endblock %}
+                </div>
+            </div>
         </div>
     </div>
 </div>
