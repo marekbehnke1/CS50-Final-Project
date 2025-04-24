@@ -366,18 +366,55 @@ def account():
     db = sqlite3.connect("database.db")
     db.row_factory = dict_factory
 
-    # set userinfo to be stired ub a a session variable
+    # set userinfo to be stored in a session variable
     session["user_info"] = []
     for row in db.execute("SELECT username, fname, lname, email FROM users WHERE userid = ?", (session["user_id"],)):
         session["user_info"].append(row)
 
     return render_template("account.html", userInfo = session["user_info"])
 
-@app.route("/password")
+@app.route("/password", methods=["GET", "POST"] )
 @login_required
 def change_password():
 
-    return render_template("/password.html", userInfo = session["user_info"])
+    if request.method == "POST":
+
+        db = sqlite3.connect("database.db")
+        curs = db.cursor()
+
+        hash = curs.execute("SELECT hash FROM users WHERE userid = ?", (session["user_id"],)).fetchone()[0]
+        password = request.form.get("password")
+        newPassword = request.form.get("newPassword")
+        newPasswordConfirm = request.form.get("newPasswordConfirm")
+
+        # check fields are complete
+        if not password or not newPassword or not newPasswordConfirm:
+            flash("Please complete all fields", "error")
+            db.close()
+            return render_template("/password.html", userInfo = session["user_info"])
+
+        # check password is correct
+        if check_password_hash(hash, password):
+
+            # Check new passwords match
+            if newPassword == newPasswordConfirm:
+                curs.execute("UPDATE users SET hash = ? WHERE userid = ?", (generate_password_hash(newPassword), session["user_id"]))
+                db.commit()
+                flash("Password succesfully changed", "success")
+                db.close()
+                return render_template("/password.html", userInfo = session["user_info"])
+            else:
+                flash("Passwords did not match", "error")
+                db.close()
+                return render_template("/password.html", userInfo = session["user_info"])
+
+        else:
+            flash("Incorrect Password", "error")
+            db.close()
+            return render_template("/password.html", userInfo = session["user_info"])
+    
+    else:
+        return render_template("/password.html", userInfo = session["user_info"])
 
 
 @app.route("/logout")
