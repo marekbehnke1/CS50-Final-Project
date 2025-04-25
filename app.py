@@ -371,7 +371,7 @@ def account():
     for row in db.execute("SELECT username, fname, lname, email FROM users WHERE userid = ?", (session["user_id"],)):
         session["user_info"].append(row)
 
-    return render_template("account.html", userInfo = session["user_info"])
+    return render_template("info.html", userInfo = session["user_info"])
 
 @app.route("/password", methods=["GET", "POST"] )
 @login_required
@@ -415,6 +415,13 @@ def change_password():
     
     else:
         return render_template("/password.html", userInfo = session["user_info"])
+
+@app.route("/accdetails", methods = ["GET", "POST"])
+@login_required
+def details():
+    
+
+    return render_template("/accdetails.html", userInfo = session["user_info"])
 
 
 @app.route("/logout")

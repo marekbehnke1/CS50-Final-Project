@@ -2,19 +2,16 @@
 {% block main %}
 <div class="w-full h-screen justify-center">
     <div class="w-full justify-center flex" id="menuContainer">
-        <div class="w-1/3 text-right" id="menu">
-            <a class="mx-2 p-2" href="/"> Home </a>
-            <a class="mx-2 p-2" href=""> Portfolio </a>
-            <a class="mx-2 p-2" href="/logout"> Logout </a>
+        <div class="w-2/5 justify-end flex" id="menu">
+            <a class="rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href="/"> Home </a>
+            <a class="rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href=""> Portfolio </a>
+            <a class="rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href="/logout"> Logout </a>
         </div>
     </div>
     <div class="w-full h-9/10">
         <div class="w-2/5 h-4/6 bg-slate-400 m-auto text-center rounded-3xl">
-            
-            <p>Account Information</p>
-            <p>Hello, {{ userInfo[0].fname }}</p>
 
-            <div class="flex w-full">
+            <div class="flex w-full py-8">
                 <div class="w-1/3 border-r-1 border-solid border-slate-500 text-center" id="accountMenu">
                     <table class="table-fixed w-full"> 
                         <tbody>
@@ -41,7 +38,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="2-2/3 justify-center" id="accountInfo">
+                <div class="w-2/3 justify-center" id="accountInfo">
                     {% block info %}
 
                     {% endblock %}
