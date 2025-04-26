@@ -24,11 +24,11 @@ TODO
         [] stocks interested in?
         [] stocks to watch? 
 
-     [] Account Page
-        [] update password
-        [] update account details
+     [x] Account Page
+        [x] update password
+        [x] update account details
         
-     [] Login page
+     [x] Login page
         [x]finish register button
         [x]flash bar
 
@@ -51,11 +51,11 @@ TODO
         [x] Registration functionality
             [x] loop throgh a dict to check empty form fields and give appropriate error
 
-        [] Account page
-            [] password change
-            [] update account info
+        [x] Account page
+            [x] password change
+            [x] update account info
 
-        [] Favourites
+        [x] Favourites
             [x] add to favourites route
             [x] retrieve favourites on login
             [x] need to find a way to use the + to add to favourites using JS, so page doesnt have to reload

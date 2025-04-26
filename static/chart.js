@@ -111,7 +111,7 @@ async function updateFavourites(){
 
     let html = ''
     for(let item of result){
-        html += '<tr class="border-y border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700 stock-item">' + 
+        html += '<tr class="border-y h-10 border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700 stock-item">' + 
                     '<td class="ticker-code cursor-pointer">' + item["ticker"] + '</td>' + 
                     '<td>DATA</td>' +
                     '<td>' + 

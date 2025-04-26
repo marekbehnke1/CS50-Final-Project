@@ -459,7 +459,20 @@ def details():
 @login_required
 def portfolio():
 
-    return render_template("/portfolio.html")
+    db = sqlite3.connect("database.db")
+    curs = db.cursor()
+
+    favourites = curs.execute("SELECT * FROM favourites WHERE userid = ?", (session["user_id"],)).fetchall()
+    db.close()
+
+    favouriteData = []
+    for favourite in favourites:
+            #generator expression to pull entries from IEXdata
+            favouriteData.append(
+                next((item for item in IEXdata if item["ticker"] == favourite[2]), None)
+            )
+            
+    return render_template("/portfolio.html", favourites = favouriteData)
 
 
 @app.route("/logout")

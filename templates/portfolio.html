@@ -1,4 +1,77 @@
 {% extends "layout.html" %}
 {% block main %}
+<div class="w-full justify-center flex" id="menuContainer">
+    <div class="w-2/5 justify-end flex" id="menu">
+        <a class="rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href="/"> Home </a>
+        <a class="rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href="/account"> Account </a>
+        <a class="rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href="/logout"> Logout </a>
+    </div>
+</div>
+<div class="flex">
+    <div class="bg-slate-500 w-2/3">
+       <div class="grid grid-cols-2 gap-4 "> 
 
+            {% for item in favourites %}
+                <div class="text-center">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td class="p-2">
+                                    {{ item["ticker"] }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">Volume:</td>
+                                <td class="p-2">
+                                    {{ item["volume"] }}
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">Open:</td>
+                                <td class="p-2">
+                                    {{ item["open"] }}
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">Mid:</td>
+                                <td class="p-2">
+                                    {{ item["mid"] }}
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">High:</td>
+                                <td class="p-2">
+                                    {{ item["high"] }}
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">Low:</td>
+                                <td class="p-2">
+                                    {{ item["low"] }}
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-2">Last:</td>
+                                <td class="p-2">
+                                    {{ item["tngoLast"] }}
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>                    
+                </div>
+            {% endfor %}
+       </div>
+
+    </div>
+
+    <div class="bg-sky-300 w-1/3 text-center">
+        Personal Info
+    </div>
+</div>
 {% endblock %}
