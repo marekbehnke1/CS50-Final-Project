@@ -419,9 +419,47 @@ def change_password():
 @app.route("/accdetails", methods = ["GET", "POST"])
 @login_required
 def details():
-    
 
+    if request.method == "POST":
+
+        fname = request.form.get("fname")
+        lname = request.form.get("lname")
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        if not fname:
+            fname = session["user_info"][0]["fname"]
+        if not lname:
+            lname = session["user_info"][0]["lname"]
+        if not email:
+            fname = session["user_info"][0]["email"]
+        if not password:
+            flash("Please enter your password", "error")
+            return render_template("/accdetails.html", userInfo = session["user_info"])
+        
+        db = sqlite3.connect("database.db")
+        curs = db.cursor()
+
+        hash = curs.execute("SELECT hash FROM users WHERE userid = ?", (session["user_id"],)).fetchone()[0]
+        if not check_password_hash(hash, password):
+            flash("Incorrect Password", "error")
+            return render_template("/accdetails.html", userInfo = session["user_info"])
+        
+        curs.execute("UPDATE users SET fname = ?, lname = ?, email = ? WHERE userid = ?", (fname, lname, email, session["user_id"],))
+        db.commit()
+                
+        db.close()
+
+        flash("Details updated", "success")
+        return render_template("/info.html", userInfo = session["user_info"])
+    
     return render_template("/accdetails.html", userInfo = session["user_info"])
+
+@app.route("/portfolio")
+@login_required
+def portfolio():
+
+    return render_template("/portfolio.html")
 
 
 @app.route("/logout")

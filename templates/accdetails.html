@@ -3,10 +3,27 @@
 {% block info %}
 
 <form action="/accdetails" method="post" class="flex-col justify-center items-center space-y-6">
-    <input type="" placeholder="" name="" id="" class="outline-2 hover:outline-pink-500/80 focus:outline-offset-4 focus:bg-slate-500/35 focus:outline-pink-500 rounded-md text-center w-1/2">
-    <input type="" placeholder="" name="" id="" class="outline-2 hover:outline-pink-500/80 focus:outline-offset-4 focus:bg-slate-500/35 focus:outline-pink-500 rounded-md text-center w-1/2">
-    <input type="" placeholder="" name="" id="" class="outline-2 hover:outline-pink-500/80 focus:outline-offset-4 focus:bg-slate-500/35 focus:outline-pink-500 rounded-md text-center w-1/2"> 
-    <input type="submit" value="Submit" class="outline-2 w-1/2 rounded-md cursor-pointer mx-18 hover:bg-gradient-to-br from-sky-500 to-blue-500 hover:text-black">
+    <table class="table-fixed w-full">
+        <tbody>
+            <tr class="">
+                <td class="text-center px-2">First name:</td>
+                <td class="py-2 flex justify-start"><input type="text" name="fname" id="fname" class="outline-2 hover:outline-pink-500/80 focus:outline-offset-4 focus:bg-slate-500/35 focus:outline-pink-500 rounded-md outline-slate-700 text-center w-7/8">
+                </td>
+            </tr>
+            <tr class="">
+                <td class="text-center px-2">Last name:</td>
+                <td class="py-2 flex justify-start"><input type="text" name="lname" id="lname" class="outline-2 hover:outline-pink-500/80 focus:outline-offset-4 focus:bg-slate-500/35 focus:outline-pink-500 rounded-md outline-slate-700 text-center w-7/8">
+                </td>
+            </tr>
+            <tr class=""> 
+                <td class="text-center px-2">Email:</td>
+                <td class="py-2 flex justify-start"><input type="email" name="email" id="email" class="outline-2 hover:outline-pink-500/80 focus:outline-offset-4 focus:bg-slate-500/35 focus:outline-pink-500 rounded-md outline-slate-700 text-center w-7/8"> 
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <input type="password" placeholder="Enter Password" name="password" id="" class="outline-2 hover:outline-pink-500/80 focus:outline-offset-4 focus:bg-slate-500/35 focus:outline-pink-500 rounded-md outline-slate-700 text-center w-1/2">
+    <input type="submit" value="Submit" class="outline-2 w-1/2 rounded-md cursor-pointer mx-18 hover:bg-gradient-to-br from-sky-500 to-blue-500 hover:text-black hover:border-solid hover:border-1 hover:outline-none">
 </form>
 
 {% endblock %}
