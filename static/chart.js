@@ -111,9 +111,19 @@ async function updateFavourites(){
 
     let html = ''
     for(let item of result){
+
+        let icon;
+
+        if(item["change"] > 0){
+            icon = '<svg width="20px" height="20px" viewBox="0 0 16.00 16.00" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(0)matrix(1, 0, 0, 1, 0, 0)" stroke="#0ea5e9"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round" stroke="#0ea5e9" stroke-width="0.032"></g><g> <path d="M6 8L2 8L2 6L8 5.24536e-07L14 6L14 8L10 8L10 16L6 16L6 8Z" fill="#0ea5e9"></path> </g></svg>'
+        }
+        else{
+            icon = '<svg width="20px" height="20px" viewBox="0 0 16.00 16.00" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(0)matrix(1, 0, 0, -1, 0, 0)" stroke="#ec4899"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round" stroke="#ec4899" stroke-width="0.032"></g><g> <path d="M6 8L2 8L2 6L8 5.24536e-07L14 6L14 8L10 8L10 16L6 16L6 8Z" fill="#ec4899"></path> </g></svg>'
+        };
+
         html += '<tr class="border-y h-10 border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700 stock-item">' + 
                     '<td class="ticker-code cursor-pointer">' + item["ticker"] + '</td>' + 
-                    '<td>DATA</td>' +
+                    '<td>' + item["change"] + ' %' + icon +'</td>' +
                     '<td>' + 
                         '<form action="/favourite" method="get">' + 
                             '<input type="hidden" name="q" value="' + item["ticker"] + '">' + 

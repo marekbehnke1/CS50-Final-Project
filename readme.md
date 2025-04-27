@@ -9,7 +9,7 @@ if i kil terminal
 TODO
 # [] Front End
      [] Landing Page
-        [] graphs
+        [x] graphs
             [x] graph working
             [x] graph date selection working
             [x] finish default values and error check for graph date update
@@ -19,6 +19,8 @@ TODO
                 [] need some error checking here for when a searched stock does not return a valid result
                 [x] clear the search box once item has been clicked
             [x] add to favourite / remove from favourite
+            [] up/down arrows not vertically aligning
+            [] info from tiingo on the bottom right panel
 
      [] Portfolio Page
         [] stocks interested in?
@@ -61,7 +63,8 @@ TODO
             [x] need to find a way to use the + to add to favourites using JS, so page doesnt have to reload
 
         [] portfolio page
-            [] retrieve favourites
+            [x] retrieve favourites
+            [] display more interesting data
 
     [] API Connection 
         [x]Tiingo

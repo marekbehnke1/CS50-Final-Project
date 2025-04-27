@@ -148,10 +148,53 @@ def index():
     #convert to list of dict
     db.row_factory = dict_factory
     favouritesList = []
-    for row in db.execute("SELECT ticker FROM favourites where userid = ?", (user_id,)):
+    for row in db.execute("SELECT ticker, change FROM favourites where userid = ?", (user_id,)):
         favouritesList.append(row)
 
     db.close()
+
+    # update saved change values - once per day
+    # gain or loss for favourites
+    dateFromInit = datetime.date.today() - datetime.timedelta(days=7)
+    dateFrom = dateFromInit.strftime('%Y-%m-%d')
+
+    # set to todays date
+    dateToInit = datetime.date.today() 
+    dateTo = dateToInit.strftime('%Y-%m-%d')
+    
+    #redeclaring this for clarity
+    todayDate = dateTo
+    
+    ## updating the favourites values once per day ##
+    db = sqlite3.connect("database.db")
+    curs = db.cursor()
+    userLastUpdate = curs.execute("SELECT lastUpdate FROM users WHERE userid = ?", (user_id,)).fetchone()[0]
+
+    if userLastUpdate != todayDate:
+        # set the update date to today
+        print(userLastUpdate)
+        print(todayDate)
+
+        # update favourites with current data
+        for item in favouritesList:
+            lastWeekData = retrieve_history(item["ticker"], dateFrom, dateTo)
+            # in case of api calls being reached
+            
+            change = lastWeekData[0]["open"] - lastWeekData[len(lastWeekData) - 1]["close"]
+            changePercent = round((change / lastWeekData[0]["open"]) * 100, 3)
+            # Check to see if the API data is different to the saved data. Updates saved data if so
+            if item["change"] != changePercent:
+
+                curs.execute("UPDATE favourites SET change = ? WHERE userid = ? AND ticker = ?", (changePercent, user_id, item["ticker"],))
+                db.commit()
+                item["change"] = changePercent
+
+        curs.execute("UPDATE users SET lastUpdate = ? WHERE userid = ?", (dateTo, user_id,))
+        db.commit()
+        db.close()
+               
+    else:
+        db.close()
 
     if user_id:
         return render_template("index.html", volumeData = volumeDataSorted, differenceData = differenceDataSorted, differenceDataReverse = differenceDataReverse, favouritesList = favouritesList)
@@ -258,18 +301,36 @@ def favourite():
             curs.execute("DELETE FROM favourites WHERE userid = ? AND ticker = ?", (user_id, qCode,))
             db.commit()
         elif qType =="ad":
-        # if item is not in favourites, add to list
+        # if item is not in favourites, add to list & update change
             if not (curs.execute("SELECT * FROM favourites where userid = ? AND ticker = ?", (user_id, qCode,)).fetchall()):
-                curs.execute("INSERT INTO favourites (userid, ticker) VALUES (?, ?)", (user_id, qCode,))
+
+                dateFromInit = datetime.date.today() - datetime.timedelta(days=7)
+                dateFrom = dateFromInit.strftime('%Y-%m-%d')
+            
+                # set to todays date
+                dateToInit = datetime.date.today() 
+                dateTo = dateToInit.strftime('%Y-%m-%d')
+                
+                
+                lastWeekData = retrieve_history(qCode, dateFrom, dateTo)
+                
+                change = lastWeekData[0]["open"] - lastWeekData[len(lastWeekData) - 1]["close"]
+                changePercent = round((change / lastWeekData[0]["open"]) * 100, 3)
+ 
+                curs.execute("INSERT INTO favourites (userid, ticker, change) VALUES (?, ?, ?)", (user_id, qCode, changePercent,))
                 db.commit()   
     
     #convert query results to dict
     db.row_factory = dict_factory
     user_favourites = []
-    for row in db.execute("SELECT ticker FROM favourites where userid = ?", (user_id,)):
+    for row in db.execute("SELECT ticker, change FROM favourites where userid = ?", (user_id,)):
         user_favourites.append(row)
-
     db.close()
+
+
+
+
+
     return jsonify(user_favourites)
 
 @app.route("/login" , methods=["GET", "POST"])

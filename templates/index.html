@@ -40,7 +40,7 @@
                 <thead>
                     <tr class="h-12">
                         <th class="w-4/9">Ticker</th>
-                        <th class="w-4/9">something</th>
+                        <th class="w-4/9">7 Day</th>
                         <th class="w-1/9"></th>
                     </tr>
                 </thead>
@@ -51,8 +51,14 @@
                         <td class="ticker-code cursor-pointer">
                             {{ item.ticker }}
                         </td>
-                        <td>
-                            {{ item.volume }}
+                        <td class="flex align-middle justify-evenly">
+                            {% if item.change > 0 %}
+                                <svg class="block" width="20px" height="20px" viewBox="0 0 16.00 16.00" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(0)matrix(1, 0, 0, 1, 0, 0)" stroke="#0ea5e9"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round" stroke="#0ea5e9" stroke-width="0.032"></g><g> <path d="M6 8L2 8L2 6L8 5.24536e-07L14 6L14 8L10 8L10 16L6 16L6 8Z" fill="#0ea5e9"></path> </g></svg>
+                            {% else %}
+                                <svg class="block" width="20px" height="20px" viewBox="0 0 16.00 16.00" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(0)matrix(1, 0, 0, -1, 0, 0)" stroke="#ec4899"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round" stroke="#ec4899" stroke-width="0.032"></g><g> <path d="M6 8L2 8L2 6L8 5.24536e-07L14 6L14 8L10 8L10 16L6 16L6 8Z" fill="#ec4899"></path> </g></svg>
+                            {% endif %}
+
+                           <p class="block h-full">{{item.change}} %</p> 
                         </td>
                         <td>
                             <form action="/favourite" method="get">
@@ -143,9 +149,8 @@
                     </table>
                 </div>
                 <div class="w-1/2 bg-slate-300" id="data-right">
-                    <p>stats from graph go here</p>
-                    <p>change in price over month</p>
-                    <p>avg open/close?</p>
+                    <!-- STOCK INFO META DATA HERE -->
+                     <p>Stock meta data</p>
                 </div>
             </div>
         </div>
