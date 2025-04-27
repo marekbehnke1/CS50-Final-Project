@@ -164,7 +164,7 @@ def index():
     
     #redeclaring this for clarity
     todayDate = dateTo
-    
+
     ## updating the favourites values once per day ##
     db = sqlite3.connect("database.db")
     curs = db.cursor()
@@ -172,22 +172,24 @@ def index():
 
     if userLastUpdate != todayDate:
         # set the update date to today
-        print(userLastUpdate)
-        print(todayDate)
 
         # update favourites with current data
         for item in favouritesList:
             lastWeekData = retrieve_history(item["ticker"], dateFrom, dateTo)
             # in case of api calls being reached
-            
-            change = lastWeekData[0]["open"] - lastWeekData[len(lastWeekData) - 1]["close"]
-            changePercent = round((change / lastWeekData[0]["open"]) * 100, 3)
-            # Check to see if the API data is different to the saved data. Updates saved data if so
-            if item["change"] != changePercent:
+            try:
+                change = lastWeekData[len(lastWeekData) - 1]["close"] - lastWeekData[0]["open"]
+                changePercent = round((change / lastWeekData[0]["open"]) * 100, 3)
+                # Check to see if the API data is different to the saved data. Updates saved data if so
+                if item["change"] != changePercent:
 
-                curs.execute("UPDATE favourites SET change = ? WHERE userid = ? AND ticker = ?", (changePercent, user_id, item["ticker"],))
-                db.commit()
-                item["change"] = changePercent
+                    curs.execute("UPDATE favourites SET change = ? WHERE userid = ? AND ticker = ?", (changePercent, user_id, item["ticker"],))
+                    db.commit()
+                    item["change"] = changePercent
+            except:
+                flash("API limit reached")
+                db.close()
+                return redirect("/index.html")
 
         curs.execute("UPDATE users SET lastUpdate = ? WHERE userid = ?", (dateTo, user_id,))
         db.commit()
@@ -314,11 +316,16 @@ def favourite():
                 
                 lastWeekData = retrieve_history(qCode, dateFrom, dateTo)
                 
-                change = lastWeekData[0]["open"] - lastWeekData[len(lastWeekData) - 1]["close"]
-                changePercent = round((change / lastWeekData[0]["open"]) * 100, 3)
+                try:
+                    change = lastWeekData[len(lastWeekData) - 1]["close"] - lastWeekData[0]["open"]
+                    changePercent = round((change / lastWeekData[0]["open"]) * 100, 3)
+                    curs.execute("INSERT INTO favourites (userid, ticker, change) VALUES (?, ?, ?)", (user_id, qCode, changePercent,))
+                    db.commit()   
+
+                except:
+                    flash("API limit reached")
+                    db.close()
  
-                curs.execute("INSERT INTO favourites (userid, ticker, change) VALUES (?, ?, ?)", (user_id, qCode, changePercent,))
-                db.commit()   
     
     #convert query results to dict
     db.row_factory = dict_factory
