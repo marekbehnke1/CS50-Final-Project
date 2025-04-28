@@ -181,6 +181,7 @@ def index():
                 change = lastWeekData[len(lastWeekData) - 1]["close"] - lastWeekData[0]["open"]
                 changePercent = round((change / lastWeekData[0]["open"]) * 100, 3)
                 # Check to see if the API data is different to the saved data. Updates saved data if so
+                # item["change"] is saved as a % 
                 if item["change"] != changePercent:
 
                     curs.execute("UPDATE favourites SET change = ? WHERE userid = ? AND ticker = ?", (changePercent, user_id, item["ticker"],))
@@ -214,6 +215,11 @@ def info_page():
         # it is looping through IEXdata for a dict where dict["ticker"] == the query
         # and returning the dict as json
         result = next((item for item in IEXdata if item["ticker"] == query), None)
+
+        # check database to see if meta data text exists
+        # if it does not, api call and update entry
+
+
     else:
         result = []
     return jsonify(result)
