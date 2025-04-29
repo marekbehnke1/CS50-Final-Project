@@ -223,13 +223,13 @@ def info_page():
 
         infoText = curs.execute("SELECT info FROM stocks WHERE ticker = ?", (query,)).fetchone()[0]
         # check if info text exists in db
-        if not infoText:
-
-            # todo: need to include error check for if metadata isnt avaialble on the API request
-            # todo: error check for if the stock itself doesnt exist 
+        if not infoText: 
 
             metadata = retrieve_metadata(query)
             infoText = metadata["description"]
+            # check if API info text exists and provide default
+            if not infoText:
+                infoText = "No information was available for this stock"
 
             #if ticker exists in db, add metadata to it
             if curs.execute("SELECT * FROM stocks WHERE ticker = ?", (query,)).fetchone()[0]:

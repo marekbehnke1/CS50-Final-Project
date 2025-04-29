@@ -20,7 +20,9 @@ TODO
                 [x] clear the search box once item has been clicked
             [x] add to favourite / remove from favourite
             [] up/down arrows not vertically aligning
-            [] info from tiingo on the bottom right panel
+            [x] info from tiingo on the bottom right panel
+        [] add favourite button for when stocks are searched
+        [] favourite button turn to a - if stock is already in favs list
 
      [] Portfolio Page
         [] stocks interested in?
