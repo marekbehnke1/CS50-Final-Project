@@ -4,7 +4,7 @@ import gviz_api
 
 import datetime
 
-from helpers import login_required, retrieve_iex, sort_data, retrieve_history, dict_factory
+from helpers import login_required, retrieve_iex, sort_data, retrieve_history, dict_factory, retrieve_metadata
 
 from flask import Flask, render_template, session, request, redirect, flash, jsonify
 from flask_session import Session
@@ -213,12 +213,39 @@ def info_page():
     if query:
         # this is a generator expression
         # it is looping through IEXdata for a dict where dict["ticker"] == the query
-        # and returning the dict as json
+        # and returning the dict
         result = next((item for item in IEXdata if item["ticker"] == query), None)
 
         # check database to see if meta data text exists
         # if it does not, api call and update entry
+        db = sqlite3.connect("database.db")
+        curs = db.cursor()
 
+        infoText = curs.execute("SELECT info FROM stocks WHERE ticker = ?", (query,)).fetchone()[0]
+        # check if info text exists in db
+        if not infoText:
+
+            # todo: need to include error check for if metadata isnt avaialble on the API request
+            # todo: error check for if the stock itself doesnt exist 
+
+            metadata = retrieve_metadata(query)
+            infoText = metadata["description"]
+
+            #if ticker exists in db, add metadata to it
+            if curs.execute("SELECT * FROM stocks WHERE ticker = ?", (query,)).fetchone()[0]:
+
+                curs.execute("UPDATE stocks SET info = ? WHERE ticker = ?", (infoText, query,))
+                db.commit()
+                db.close()
+
+            #if ticker is not in the db, create a record for it
+            else:
+                curs.execute("INSERT INTO stocks (ticker, exchange, type, currency, info) VALUES (?, ?, ?, ?, ?)", (query, metadata["exchangeCode"], 'Stock', 'USD', infoText,))
+                db.commit()
+                db.close()
+
+        # add metadata to result
+        result.update({'info' : infoText})
 
     else:
         result = []

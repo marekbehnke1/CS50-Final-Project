@@ -103,6 +103,7 @@ async function updateTable(code){
     document.getElementById("return-low").innerHTML = table_info.low
     document.getElementById("return-mid").innerHTML = table_info.mid
     document.getElementById("return-volume").innerHTML = table_info.volume
+    document.getElementById("info-text").innerHTML = table_info.info
 };
 
 async function updateFavourites(){
