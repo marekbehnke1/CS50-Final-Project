@@ -330,12 +330,15 @@ def favourite():
     db = sqlite3.connect("database.db")
     curs = db.cursor()
 
+
     if qType:    
         # check if query is remove or add
-        if qType == "rm":
+        if qType == "rm" and qCode:
             curs.execute("DELETE FROM favourites WHERE userid = ? AND ticker = ?", (user_id, qCode,))
             db.commit()
-        elif qType =="ad":
+            
+
+        elif qType == "ad" and qCode:
         # if item is not in favourites, add to list & update change
             if not (curs.execute("SELECT * FROM favourites where userid = ? AND ticker = ?", (user_id, qCode,)).fetchall()):
 
@@ -358,7 +361,6 @@ def favourite():
                 except:
                     flash("API limit reached")
                     db.close()
- 
     
     #convert query results to dict
     db.row_factory = dict_factory
@@ -366,10 +368,6 @@ def favourite():
     for row in db.execute("SELECT ticker, change FROM favourites where userid = ?", (user_id,)):
         user_favourites.append(row)
     db.close()
-
-
-
-
 
     return jsonify(user_favourites)
 
