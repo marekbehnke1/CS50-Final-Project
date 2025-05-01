@@ -333,7 +333,7 @@ def retrieve_favourite():
         user_favourites.append(row)
     db.close()
 
-    print(user_favourites)
+    #print(user_favourites)
     return jsonify(user_favourites)
 
 @app.route("/favourite")

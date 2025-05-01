@@ -21,8 +21,8 @@ TODO
             [x] add to favourite / remove from favourite
             [] up/down arrows not vertically aligning
             [x] info from tiingo on the bottom right panel
-        [] add favourite button for when stocks are searched
-            [] make button do button
+        [x] add favourite button for when stocks are searched
+            [x] make button do button
         [] favourite button turn to a - if stock is already in favs list
 
      [] Portfolio Page

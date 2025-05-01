@@ -110,6 +110,19 @@ async function updateFavourites(){
     let response = await fetch('/retrieveFavourite')
     let result = await response.json()
 
+    // this works - but needs to be in update page i think
+    for(let item of result){
+        if (document.getElementById("current-ticker").value == item["ticker"]){
+
+            document.getElementById("centre-fav-add").style.visibility="hidden"
+
+            break
+        }
+        else {
+            document.getElementById("centre-fav-add").style.visibility="visible"
+        }
+    }
+
     let html = ''
     for(let item of result){
 
