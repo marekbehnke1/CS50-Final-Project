@@ -319,6 +319,23 @@ def chart():
 
     return chart_data
 
+@app.route("/retrieveFavourite")
+@login_required
+def retrieve_favourite():
+
+    user_id = session["user_id"]
+    db = sqlite3.connect("database.db")
+
+    #convert query results to dict
+    db.row_factory = dict_factory
+    user_favourites = []
+    for row in db.execute("SELECT ticker, change FROM favourites where userid = ?", (user_id,)):
+        user_favourites.append(row)
+    db.close()
+
+    print(user_favourites)
+    return jsonify(user_favourites)
+
 @app.route("/favourite")
 @login_required
 def favourite():
@@ -335,8 +352,7 @@ def favourite():
         # check if query is remove or add
         if qType == "rm" and qCode:
             curs.execute("DELETE FROM favourites WHERE userid = ? AND ticker = ?", (user_id, qCode,))
-            db.commit()
-            
+            db.commit()            
 
         elif qType == "ad" and qCode:
         # if item is not in favourites, add to list & update change
@@ -357,19 +373,13 @@ def favourite():
                     changePercent = round((change / lastWeekData[0]["open"]) * 100, 3)
                     curs.execute("INSERT INTO favourites (userid, ticker, change) VALUES (?, ?, ?)", (user_id, qCode, changePercent,))
                     db.commit()   
+                    db.close()
 
                 except:
                     flash("API limit reached")
                     db.close()
-    
-    #convert query results to dict
-    db.row_factory = dict_factory
-    user_favourites = []
-    for row in db.execute("SELECT ticker, change FROM favourites where userid = ?", (user_id,)):
-        user_favourites.append(row)
-    db.close()
-
-    return jsonify(user_favourites)
+                
+    return redirect("/")
 
 @app.route("/login" , methods=["GET", "POST"])
 def login():

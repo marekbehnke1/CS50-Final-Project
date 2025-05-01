@@ -107,7 +107,7 @@ async function updateTable(code){
 };
 
 async function updateFavourites(){
-    let response = await fetch('/favourite')
+    let response = await fetch('/retrieveFavourite')
     let result = await response.json()
 
     let html = ''
