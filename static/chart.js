@@ -34,21 +34,7 @@ async function updateChart(code, dateTo, dateFrom) {
     let chartData = await response.json()
     drawChart(chartData, code)
 
-    let favresponse = await fetch('/retrieveFavourite')
-    let result = await favresponse.json()
 
-        // should try and find a way where we are not making 2 requests to retrieve favourite to accomplish this
-        for(let item of result){
-            if (document.getElementById("current-ticker").value == item["ticker"]){
-    
-                document.getElementById("centre-fav-add").style.visibility="hidden"
-    
-                break
-            }
-            else {
-                document.getElementById("centre-fav-add").style.visibility="visible"
-            }
-        }
 };
 
 async function search(code) {
@@ -103,6 +89,22 @@ async function search(code) {
         })
     };
 
+    let favresponse = await fetch('/retrieveFavourite')
+    let result = await favresponse.json()
+
+        // should try and find a way where we are not making 2 requests to retrieve favourite to accomplish this
+        for(let item of result){
+            if (document.getElementById("current-ticker").value == item["ticker"]){
+    
+                document.getElementById("centre-fav-add").style.visibility="hidden"
+    
+                break
+            }
+            else {
+                document.getElementById("centre-fav-add").style.visibility="visible"
+            }
+        }
+
 };
 
 // updates the table of data with info from the currently selected stock item
@@ -135,8 +137,6 @@ async function updateFavourites(){
     // will need to give the stock signs a specific class, then pull the class list etc..
 
 
-
-
     let html = ''
     for(let item of result){
 
@@ -162,6 +162,9 @@ async function updateFavourites(){
     }
     document.getElementById("favourite-list").innerHTML = html
 
+    // think the sign switch will need to go here
+
+    // add event listeners to the remove sign
     let removeFavourites = document.getElementsByClassName("remove_favourite")
     for(let item of removeFavourites){
 
@@ -170,6 +173,8 @@ async function updateFavourites(){
             updateFavourites()
         })
     }
+
+    //redeclaring as these lists have been updated
     stockItems = document.getElementsByClassName("ticker-code")
     dateFrom = document.getElementById("dateFrom").value    
     dateTo = document.getElementById("dateTo").value
