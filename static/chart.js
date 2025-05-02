@@ -33,6 +33,22 @@ async function updateChart(code, dateTo, dateFrom) {
 
     let chartData = await response.json()
     drawChart(chartData, code)
+
+    let favresponse = await fetch('/retrieveFavourite')
+    let result = await favresponse.json()
+
+        // should try and find a way where we are not making 2 requests to retrieve favourite to accomplish this
+        for(let item of result){
+            if (document.getElementById("current-ticker").value == item["ticker"]){
+    
+                document.getElementById("centre-fav-add").style.visibility="hidden"
+    
+                break
+            }
+            else {
+                document.getElementById("centre-fav-add").style.visibility="visible"
+            }
+        }
 };
 
 async function search(code) {
@@ -66,7 +82,8 @@ async function search(code) {
     
 };
 
-function updatePage(page_items, dateTo, dateFrom){
+// this adds event listeners to all the stock items currently on the page
+ async function updatePage(page_items, dateTo, dateFrom){
 
     for(let i = 0; i < page_items.length; i++){
 
@@ -85,9 +102,10 @@ function updatePage(page_items, dateTo, dateFrom){
         
         })
     };
+
 };
 
-
+// updates the table of data with info from the currently selected stock item
 async function updateTable(code){
 
     // gets table data
@@ -106,22 +124,18 @@ async function updateTable(code){
     document.getElementById("info-text").innerHTML = table_info.info
 };
 
+// updates the list of the favourites and attaches event listeners
 async function updateFavourites(){
     let response = await fetch('/retrieveFavourite')
     let result = await response.json()
 
-    // this works - but needs to be in update page i think
-    for(let item of result){
-        if (document.getElementById("current-ticker").value == item["ticker"]){
 
-            document.getElementById("centre-fav-add").style.visibility="hidden"
+    // TODO: should have something in here that checks the + or - on all stock items on screen, and changes them to the appropriate sign
+    // when a favourite is added or removed
+    // will need to give the stock signs a specific class, then pull the class list etc..
 
-            break
-        }
-        else {
-            document.getElementById("centre-fav-add").style.visibility="visible"
-        }
-    }
+
+
 
     let html = ''
     for(let item of result){
