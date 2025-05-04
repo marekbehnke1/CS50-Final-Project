@@ -2,9 +2,9 @@
 let remove_fav = document.getElementsByClassName("remove_favourite")
 let add_fav = document.getElementsByClassName("add_favourite")
 let stock_links = document.getElementsByClassName("ticker-code")
+update_favourites()
 
 //TODO: Update page (event) - run on page load with no event
-
 // attaches all event listeners for the page
 async function update_page(){
 
@@ -45,16 +45,17 @@ async function update_page(){
     // TODO: update icons on link items
 
     
-    // TODO: update the add fav icon in centre
+    // update the add fav icon in centre
     center_fav_icon_update(await get_fav())
+
 }
 
 function fav_rm_listen(){
-    code = this.previousElementSibling.value
+    code = this.parentElement.previousElementSibling.value
     remove_favourite(code)
 }
 function fav_add_listen(){
-    code = this.previousElementSibling.value
+    code = this.parentElement.previousElementSibling.value
     add_favourite(code)
 }
 function search_listen(){
@@ -130,14 +131,10 @@ async function search(code){
 
 //Functions:
     // Update Favourites()
-        // TODO: update the add/remove icons on all links
-        // TODO: update the item in the centre if necesary
-
-
 async function update_favourites(){
-
+    
     favourites_list = await get_fav()
-
+    
     let html = ''
     for(let item of favourites_list){
         if(item["change"] > 0){
@@ -146,13 +143,40 @@ async function update_favourites(){
         else{
             icon = '<svg width="20px" height="20px" viewBox="0 0 16.00 16.00" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(0)matrix(1, 0, 0, -1, 0, 0)" stroke="#ec4899"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round" stroke="#ec4899" stroke-width="0.032"></g><g> <path d="M6 8L2 8L2 6L8 5.24536e-07L14 6L14 8L10 8L10 16L6 16L6 8Z" fill="#ec4899"></path> </g></svg>'
         };
-
+        
         html += fav_element(icon, item)
     }
     document.getElementById("favourite-list").innerHTML = html
+    
+    // TODO: update the add/remove icons on all links
+        // pull list of all add-remove links
+        // check their ticker code and give them an appropriate button
+    
+    let remove_icon = '<svg class="cursor-pointer remove_favourite" width="20px" height="20px" viewBox="0 0 24 24" fill="" xmlns="http://www.w3.org/2000/svg"><g> <path class="hover:stroke-slate-200" d="M6 12L18 12" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>'
+
+        let fav_buttons = document.getElementsByClassName("stock-list-item")
+    for(button of fav_buttons){  
+
+        code = button.parentElement.previousElementSibling.value
+        
+        // if code is in fav list
+        for(item of favourites_list)
+        {
+            if(item.ticker == code){
+
+                button.parentElement.innerHTML = remove_icon
+            }
+            // not sure why this isnt working
+            // the minus comes up if they are in favs, but i cant make it come back if theyre not.
+
+            // else if(item.innerHTML = remove_icon){
+            //     button.parentElement.innerHTML = '<svg class="hover:fill-slate-200 cursor-pointer add_favourite stock-list-item" fill="#475569" height="20px" width="20px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <polygon points="455,212.5 242.5,212.5 242.5,0 212.5,0 212.5,212.5 0,212.5 0,242.5 212.5,242.5 212.5,455 242.5,455 242.5,242.5 455,242.5 "></polygon> </g></svg>'   
+            // }
+        }
+    }
+
 
     update_page()
-
 }
 
 // adds standard link functionality to an item
@@ -170,9 +194,9 @@ function fav_element(icon, item){
     let fav_item = '<tr class="border-y h-10 border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700 stock-item">' + 
                         '<td class="ticker-code cursor-pointer">' + item["ticker"] + '</td>' + 
                         '<td>' + item["change"] + ' %' + icon +'</td>' +
-                        '<td>' + 
-                            '<form action="/favourite" method="get">' + 
-                                '<input type="hidden" name="q" value="' + item["ticker"] + '">' + 
+                        '<td>' + '<input type="hidden" name="q" value="' + item["ticker"] + '">' +
+                            '<form class="fav-form" action="/favourite" method="get">' + 
+                                    //this is where it was before
                                 '<svg class="cursor-pointer remove_favourite" width="20px" height="20px" viewBox="0 0 24 24" fill="" xmlns="http://www.w3.org/2000/svg"><g> <path class="hover:stroke-slate-200" d="M6 12L18 12" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>' + 
                             '</form>' + 
                         '</td>'+
