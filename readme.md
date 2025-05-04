@@ -80,6 +80,9 @@ TODO
         - i think its linked to the updatePage function through the /chart route
         - doesnt happen if no search, no date, no graph 
         - happens if you have typed something into the search
+    [] if you use the main window add/remove fav thing then load a chart - it does a million network requests
+        - the requests are going through stock and chart routes
+        - i think this is to do with the js code added
 
 
 https://stackoverflow.com/questions/74808530/send-data-from-javascript-%E2%86%92-python-and-back-without-reloading-the-page

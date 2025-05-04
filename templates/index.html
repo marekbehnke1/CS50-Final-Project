@@ -25,7 +25,11 @@
                             <td>
                                 <form action="/favourite" method="get">
                                     <input type="hidden" name="q" value="{{ item.ticker }}">
-                                    <svg class="hover:fill-slate-200 cursor-pointer add_favourite" fill="#475569" height="20px" width="20px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <polygon points="455,212.5 242.5,212.5 242.5,0 212.5,0 212.5,212.5 0,212.5 0,242.5 212.5,242.5 212.5,455 242.5,455 242.5,242.5 455,242.5 "></polygon> </g></svg> 
+                                    {% if item.fav == "yes"%}
+                                        <svg class="cursor-pointer remove_favourite" width="20px" height="20px" viewBox="0 0 24 24" fill="" xmlns="http://www.w3.org/2000/svg"><g> <path class="hover:stroke-slate-200" d="M6 12L18 12" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                    {% else %}
+                                        <svg class="hover:fill-slate-200 cursor-pointer add_favourite" fill="#475569" height="20px" width="20px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <polygon points="455,212.5 242.5,212.5 242.5,0 212.5,0 212.5,212.5 0,212.5 0,242.5 212.5,242.5 212.5,455 242.5,455 242.5,242.5 455,242.5 "></polygon> </g></svg> 
+                                    {% endif %}
                                 </form>
                             </td>
                         </tr>
@@ -118,45 +122,45 @@
                     <table class="table-fixed">
                         <tr>
                             <td>Ticker:</td>
-                            <td id="return-ticker"></td>
+                            <td class="table_field" id="ticker"></td>
                         </tr>
                         <tr>
                             <td>Data Timestamp:</td>
-                            <td id="return-timestamp"></td>
+                            <td class="table_field" id="timestamp"></td>
                         </tr>
                         <tr>
                             <td>Last Price:</td>
-                            <td id="return-last"></td>
+                            <td class="table_field" id="last"></td>
                         </tr>
                         <tr>
                             <td>Previous Close:</td>
-                            <td id="return-prevClose"></td>
+                            <td class="table_field" id="prevClose"></td>
                         </tr>
                         <tr>
                             <td>Open Price:</td>
-                            <td id="return-open"></td>
+                            <td class="table_field" id="open"></td>
                         </tr>
                         <tr>
                             <td>High:</td>
-                            <td id="return-high"></td>
+                            <td class="table_field" id="high"></td>
                         </tr>
                         <tr>
                             <td>Low:</td>
-                            <td id="return-low"></td>
+                            <td class="table_field" id="low"></td>
                         </tr>
                         <tr>
                             <td>Mid:</td>
-                            <td id="return-mid"></td>
+                            <td class="table_field" id="mid"></td>
                         </tr>
                         <tr>
                             <td>Volume</td>
-                            <td id="return-volume"></td>
+                            <td class="table_field" id="volume"></td>
                         </tr>
                     </table>
                 </div>
                 <div class="w-1/2 bg-slate-300" id="data-right">
                     <!-- STOCK INFO META DATA HERE -->
-                     <p id="info-text">Stock meta data</p>
+                     <p class="table_field" id="info">Stock meta data</p>
                 </div>
             </div>
         </div>
@@ -226,72 +230,9 @@
 </div>
 
 <script>
-    var stockItems = document.getElementsByClassName("ticker-code");
-    let code = document.getElementById("current-ticker").value;
-    let dateFrom = document.getElementById("dateFrom").value    
-    let dateTo = document.getElementById("dateTo").value
+
+    update_page();
     
-    // sets the link aspect of the stock items diplayed on page
-    // and updates table & graph when they are clicked
-    updatePage(stockItems, dateFrom, dateTo);
-
-
-    // Run search function on input to the search bar
-    let searchForm = document.getElementById("search");
-    searchForm.addEventListener('input', function(){
-        search(searchForm.value);
-    });
-
-    // clear search box when it loses focus
-    searchForm.addEventListener('focusout', function(){
-        setTimeout(function(){
-            document.getElementById("search-results").innerHTML = "";
-            document.getElementById("search").value ="";
-        }, 75) 
-    });
-
-
-    //updates the graph based on date range changes
-    let chartDates = document.getElementsByClassName("chartDates");
-    // if dateFrom & dateTo && code all exist, then request chart update with those dates
-    for(let i = 0; i < chartDates.length; i++){
-        chartDates[i].addEventListener("input", function() {
-
-            // These need to be redeclared here because their values are assigned after
-            // the page has loaded
-            dateFrom = document.getElementById("dateFrom").value    
-            dateTo = document.getElementById("dateTo").value
-            code = document.getElementById("current-ticker").value
-
-            if(dateTo && dateFrom && code){
-                updateChart(code, dateTo, dateFrom)
-            }
-        })
-    };
-
-    // add item to favourite
-    let favouriteButton = document.getElementsByClassName("add_favourite");
-    for(let button of favouriteButton){
-        button.addEventListener('click', async function(){
-
-            let response = await fetch('/favourite?q=ad&ticker=' + button.previousElementSibling.value)
-            updateFavourites()
-
-        });
-    };
-
-    // remove item from favourite
-    let removeButton = document.getElementsByClassName("remove_favourite");
-    for(let button of removeButton){
-        button.addEventListener('click', async function(){
-
-            await fetch('/favourite?q=rm&ticker=' + button.previousElementSibling.value)
-            updateFavourites()
-
-        });
-    };
-
-
 </script>
 
 

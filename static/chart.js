@@ -33,8 +33,6 @@ async function updateChart(code, dateTo, dateFrom) {
 
     let chartData = await response.json()
     drawChart(chartData, code)
-
-
 };
 
 async function search(code) {
@@ -63,9 +61,7 @@ async function search(code) {
             dateTo = document.getElementById("dateTo").value
             updateChart(ticker, dateTo, dateFrom) 
         })
-    }
-    
-    
+    }    
 };
 
 // this adds event listeners to all the stock items currently on the page
@@ -132,11 +128,6 @@ async function updateFavourites(){
     let result = await response.json()
 
 
-    // TODO: should have something in here that checks the + or - on all stock items on screen, and changes them to the appropriate sign
-    // when a favourite is added or removed
-    // will need to give the stock signs a specific class, then pull the class list etc..
-
-
     let html = ''
     for(let item of result){
 
@@ -151,7 +142,9 @@ async function updateFavourites(){
 
         html += '<tr class="border-y h-10 border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700 stock-item">' + 
                     '<td class="ticker-code cursor-pointer">' + item["ticker"] + '</td>' + 
-                    '<td>' + item["change"] + ' %' + icon +'</td>' +
+                    '<td class="flex align-middle justify-evenly">' + 
+                        icon + '<p class="block h-full">' + item["change"] + ' %' + '</p>' +
+                    '</td>' +
                     '<td>' + 
                         '<form action="/favourite" method="get">' + 
                             '<input type="hidden" name="q" value="' + item["ticker"] + '">' + 

@@ -199,6 +199,15 @@ def index():
     else:
         db.close()
 
+
+    #if favouritesList:
+    #    for item in volumeDataSorted:
+    #        if item["ticker"] in favouritesList[0]["ticker"]:
+    #            item.update({"fav" : "yes"})
+    #            print("match - " + item["ticker"] + "-->" + favouritesList[0]["ticker"])
+    #        else:
+    #            item.update({"fav" : "no"})
+
     if user_id:
         return render_template("index.html", volumeData = volumeDataSorted, differenceData = differenceDataSorted, differenceDataReverse = differenceDataReverse, favouritesList = favouritesList)
     else:
@@ -215,6 +224,10 @@ def info_page():
         # it is looping through IEXdata for a dict where dict["ticker"] == the query
         # and returning the dict
         result = next((item for item in IEXdata if item["ticker"] == query), None)
+        if not result:
+            result = {}
+            result["info"] = "No information was available for this stock"
+            return jsonify(result)
 
         # check database to see if meta data text exists
         # if it does not, api call and update entry
@@ -367,17 +380,15 @@ def favourite():
                 
                 
                 lastWeekData = retrieve_history(qCode, dateFrom, dateTo)
-                
                 try:
                     change = lastWeekData[len(lastWeekData) - 1]["close"] - lastWeekData[0]["open"]
                     changePercent = round((change / lastWeekData[0]["open"]) * 100, 3)
-                    curs.execute("INSERT INTO favourites (userid, ticker, change) VALUES (?, ?, ?)", (user_id, qCode, changePercent,))
-                    db.commit()   
-                    db.close()
-
                 except:
-                    flash("API limit reached")
-                    db.close()
+                    changePercent = 0
+
+                curs.execute("INSERT INTO favourites (userid, ticker, change) VALUES (?, ?, ?)", (user_id, qCode, changePercent,))
+                db.commit()   
+                db.close()
                 
     return redirect("/")
 
