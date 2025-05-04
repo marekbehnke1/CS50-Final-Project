@@ -3,11 +3,10 @@ let remove_fav = document.getElementsByClassName("remove_favourite")
 let add_fav = document.getElementsByClassName("add_favourite")
 let stock_links = document.getElementsByClassName("ticker-code")
 
-
 //TODO: Update page (event) - run on page load with no event
 
 // attaches all event listeners for the page
-function update_page(){
+async function update_page(){
 
     // these get redclared so the lists are updated
     let remove_fav = document.getElementsByClassName("remove_favourite")
@@ -42,6 +41,12 @@ function update_page(){
 
     // clear search box on focusout
     search_form.addEventListener("focusout", search_close)
+
+    // TODO: update icons on link items
+
+    
+    // TODO: update the add fav icon in centre
+    center_fav_icon_update(await get_fav())
 }
 
 function fav_rm_listen(){
@@ -87,10 +92,10 @@ async function update_graph(code, dateTo, dateFrom) {
 
     let response = await fetch('/chart?q=' + code +'&to=' + dateTo + '&from=' + dateFrom)
     let chartData = await response.json()
-    let chartDates = document.getElementsByClassName("chartDates")
 
     drawChart(chartData, code)
     update_table(code)
+    update_page()
 };
 
 async function update_table(code){
@@ -131,12 +136,10 @@ async function search(code){
 
 async function update_favourites(){
 
-    let response = await fetch('/retrieveFavourite')
-    console.log("retrieving fav list")
-    let result = await response.json()
+    favourites_list = await get_fav()
 
     let html = ''
-    for(let item of result){
+    for(let item of favourites_list){
         if(item["change"] > 0){
             icon = '<svg width="20px" height="20px" viewBox="0 0 16.00 16.00" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(0)matrix(1, 0, 0, 1, 0, 0)" stroke="#0ea5e9"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round" stroke="#0ea5e9" stroke-width="0.032"></g><g> <path d="M6 8L2 8L2 6L8 5.24536e-07L14 6L14 8L10 8L10 16L6 16L6 8Z" fill="#0ea5e9"></path> </g></svg>'
         }
@@ -175,4 +178,34 @@ function fav_element(icon, item){
                         '</td>'+
                     '</tr>'
     return fav_item
+}
+// returns a promise of the favourites list
+async function get_fav() {
+    let response = await fetch('/retrieveFavourite')
+    favourites_list = await response.json()
+    return favourites_list
+}
+
+// updates the + icon in the centre based on fav stats of item
+function center_fav_icon_update(favourites_list){
+    current_stock = document.getElementById("current-ticker").value
+
+    if (!current_stock){
+        document.getElementById("centre-fav-add").style.visibility = "hidden"
+    }
+    
+    // check if the item is in the favourites list
+    else{
+        //console.log(favourites_list[0])
+        for(item of favourites_list){
+            
+            if (item["ticker"] == current_stock){
+                document.getElementById("centre-fav-add").style.visibility = "hidden"
+                break
+            }
+            else{
+                document.getElementById("centre-fav-add").style.visibility = "visible"
+            }
+        }
+    }
 }
