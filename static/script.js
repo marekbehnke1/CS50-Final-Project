@@ -199,14 +199,13 @@ function add_link(){
     update_graph(code, dateTo, dateFrom)
 }
 
-// just an object that creates the fav list item
+// just an object that represebts the fav list item
 function fav_element(icon, item){
     let fav_item = '<tr class="border-y h-10 border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700 stock-item">' + 
                         '<td class="ticker-code cursor-pointer">' + item["ticker"] + '</td>' + 
-                        '<td>' + item["change"] + ' %' + icon +'</td>' +
+                        '<td class="flex align-middle justify-evenly">' + '<p>' + item["change"] + ' %' + '</p>' + icon +'</td>' +
                         '<td>' + '<input type="hidden" name="q" value="' + item["ticker"] + '">' +
                             '<form class="fav-form" action="/favourite" method="get">' + 
-                                    //this is where it was before
                                 '<svg class="cursor-pointer remove_favourite" width="20px" height="20px" viewBox="0 0 24 24" fill="" xmlns="http://www.w3.org/2000/svg"><g> <path class="hover:stroke-slate-200" d="M6 12L18 12" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>' + 
                             '</form>' + 
                         '</td>'+
