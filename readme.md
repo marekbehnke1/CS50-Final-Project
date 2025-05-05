@@ -23,7 +23,7 @@ TODO
             [x] info from tiingo on the bottom right panel
         [x] add favourite button for when stocks are searched
             [x] make button do button
-        [] favourite button turn to a - if stock is already in favs list
+        [x] favourite button turn to a - if stock is already in favs list
 
      [] Portfolio Page
         [] stocks interested in?
@@ -80,9 +80,10 @@ TODO
         - i think its linked to the updatePage function through the /chart route
         - doesnt happen if no search, no date, no graph 
         - happens if you have typed something into the search
-    [] if you use the main window add/remove fav thing then load a chart - it does a million network requests
+    [x] if you use the main window add/remove fav thing then load a chart - it does a million network requests
         - the requests are going through stock and chart routes
         - i think this is to do with the js code added
+    [] Centre fav button not working now - as a result of my new fav button swap thing
 
 
 https://stackoverflow.com/questions/74808530/send-data-from-javascript-%E2%86%92-python-and-back-without-reloading-the-page

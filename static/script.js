@@ -213,6 +213,8 @@ async function get_fav() {
     return favourites_list
 }
 
+// CENTRE FAV BUTTON NOT WORKING!!
+
 // updates the + icon in the centre based on fav stats of item
 function center_fav_icon_update(favourites_list){
     current_stock = document.getElementById("current-ticker").value
