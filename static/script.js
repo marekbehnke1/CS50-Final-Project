@@ -2,7 +2,10 @@
 let remove_fav = document.getElementsByClassName("remove_favourite")
 let add_fav = document.getElementsByClassName("add_favourite")
 let stock_links = document.getElementsByClassName("ticker-code")
-update_favourites()
+
+//window.onload = (event) => {
+//    update_favourites()
+//};
 
 //TODO: Update page (event) - run on page load with no event
 // attaches all event listeners for the page
@@ -132,7 +135,7 @@ async function search(code){
 //Functions:
     // Update Favourites()
 async function update_favourites(){
-    
+    console.log("update favourites called")
     favourites_list = await get_fav()
     
     let html = ''
@@ -149,29 +152,36 @@ async function update_favourites(){
     document.getElementById("favourite-list").innerHTML = html
     
     // TODO: update the add/remove icons on all links
-        // pull list of all add-remove links
-        // check their ticker code and give them an appropriate button
     
-    let remove_icon = '<svg class="cursor-pointer remove_favourite" width="20px" height="20px" viewBox="0 0 24 24" fill="" xmlns="http://www.w3.org/2000/svg"><g> <path class="hover:stroke-slate-200" d="M6 12L18 12" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>'
+    let remove_icon = '<svg class="cursor-pointer remove_favourite stock-list-item" width="20px" height="20px" viewBox="0 0 24 24" fill="" xmlns="http://www.w3.org/2000/svg"><g> <path class="hover:stroke-slate-200" d="M6 12L18 12" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>'
+    let add_icon = '<svg class="hover:fill-slate-200 cursor-pointer add_favourite stock-list-item" fill="#475569" height="20px" width="20px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <polygon points="455,212.5 242.5,212.5 242.5,0 212.5,0 212.5,212.5 0,212.5 0,242.5 212.5,242.5 212.5,455 242.5,455 242.5,242.5 455,242.5 "></polygon> </g></svg>'
 
-        let fav_buttons = document.getElementsByClassName("stock-list-item")
+    let fav_buttons = document.getElementsByClassName("stock-list-item")
     for(button of fav_buttons){  
 
         code = button.parentElement.previousElementSibling.value
-        
+        count = 0
         // if code is in fav list
         for(item of favourites_list)
         {
-            if(item.ticker == code){
+            if(item["ticker"] == code){
 
                 button.parentElement.innerHTML = remove_icon
+                break
             }
-            // not sure why this isnt working
-            // the minus comes up if they are in favs, but i cant make it come back if theyre not.
 
-            // else if(item.innerHTML = remove_icon){
-            //     button.parentElement.innerHTML = '<svg class="hover:fill-slate-200 cursor-pointer add_favourite stock-list-item" fill="#475569" height="20px" width="20px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <polygon points="455,212.5 242.5,212.5 242.5,0 212.5,0 212.5,212.5 0,212.5 0,242.5 212.5,242.5 212.5,455 242.5,455 242.5,242.5 455,242.5 "></polygon> </g></svg>'   
-            // }
+            //THIS WORKS NOW
+            // The only instance it does not work for, is when you remove the last item in the list
+
+            // Counts the number of times the button does not match the list, if the count is the same as list length
+            // then the button is not in the list, and can change
+            else if(button.parentElement != null){
+                count += 1
+                if (count == favourites_list.length)
+                {
+                    button.parentElement.innerHTML = add_icon
+                }
+            }
         }
     }
 
@@ -220,7 +230,6 @@ function center_fav_icon_update(favourites_list){
     
     // check if the item is in the favourites list
     else{
-        //console.log(favourites_list[0])
         for(item of favourites_list){
             
             if (item["ticker"] == current_stock){
