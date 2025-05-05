@@ -11,7 +11,7 @@ async function update_page(){
     let add_fav = document.getElementsByClassName("add_favourite")
     let stock_links = document.getElementsByClassName("ticker-code")
     let chart_dates = document.getElementsByClassName("chartDates")
-    
+    let centre_add_button = document.getElementById("centre-fav-add")
 
     // attach link listeners
     for (item of stock_links){
@@ -22,6 +22,9 @@ async function update_page(){
     for (item of add_fav){
         item.addEventListener("click", fav_add_listen)
     }
+
+    // attach listener to centre button
+    centre_add_button.addEventListener("click", centre_fav_add_listen)
 
     // attach remove fav listeners
     for (item of remove_fav){
@@ -51,6 +54,10 @@ function fav_rm_listen(){
 }
 function fav_add_listen(){
     code = this.parentElement.previousElementSibling.value
+    add_favourite(code)
+}
+function centre_fav_add_listen(){
+    code = this.previousElementSibling.value
     add_favourite(code)
 }
 function search_listen(){
@@ -212,8 +219,6 @@ async function get_fav() {
     favourites_list = await response.json()
     return favourites_list
 }
-
-// CENTRE FAV BUTTON NOT WORKING!!
 
 // updates the + icon in the centre based on fav stats of item
 function center_fav_icon_update(favourites_list){
