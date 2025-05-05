@@ -126,9 +126,8 @@ async function search(code){
 
 //Functions:
     // Update Favourites()
-    // TODO: Finish final bug in the sign update
 async function update_favourites(){
-    console.log("update favourites called")
+
     favourites_list = await get_fav()
     
     let html = ''
@@ -143,9 +142,7 @@ async function update_favourites(){
         html += fav_element(icon, item)
     }
     document.getElementById("favourite-list").innerHTML = html
-    
-    // TODO: update the add/remove icons on all links
-    
+        
     let remove_icon = '<svg class="cursor-pointer remove_favourite stock-list-item" width="20px" height="20px" viewBox="0 0 24 24" fill="" xmlns="http://www.w3.org/2000/svg"><g> <path class="hover:stroke-slate-200" d="M6 12L18 12" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>'
     let add_icon = '<svg class="hover:fill-slate-200 cursor-pointer add_favourite stock-list-item" fill="#475569" height="20px" width="20px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <polygon points="455,212.5 242.5,212.5 242.5,0 212.5,0 212.5,212.5 0,212.5 0,242.5 212.5,242.5 212.5,455 242.5,455 242.5,242.5 455,242.5 "></polygon> </g></svg>'
 
@@ -154,30 +151,33 @@ async function update_favourites(){
 
         code = button.parentElement.previousElementSibling.value
         count = 0
-        // if code is in fav list
-        for(item of favourites_list)
-        {
-            if(item["ticker"] == code){
 
-                button.parentElement.innerHTML = remove_icon
-                break
-            }
-
-            //THIS WORKS NOW
-            // The only instance it does not work for, is when you remove the last item in the list
-
-            // Counts the number of times the button does not match the list, if the count is the same as list length
-            // then the button is not in the list, and can change
-            else if(button.parentElement != null){
-                count += 1
-                if (count == favourites_list.length)
-                {
-                    button.parentElement.innerHTML = add_icon
+        // This is to account for removing the last fav item
+        // in which case when it gets back here, the list length will be 0
+        if (favourites_list.length == 0)
+        {   //Set all signs to +
+            button.parentElement.innerHTML = add_icon
+        }
+        else {
+            for(item of favourites_list)
+            {
+                if(item["ticker"] == code){
+                    button.parentElement.innerHTML = remove_icon
+                    break
+                }
+    
+                //THIS WORKS NOW
+                else if(button.parentElement != null){
+                    count += 1
+                    // changes the button once it has checked the whole list and does not find a match.
+                    if (count == favourites_list.length)
+                    {
+                        button.parentElement.innerHTML = add_icon
+                    }
                 }
             }
         }
     }
-
 
     update_page()
 }
