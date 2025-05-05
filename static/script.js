@@ -3,11 +3,6 @@ let remove_fav = document.getElementsByClassName("remove_favourite")
 let add_fav = document.getElementsByClassName("add_favourite")
 let stock_links = document.getElementsByClassName("ticker-code")
 
-//window.onload = (event) => {
-//    update_favourites()
-//};
-
-//TODO: Update page (event) - run on page load with no event
 // attaches all event listeners for the page
 async function update_page(){
 
@@ -45,9 +40,6 @@ async function update_page(){
     // clear search box on focusout
     search_form.addEventListener("focusout", search_close)
 
-    // TODO: update icons on link items
-
-    
     // update the add fav icon in centre
     center_fav_icon_update(await get_fav())
 
@@ -134,6 +126,7 @@ async function search(code){
 
 //Functions:
     // Update Favourites()
+    // TODO: Finish final bug in the sign update
 async function update_favourites(){
     console.log("update favourites called")
     favourites_list = await get_fav()
