@@ -591,6 +591,13 @@ def portfolio():
             favouriteData.append(
                 next((item for item in IEXdata if item["ticker"] == favourite[2]), None)
             )
+    ### Account Info ###
+
+
+    ### Portfolio Info ###
+
+
+    ### History Info ###
             
     return render_template("/portfolio.html", favourites = favouriteData)
 

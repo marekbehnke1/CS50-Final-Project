@@ -8,7 +8,7 @@
     </div>
 </div>
 <div class="flex">
-    <div class="bg-slate-500 w-2/3">
+    <div class="bg-slate-500 w-3/5">
        <div class="grid grid-cols-2 gap-4 "> 
 
             {% for item in favourites %}
@@ -70,8 +70,36 @@
 
     </div>
 
-    <div class="bg-sky-300 w-1/3 text-center">
-        Personal Info
+    <div class=" w-2/5  h-screen text-center">
+        <div class="w-full h-1/2 flex">
+            <div class="h-full w-1/2">
+                <div class="min-w-1/2 h-1/2" id="deposit-panel">
+
+                    <p>Account Balance:</p>
+                    
+                    <form action="/" method="post" class="">
+                        <input class="block border border-slate-700 bg-slate-800 rounded-lg py-1 my-2 text-center text-slate-100 hover:border-pink-200 hover:border-solid hover:border" type="text" name="amount" id="deposit_amount" placeholder="Deposit Amount">
+                        <input class="block border border-slate-700 bg-slate-800 rounded-lg py-1 my-2 text-center text-slate-100 hover:border-pink-200 hover:border-solid hover:border" type="password" name="password" id="password" placeholder="Password">
+                        <input class="rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" type="submit" value="Deposit">
+                    </form>
+                    
+                    
+                </div>
+                <div class="h-1/2" id="deposit-history-panel">
+                    Deposit history
+                    
+                </div>
+            </div>
+            <div class="min-w-1/2 h-full bg-slate-300" id="account-stats-panel">
+                <p>Account Stats:</p>
+                <p>Total Amount Deposited:</p>
+                <p>Total Value of Holdings:</p>
+                <p>Total Profit:</p>
+            </div>
+        </div>
+        <div class="min-w-full h-1/2 bg-slate-400" id="transaction-history-panel">
+            Transaction history
+        </div>
     </div>
 </div>
 {% endblock %}
