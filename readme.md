@@ -94,3 +94,6 @@ https://www.makeuseof.com/tag/python-javascript-communicate-json/
 
 google visualisations api 
 pip install gviz_api
+
+This will host the site locally
+flask run --host=0.0.0.0

@@ -15,6 +15,8 @@ import requests
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
+import re
+
 app = Flask(__name__)
 
 # Configure session to use filesystem (instead of signed cookies)
@@ -442,6 +444,10 @@ def register():
                 flash("Please enter " + key, "error")
                 return render_template("register.html")
             
+        if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', new_user["email"]):
+            flash ("Please enter a valid email", "error")
+            return render_template("register.html")
+            
         # check if passwords match
         if not new_user["password"] == request.form.get("password_check"):
             flash("Passwords do not match", "error")
@@ -547,6 +553,11 @@ def details():
             flash("Please enter your password", "error")
             return render_template("/accdetails.html", userInfo = session["user_info"])
         
+        # email regex
+        if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+            flash ("Please enter a valid email", "error")
+            return render_template("/accdetails.html", userInfo = session["user_info"])
+        
         db = sqlite3.connect("database.db")
         curs = db.cursor()
 
@@ -584,17 +595,27 @@ def portfolio():
 
     ### Account Info ###
     balance = curs.execute("SELECT balance FROM users WHERE userid = ?", (userid,)).fetchone()[0]
-    deposits = curs.execute("SELECT * FROM transactions WHERE userid = ? AND transtype = 'deposit'", (userid,)).fetchall()
+    deposits = curs.execute("SELECT * FROM transactions WHERE userid = ? AND transtype = 'deposit' LIMIT 7", (userid,)).fetchall()
     transactions = curs.execute("SELECT * FROM transactions WHERE userid = ? AND NOT transtype = 'deposit'", (userid,)).fetchall()
 
+    
+    totaldepo = 0
+    for item in deposits:
+        totaldepo += item[2]
 
+    ## Include some stuff with total transaction spend etc
+
+    account_stats = {
+        "balance" : balance,
+        "totaldepo" : totaldepo
+    }
     ### Portfolio Info ###
 
 
     ### History Info ###
             
     db.close()
-    return render_template("/portfolio.html", favourites = favouriteData, balance = balance, transactions = transactions, deposits = deposits)
+    return render_template("/portfolio.html", favourites = favouriteData, balance = balance, transactions = transactions, deposits = deposits, account_stats = account_stats)
 
 @app.route("/deposit", methods=["GET", "POST"])
 @login_required
@@ -631,6 +652,15 @@ def deposit():
         if not balance:
             balance = 0
         updated_balance = balance + int(deposit)
+
+        print(deposit)
+        print(updated_balance)
+
+        # limit on balance to not upset sql
+        if updated_balance > 10e20:
+            db.close()
+            flash("Transaction could not be processed", "error")
+            return redirect("/portfolio")
 
         curs.execute("UPDATE users SET balance = ? WHERE userid = ?", (updated_balance, userid,))
         db.commit()
