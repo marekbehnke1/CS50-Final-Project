@@ -1,6 +1,15 @@
 {% extends "layout.html" %}
 
 {% block main %}
+<div class="w-full justify-center flex" id="menuContainer">
+    <div class="w-2/5 justify-end flex" id="menu">
+        <a class="border-pink-600 rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href="/"> Home </a>
+        <a class="rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href="/portfolio"> Portfolio </a>
+        <a class=" rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href="/trade"> Trade </a>
+        <a class="rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href="/account"> Account </a>
+        <a class="rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href="/logout"> Logout </a>
+    </div>
+</div>
 <div class="flex" id="screen-panel">
     <div class="w-1/8 h-screen items-center justify-center text-center" id="left-panel">
         <div class="h-1/2 text-wrap justify-center flex" id="volume-panel">
@@ -79,20 +88,7 @@
     </div>
     
     <div class="w-5/8 h-screen  text-center" id="main-panel">
-            <div class="" id="main-panel-top">
-                <div class="flex h-12 w-full">
-                    <div class="w-1/2"> </div>
-                    <div class="w-1/2 bg-slate-700 flex">
-                        <div class="flex w-full justify-end items-center">
-                            <a class="border-pink-600 rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href="/"> Home </a>
-                            <a class="rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href="/portfolio"> Portfolio </a>
-                            <a class=" rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href="/trade"> Trade </a>
-                            <a class="rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href="/account"> Account </a>
-                            <a class="rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href="/logout"> Logout </a>    
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         <div class="size-full" id="main-panel-center">
             <div class="w-full h-12 bg-slate-500 flex justify-evenly relative" id="chart-search-panel">
                 <input type="search" class="border-slate-950 border-solid rounded-md border my-1 text-center" autofocus id="search" placeholder="Search code">
