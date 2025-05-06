@@ -568,11 +568,12 @@ def details():
 @app.route("/portfolio", methods=["GET", "POST"])
 @login_required
 def portfolio():
+    userid = session["user_id"]
 
     db = sqlite3.connect("database.db")
     curs = db.cursor()
 
-    favourites = curs.execute("SELECT * FROM favourites WHERE userid = ?", (session["user_id"],)).fetchall()
+    favourites = curs.execute("SELECT * FROM favourites WHERE userid = ?", (userid,)).fetchall()
 
     favouriteData = []
     for favourite in favourites:
@@ -582,9 +583,9 @@ def portfolio():
             )
 
     ### Account Info ###
-    balance = curs.execute("SELECT balance FROM users WHERE userid = ?", (session["user_id"],)).fetchone()[0]
-    
-    print(balance)
+    balance = curs.execute("SELECT balance FROM users WHERE userid = ?", (userid,)).fetchone()[0]
+    deposits = curs.execute("SELECT * FROM transactions WHERE userid = ? AND transtype = 'deposit'", (userid,)).fetchall()
+    transactions = curs.execute("SELECT * FROM transactions WHERE userid = ? AND NOT transtype = 'deposit'", (userid,)).fetchall()
 
 
     ### Portfolio Info ###
@@ -593,7 +594,7 @@ def portfolio():
     ### History Info ###
             
     db.close()
-    return render_template("/portfolio.html", favourites = favouriteData, balance = balance)
+    return render_template("/portfolio.html", favourites = favouriteData, balance = balance, transactions = transactions, deposits = deposits)
 
 @app.route("/deposit", methods=["GET", "POST"])
 @login_required
@@ -632,7 +633,7 @@ def deposit():
         updated_balance = balance + int(deposit)
 
         curs.execute("UPDATE users SET balance = ? WHERE userid = ?", (updated_balance, userid,))
-        db.commit
+        db.commit()
         db.close()
                 
     return redirect("/portfolio")
