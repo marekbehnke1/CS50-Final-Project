@@ -75,11 +75,11 @@
             <div class="h-full w-1/2">
                 <div class="min-w-1/2 h-1/2" id="deposit-panel">
 
-                    <p>Account Balance:</p>
+                    <p>Account Balance: {{ balance }}</p>
                     
-                    <form action="/" method="post" class="">
-                        <input class="block border border-slate-700 bg-slate-800 rounded-lg py-1 my-2 text-center text-slate-100 hover:border-pink-200 hover:border-solid hover:border" type="text" name="amount" id="deposit_amount" placeholder="Deposit Amount">
-                        <input class="block border border-slate-700 bg-slate-800 rounded-lg py-1 my-2 text-center text-slate-100 hover:border-pink-200 hover:border-solid hover:border" type="password" name="password" id="password" placeholder="Password">
+                    <form action="/deposit" method="post" class="">
+                        <input class="block border border-slate-700 bg-slate-800 rounded-lg py-1 my-2 text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="amount" id="deposit_amount" placeholder="Deposit Amount">
+                        <input class="block border border-slate-700 bg-slate-800 rounded-lg py-1 my-2 text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="password" name="password" id="password" placeholder="Password">
                         <input class="rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" type="submit" value="Deposit">
                     </form>
                     

@@ -199,15 +199,6 @@ def index():
     else:
         db.close()
 
-
-    #if favouritesList:
-    #    for item in volumeDataSorted:
-    #        if item["ticker"] in favouritesList[0]["ticker"]:
-    #            item.update({"fav" : "yes"})
-    #            print("match - " + item["ticker"] + "-->" + favouritesList[0]["ticker"])
-    #        else:
-    #            item.update({"fav" : "no"})
-
     if user_id:
         return render_template("index.html", volumeData = volumeDataSorted, differenceData = differenceDataSorted, differenceDataReverse = differenceDataReverse, favouritesList = favouritesList)
     else:
@@ -346,7 +337,6 @@ def retrieve_favourite():
         user_favourites.append(row)
     db.close()
 
-    #print(user_favourites)
     return jsonify(user_favourites)
 
 @app.route("/favourite")
@@ -575,7 +565,7 @@ def details():
     
     return render_template("/accdetails.html", userInfo = session["user_info"])
 
-@app.route("/portfolio")
+@app.route("/portfolio", methods=["GET", "POST"])
 @login_required
 def portfolio():
 
@@ -583,7 +573,6 @@ def portfolio():
     curs = db.cursor()
 
     favourites = curs.execute("SELECT * FROM favourites WHERE userid = ?", (session["user_id"],)).fetchall()
-    db.close()
 
     favouriteData = []
     for favourite in favourites:
@@ -591,7 +580,11 @@ def portfolio():
             favouriteData.append(
                 next((item for item in IEXdata if item["ticker"] == favourite[2]), None)
             )
+
     ### Account Info ###
+    balance = curs.execute("SELECT balance FROM users WHERE userid = ?", (session["user_id"],)).fetchone()[0]
+    
+    print(balance)
 
 
     ### Portfolio Info ###
@@ -599,7 +592,50 @@ def portfolio():
 
     ### History Info ###
             
-    return render_template("/portfolio.html", favourites = favouriteData)
+    db.close()
+    return render_template("/portfolio.html", favourites = favouriteData, balance = balance)
+
+@app.route("/deposit", methods=["GET", "POST"])
+@login_required
+def deposit():
+    userid = session["user_id"]
+
+    if request.method == "POST":
+        db = sqlite3.connect("database.db")
+        curs = db.cursor()
+        password = request.form.get("password")
+
+        deposit = request.form.get("amount")
+        if not deposit.isnumeric():
+            db.close()
+            flash("Please enter a valid amount to deposit", "error")
+            return redirect("/portfolio")
+        
+        hash = curs.execute("SELECT hash FROM users WHERE userid = ?", (userid,)).fetchone()[0]
+
+        if not check_password_hash(hash, password):
+            db.close()
+            flash("Incorrect Password", "error")
+            return redirect("/portfolio")
+
+        # If transaction not recorded succesfully
+        if not curs.execute("INSERT INTO transactions (userid, amount, transtype) VALUES (?, ?, ?)", (userid, deposit, "deposit",)):
+            db.close()
+            flash("Transaction could not be processed", "error")
+            return redirect("/portfolio")
+            
+        # update balance
+        balance = curs.execute("SELECT balance FROM users WHERE userid = ?", (userid,)).fetchone()[0]
+
+        if not balance:
+            balance = 0
+        updated_balance = balance + int(deposit)
+
+        curs.execute("UPDATE users SET balance = ? WHERE userid = ?", (updated_balance, userid,))
+        db.commit
+        db.close()
+                
+    return redirect("/portfolio")
 
 
 @app.route("/logout")
