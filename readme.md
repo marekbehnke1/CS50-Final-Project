@@ -85,7 +85,8 @@ TODO
     [x] if you use the main window add/remove fav thing then load a chart - it does a million network requests
         - the requests are going through stock and chart routes
         - i think this is to do with the js code added
-    [] Centre fav button not working now - as a result of my new fav button swap thing
+    [x] Centre fav button not working now - as a result of my new fav button swap thing
+    [x] we now have a weird duplacte flashed messages thing going on
 
 
 https://stackoverflow.com/questions/74808530/send-data-from-javascript-%E2%86%92-python-and-back-without-reloading-the-page

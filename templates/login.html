@@ -1,20 +1,53 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="static/script.js"></script>
+    <script src="static/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', {packages: ['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+    </script>
+    <link rel="stylesheet" href="static/style.css">
+    <title>Document</title>
+</head>
+{% with message = get_flashed_messages(with_categories=true) %}
+{% if message %}
+<header>
+    <div class="{{ message[0][0] }}">
+        {{ message[0][1] }}
+    </div>
+</header>
+{% endif %}
+{% endwith %}
+<body class="bg-slate-700">
 
-{% block main %}
 
-<div class="bg-slate-700 w-full h-screen flex items-center justify-center">
 
-    <form action="/login" method="post" class="flex-col w-1/6 h-1/2 justify-center items-center space-y-6">
-        <input type="text" placeholder="User name" class="outline-2 hover:outline-pink-500/35 focus:outline-offset-4 focus:bg-slate-500/35 focus:outline-pink-500 w-full rounded-md text-center" autofocus autocomplete="off" name="username">
-        <input type="password" placeholder="Password" class="outline-2 hover:outline-pink-500/35 focus:outline-offset-4 focus:bg-slate-500/35 focus:outline-pink-500 w-full rounded-md text-center" autocomplete="off" name="password">
-        <div class="flex justify-evenly">
-            
-                <button type="submit" class="outline-2 hover:outline-pink-500 hover:text-pink-500 focus:outline-offset-4 rounded-md cursor-pointer w-1/3">login</button>
-                <a href="/register" class="outline-2 hover:outline-sky-500 hover:text-sky-500 focus:outline-offset-4 rounded-md cursor-pointer block w-1/3 text-center">Register</a>
-            
-        </div>
-    </form>
+    <div class="bg-slate-700 w-full h-screen flex items-center justify-center">
+    
+        <form action="/login" method="post" class="flex-col w-1/6 h-1/2 justify-center items-center space-y-6">
+            <input type="text" placeholder="User name" class="outline-2 hover:outline-pink-500/35 focus:outline-offset-4 focus:bg-slate-500/35 focus:outline-pink-500 w-full rounded-md text-center" autofocus autocomplete="off" name="username">
+            <input type="password" placeholder="Password" class="outline-2 hover:outline-pink-500/35 focus:outline-offset-4 focus:bg-slate-500/35 focus:outline-pink-500 w-full rounded-md text-center" autocomplete="off" name="password">
+            <div class="flex justify-evenly">
+                
+                    <button type="submit" class="outline-2 hover:outline-pink-500 hover:text-pink-500 focus:outline-offset-4 rounded-md cursor-pointer w-1/3">login</button>
+                    <a href="/register" class="outline-2 hover:outline-sky-500 hover:text-sky-500 focus:outline-offset-4 rounded-md cursor-pointer block w-1/3 text-center">Register</a>
+                
+            </div>
+        </form>
+    
+    </div>
+  
+   
+</body> 
+</html>
 
-</div>
 
-{% endblock %}
+
+
+
+

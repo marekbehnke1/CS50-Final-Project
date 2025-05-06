@@ -1,6 +1,14 @@
 function drawChart(chartData, code){
 
     var options = {
+        //width: 300,
+        //height: 200,
+        chartArea: {
+            left: '10%',
+            right:'10%',
+            top: '10%',
+            height: '75%'
+        },
         legend: 'none',
         title: code,
         titleTextStyle: {color: 'white'},

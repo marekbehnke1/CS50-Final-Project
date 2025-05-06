@@ -665,12 +665,46 @@ def deposit():
                 
     return redirect("/portfolio")
 
-@app.route("/trade")
+@app.route("/buy", methods=["POST", "GET"])
 @login_required
-def trade():
+def buy():
 
-    return render_template("trade.html")
+    code = request.form.get("code")
+    quant = request.form.get("buy_quant")
 
+    if not code:
+        flash("Please enter a code to purchase", "error")
+        return redirect("/")
+    if not quant:
+        flash("Please enter a quantity", "error")
+        return redirect("/")
+    
+    # check stock code exists
+    # get current price of stock
+
+    # would be good to have a colour change check thing for the stock code input field
+    
+
+
+    return redirect("/")
+
+@app.route("/sell", methods=["POST", "GET"]) 
+@login_required
+def sell():
+
+    code = request.form.get("code")
+    quant = request.form.get("sell_quant")
+
+    if not code:
+        flash("Please enter a code to sell", "error")
+        return redirect("/")
+    if not quant:
+        flash("Please enter a quantity", "error")
+        return redirect("/")
+    
+
+
+    return redirect("/")
 
 @app.route("/logout")
 def logout():

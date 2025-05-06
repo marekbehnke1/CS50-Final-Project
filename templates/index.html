@@ -1,15 +1,6 @@
 {% extends "layout.html" %}
 
 {% block main %}
-<div class="w-full justify-center flex" id="menuContainer">
-    <div class="w-2/5 justify-end flex" id="menu">
-        <a class="border-pink-600 rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href="/"> Home </a>
-        <a class="rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href="/portfolio"> Portfolio </a>
-        <a class=" rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href="/trade"> Trade </a>
-        <a class="rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href="/account"> Account </a>
-        <a class="rounded-lg border w-28 text-center py-1 my-2 mx-2 hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 block" href="/logout"> Logout </a>
-    </div>
-</div>
 <div class="flex" id="screen-panel">
     <div class="w-1/8 h-screen items-center justify-center text-center" id="left-panel">
         <div class="h-1/2 text-wrap justify-center flex" id="volume-panel">
@@ -100,63 +91,81 @@
                 </div>
             </div>
 
-            <div class="h-5/8 w-full bg-slate-700 flex-col place-items-center" id="main-panel-chart">
+            <div class="h-5/8 w-full bg-slate-700 flex-col " id="main-panel-chart">
                 
                 <div id="centre-fav-container" class="flex justify-end w-full">
                     <input type="hidden" id="current-ticker">
                     <svg id="centre-fav-add" class="hover:fill-slate-200 cursor-pointer m-4" fill="#475569" height="30px" width="30px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <polygon points="455,212.5 242.5,212.5 242.5,0 212.5,0 212.5,212.5 0,212.5 0,242.5 212.5,242.5 212.5,455 242.5,455 242.5,242.5 455,242.5 "></polygon> </g></svg> 
                 </div>
 
-                    
-                <div id="main-chart" class="w-4/5 h-4/5">
-                    <!-- This is where the graph goes -->
-                </div>
+                <div class="flex w-full h-4/5">
+                    <div id="main-chart" class="w-3/5 h-full ">
+                        <!-- This is where the graph goes -->
+                    </div>
+                    <div id="trade-window" class="w-2/5 ">
+                        <div class="h-1/2 w-full">
+                            <form action="/buy" method="post" class="flex-col">
+                                <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="code" id="buy_code" placeholder="Ticker Code">
+                                <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="buy_quant" id="buy_quant" placeholder="Quantity">
+                                <input class="block rounded-lg border w-28 text-center py-1 my-2 mx-auto hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 hover:cursor-pointer" type="submit" value="Buy">
+                            </form>
+                        </div>
+                        <div class="h-1/2 w-full">
+                            <form action="/sell" method="post" class="flex-col">
+                                <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="code" id="sell_code" placeholder="Ticker Code">
+                                <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="sell_quant" id="sell_quant" placeholder="Quantity">
+                                <input class="block rounded-lg border w-28 text-center py-1 my-2 mx-auto hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 hover:cursor-pointer" type="submit" value="Sell">
+                            </form>
+                        </div>
+                    </div>
+                </div>    
+
                 <input type="date" class="chartDates border-slate-950 border-solid rounded-md border my-1" placeholder="Date from" id="dateFrom">
                 <input type="date" class="chartDates border-slate-950 border-solid rounded-md border my-1" placeholder="Date to" id="dateTo">
 
             </div>
             <div class="w-full justify-center flex" id="data-container">
-                <div class="w-1/2 bg-slate-400 flex justify-center" id="data-left">
+                <div class="w-1/2 text-slate-200 flex justify-center" id="data-left">
                     <table class="table-fixed">
-                        <tr>
+                        <tr class="py-2 border-y border-solid border-slate-500">
                             <td>Ticker:</td>
                             <td class="table_field" id="ticker"></td>
                         </tr>
-                        <tr>
+                        <tr class="py-2 border-y border-solid border-slate-500">
                             <td>Data Timestamp:</td>
                             <td class="table_field" id="timestamp"></td>
                         </tr>
-                        <tr>
+                        <tr class="py-2 border-y border-solid border-slate-500">
                             <td>Last Price:</td>
                             <td class="table_field" id="last"></td>
                         </tr>
-                        <tr>
+                        <tr class="py-2 border-y border-solid border-slate-500">
                             <td>Previous Close:</td>
                             <td class="table_field" id="prevClose"></td>
                         </tr>
-                        <tr>
+                        <tr class="py-2 border-y border-solid border-slate-500">
                             <td>Open Price:</td>
                             <td class="table_field" id="open"></td>
                         </tr>
-                        <tr>
+                        <tr class="py-2 border-y border-solid border-slate-500">
                             <td>High:</td>
                             <td class="table_field" id="high"></td>
                         </tr>
-                        <tr>
+                        <tr class="py-2 border-y border-solid border-slate-500">
                             <td>Low:</td>
                             <td class="table_field" id="low"></td>
                         </tr>
-                        <tr>
+                        <tr class="py-2 border-y border-solid border-slate-500">
                             <td>Mid:</td>
                             <td class="table_field" id="mid"></td>
                         </tr>
-                        <tr>
+                        <tr class="py-2 border-y border-solid border-slate-500">
                             <td>Volume</td>
                             <td class="table_field" id="volume"></td>
                         </tr>
                     </table>
                 </div>
-                <div class="w-1/2 bg-slate-300" id="data-right">
+                <div class="w-1/2 text-slate-200" id="data-right">
                     <!-- STOCK INFO META DATA HERE -->
                      <p class="table_field" id="info">Stock meta data</p>
                 </div>
