@@ -16,7 +16,7 @@ TODO
             [] default display for graph
             [x] search for stock info to generate graphs
             [x] Autocomplete search when searching for ticker codes
-                [] need some error checking here for when a searched stock does not return a valid result
+                [x] need some error checking here for when a searched stock does not return a valid result
                 [x] clear the search box once item has been clicked
             [x] add to favourite / remove from favourite
             [] up/down arrows not vertically aligning
@@ -42,6 +42,8 @@ TODO
         
      [] Styling
         [] finish styling
+        [] all page links on all pages - active one is a different colour
+            Their position needs to be consistent too
 
 # [] Back End
     [] Database configuration

@@ -595,7 +595,7 @@ def portfolio():
 
     ### Account Info ###
     balance = curs.execute("SELECT balance FROM users WHERE userid = ?", (userid,)).fetchone()[0]
-    deposits = curs.execute("SELECT * FROM transactions WHERE userid = ? AND transtype = 'deposit' LIMIT 7", (userid,)).fetchall()
+    deposits = curs.execute("SELECT * FROM transactions WHERE userid = ? AND transtype = 'deposit' LIMIT 8", (userid,)).fetchall()
     transactions = curs.execute("SELECT * FROM transactions WHERE userid = ? AND NOT transtype = 'deposit'", (userid,)).fetchall()
 
     
@@ -610,7 +610,7 @@ def portfolio():
         "totaldepo" : totaldepo
     }
     ### Portfolio Info ###
-
+    holdings = curs.execute("SELECT * FROM holdings WHERE userid = ?", (userid,)).fetchall()
 
     ### History Info ###
             
@@ -653,9 +653,6 @@ def deposit():
             balance = 0
         updated_balance = balance + int(deposit)
 
-        print(deposit)
-        print(updated_balance)
-
         # limit on balance to not upset sql
         if updated_balance > 10e20:
             db.close()
@@ -667,6 +664,12 @@ def deposit():
         db.close()
                 
     return redirect("/portfolio")
+
+@app.route("/trade")
+@login_required
+def trade():
+
+    return render_template("trade.html")
 
 
 @app.route("/logout")
