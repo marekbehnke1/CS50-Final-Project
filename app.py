@@ -725,7 +725,6 @@ def news():
         dateTo = dateToInit.strftime('%Y-%m-%d')
 
     newstext = retrieve_news(qCode, dateFrom, dateTo)
-
     return newstext
 
 

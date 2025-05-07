@@ -2,6 +2,8 @@
 let remove_fav = document.getElementsByClassName("remove_favourite")
 let add_fav = document.getElementsByClassName("add_favourite")
 let stock_links = document.getElementsByClassName("ticker-code")
+let sent_panel = document.getElementById("overall-sentiment-panel")
+
 
 // attaches all event listeners for the page
 async function update_page(){
@@ -248,41 +250,82 @@ async function get_news(code, dateFrom, dateTo)
     response = await fetch("/news?q=" + code + "&from=" + dateFrom + "&to=" + dateTo)
     result = await response.json()
     newsfeed = result.feed
+    console.log(result)
+    newspanel = document.getElementById("news_panel")
+    sent_panel = document.getElementById("overall-sentiment-panel")
     
     newslist = ''
+    // check newsfeed exists
+    if (!newsfeed){
+        newspanel.innerHTML = '<p> News feed not available </p>'
+        sent_panel.style.visibility = "hidden"
+        console.log("should be logging this")
+    }
+    else{
+        // check if the returned object is an iterable object
+        if (Symbol.iterator in Object(newsfeed)){
+            // check the returned object items to display
+            if(newsfeed.length <= 0){
+                newspanel.innerHTML = '<p> News feed not available </p>'
+                sent_panel.style.visibility = "hidden"
+                console.log("should be logging this")
+            }
+            else{
 
-    for(item of newsfeed){
-        newslist += `<div class="h-100 news-card rounded-xl shadow-xl p-5 bg-linear-65 from-purple-700 to-pink-700">
-                <div class="w-full h-3/20 ">
-                    <h1 class="font-bold text-slate-50"> `+ item.title +` </h1>
-                </div>
+                let total_sentiment_score; 
 
-                <div class="w-full h-14/20">
-                    <div class=" w-full flex">
-                        <div class="mt-5 h-full w-2/3 text-left text-slate-100">
-                            <p class="px-5"> `+ item.summary +` </p>
-                        </div>
-                        <div class="mt-5 h-full w-1/3 text-left text-slate-100">
-                            <img src= `+ item.banner_image +` alt="News Icon" srcset="">
-                        </div>
-                    </div>
+                for(item of newsfeed){
 
-                    <div class="w-full flex place-content-evenly mt-3 text-white">
-                        <p class="block">Sentiment: `+ item.overall_sentiment_label +`</p>   
-                        <p class="block">Sentiment: `+ item.overall_sentiment_score +`</p>
-                    </div>
-                </div>
+                    // track sent score
+                    total_sentiment_score += parseInt(item.total_sentiment_score)
 
-                <div class=" w-full h-fit flex ">
-                    <div class="w-1/3 text-slate-100">
-                        <p> `+ item.source +` </p>
-                    </div>
-                    <div class="w-2/3 text-slate-100 text-sm text-left truncate">
-                        <a class="text-slate-100 text-decoration-line: underline" href= "`+ item.url +`" > `+ item.url +` </a>
-                    </div>
-                </div>
-            </div>`  
+                    newslist += `<div class="h-100 news-card rounded-xl shadow-xl p-5 bg-linear-65 from-purple-700 to-pink-700">
+                            <div class="w-full h-3/20 ">
+                                <h1 class="font-bold text-slate-50"> `+ item.title +` </h1>
+                            </div>
+            
+                            <div class="w-full h-14/20">
+                                <div class=" w-full flex">
+                                    <div class="mt-5 h-full w-2/3 text-left text-slate-100">
+                                        <p class="px-5"> `+ item.summary +` </p>
+                                    </div>
+                                    <div class="mt-5 h-full w-1/3 text-left text-slate-100">
+                                        <img src= `+ item.banner_image +` alt="News Icon" srcset="">
+                                    </div>
+                                </div>
+            
+                                <div class="w-full flex place-content-evenly mt-3 text-white">
+                                    <p class="block">Sentiment: `+ item.overall_sentiment_label +`</p>   
+                                    <p class="block">Sentiment: `+ item.overall_sentiment_score +`</p>
+                                </div>
+                            </div>
+            
+                            <div class=" w-full h-fit flex ">
+                                <div class="w-1/3 text-slate-100">
+                                    <p> `+ item.source +` </p>
+                                </div>
+                                <div class="w-2/3 text-slate-100 text-sm text-left truncate">
+                                    <a class="text-slate-100 text-decoration-line: underline" href= "`+ item.url +`" > `+ item.url +` </a>
+                                </div>
+                            </div>
+                        </div>`  
+                }
+                final_score = total_sentiment_score / newsfeed.length
+                let final_label;
+
+                // some conditional here to give correct label
+
+                sent_panel.style.visibility = "visible"
+                document.getElementById("sentiment-label").innerHTML = final_label
+                document.getElementById("sentiment-score").innerHTML = final_score
+            }
+        }
+        else{
+            newspanel.innerHTML = '<p> News feed not available </p>'
+            sent_panel.style.visibility = "hidden"
+            console.log("should be logging this")
+        }
     }
 
-    document.getElementById("news_panel").innerHTML = newslist
+    newspanel.innerHTML = newslist
 }
