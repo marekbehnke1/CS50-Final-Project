@@ -100,3 +100,6 @@ pip install gviz_api
 
 This will host the site locally
 flask run --host=0.0.0.0
+
+alphavantage api key
+LGMEY6AQKNGZO4TZ

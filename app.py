@@ -4,7 +4,7 @@ import gviz_api
 
 import datetime
 
-from helpers import login_required, retrieve_iex, sort_data, retrieve_history, dict_factory, retrieve_metadata
+from helpers import login_required, retrieve_iex, sort_data, retrieve_history, dict_factory, retrieve_metadata, retrieve_news
 
 from flask import Flask, render_template, session, request, redirect, flash, jsonify
 from flask_session import Session
@@ -705,6 +705,29 @@ def sell():
 
 
     return redirect("/")
+
+@app.route("/news")
+@login_required
+def news():
+
+    qCode = request.args.get("q")
+    dateFrom = request.args.get("from") 
+    dateTo = request.args.get("to")
+
+    #include a default date range if date is not set
+    if not dateFrom and not dateTo:
+        # set to 4 weeks ago
+        dateFromInit = datetime.date.today() - datetime.timedelta(days=28)
+        dateFrom = dateFromInit.strftime('%Y-%m-%d')
+
+        # set to todays date
+        dateToInit = datetime.date.today() 
+        dateTo = dateToInit.strftime('%Y-%m-%d')
+
+    newstext = retrieve_news(qCode, dateFrom, dateTo)
+
+    return newstext
+
 
 @app.route("/logout")
 def logout():

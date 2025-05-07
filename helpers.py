@@ -1,6 +1,7 @@
 from functools import wraps
 from flask import request, redirect, session
 import requests
+import re
 
 # login required function
 def login_required(f):
@@ -66,6 +67,18 @@ def retrieve_metadata(ticker):
     }
     requestResponse = requests.get("https://api.tiingo.com/tiingo/daily/" + ticker + "?token=877c60a71d24e500a3767c3875e6845c35df8564", headers=headers)
     return requestResponse.json()
+
+def retrieve_news(ticker, dateFrom, dateTo):
+
+    time_from = re.sub('-','',dateFrom)+ "T0000"
+    time_to = re.sub('-','',dateTo) + "T0000"
+    key = "LGMEY6AQKNGZO4TZ"
+    url = 'https://www.alphavantage.co/query?function=NEWS_SENTIMENT&time_from='+ time_from +'&time_to='+ time_to +'&tickers='+ ticker +'&apikey=' + key
+    r = requests.get(url)
+    data = r.json()
+
+    return data
+
 
 #converts db results into dictionaries
 def dict_factory(cursor, row):

@@ -197,6 +197,7 @@ function add_link(){
     
     document.getElementById("current-ticker").value = code
     update_graph(code, dateTo, dateFrom)
+    get_news(code, dateFrom, dateTo)
 }
 
 // just an object that represebts the fav list item
@@ -240,4 +241,17 @@ function center_fav_icon_update(favourites_list){
             }
         }
     }
+}
+
+async function get_news(code, dateFrom, dateTo)
+{
+    response = await fetch("/news?q=" + code + "&from=" + dateFrom + "&to=" + dateTo)
+    result = await response.json()
+
+    console.log(result["feed"])
+    document.getElementById("news_panel").innerHTML = result["feed"]
+
+    //for(item of result["feed"]){
+    //    
+    //}
 }

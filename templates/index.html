@@ -78,7 +78,7 @@
         </div>
     </div>
     
-    <div class="w-5/8 h-screen  text-center" id="main-panel">
+    <div class="w-5/8 text-center h-fit" id="main-panel">
 
         <div class="size-full" id="main-panel-center">
             <div class="w-full h-12 bg-slate-500 flex justify-evenly relative" id="chart-search-panel">
@@ -98,32 +98,35 @@
                     <svg id="centre-fav-add" class="hover:fill-slate-200 cursor-pointer m-4" fill="#475569" height="30px" width="30px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <polygon points="455,212.5 242.5,212.5 242.5,0 212.5,0 212.5,212.5 0,212.5 0,242.5 212.5,242.5 212.5,455 242.5,455 242.5,242.5 455,242.5 "></polygon> </g></svg> 
                 </div>
 
-                <div class="flex w-full h-4/5">
-                    <div id="main-chart" class="w-3/5 h-full ">
+                <div class="flex w-full  justify-center">
+                    <div id="main-chart" class="w-4/5 h-120 ">
                         <!-- This is where the graph goes -->
                     </div>
-                    <div id="trade-window" class="w-2/5 ">
-                        <div class="h-1/2 w-full">
-                            <form action="/buy" method="post" class="flex-col">
-                                <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="code" id="buy_code" placeholder="Ticker Code">
-                                <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="buy_quant" id="buy_quant" placeholder="Quantity">
-                                <input class="block rounded-lg border w-28 text-center py-1 my-2 mx-auto hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 hover:cursor-pointer" type="submit" value="Buy">
-                            </form>
-                        </div>
-                        <div class="h-1/2 w-full">
-                            <form action="/sell" method="post" class="flex-col">
-                                <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="code" id="sell_code" placeholder="Ticker Code">
-                                <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="sell_quant" id="sell_quant" placeholder="Quantity">
-                                <input class="block rounded-lg border w-28 text-center py-1 my-2 mx-auto hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 hover:cursor-pointer" type="submit" value="Sell">
-                            </form>
-                        </div>
-                    </div>
                 </div>    
-
-                <input type="date" class="chartDates border-slate-950 border-solid rounded-md border my-1" placeholder="Date from" id="dateFrom">
-                <input type="date" class="chartDates border-slate-950 border-solid rounded-md border my-1" placeholder="Date to" id="dateTo">
-
+                
+                <input type="date" class="chartDates border-slate-950 border-solid rounded-md border my-5" placeholder="Date from" id="dateFrom">
+                <input type="date" class="chartDates border-slate-950 border-solid rounded-md border my-5" placeholder="Date to" id="dateTo">
+                
             </div>
+            
+                <div id="trade-window" class="w-full h-50 flex my-5">
+                    <div class="h-full w-1/2 bg-slate-500">
+                        <form action="/buy" method="post" class="flex-col">
+                            <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="code" id="buy_code" placeholder="Ticker Code">
+                            <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="buy_quant" id="buy_quant" placeholder="Quantity">
+                            <input class="block rounded-lg border w-28 text-center py-1 my-2 mx-auto hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 hover:cursor-pointer" type="submit" value="Buy">
+                        </form>
+                    </div>
+                    <div class="h-full w-1/2 bg-slate-400">
+                        <form action="/sell" method="post" class="flex-col">
+                            <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="code" id="sell_code" placeholder="Ticker Code">
+                            <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="sell_quant" id="sell_quant" placeholder="Quantity">
+                            <input class="block rounded-lg border w-28 text-center py-1 my-2 mx-auto hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 hover:cursor-pointer" type="submit" value="Sell">
+                        </form>
+                    </div>
+                </div>
+                
+            
             <div class="w-full justify-center flex" id="data-container">
                 <div class="w-1/2 text-slate-200 flex justify-center" id="data-left">
                     <table class="table-fixed">
@@ -137,7 +140,7 @@
                         </tr>
                         <tr class="py-2 border-y border-solid border-slate-500">
                             <td>Last Price:</td>
-                            <td class="table_field" id="last"></td>
+                            <td class="table_field" id="tngoLast"></td>
                         </tr>
                         <tr class="py-2 border-y border-solid border-slate-500">
                             <td>Previous Close:</td>
@@ -170,6 +173,9 @@
                      <p class="table_field" id="info">Stock meta data</p>
                 </div>
             </div>
+        </div>
+        <div class="w-full bg-slate-400 h-100" id="news_panel">
+            <!-- NEWS PANEL -->
         </div>
 
     </div>
