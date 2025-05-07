@@ -247,11 +247,42 @@ async function get_news(code, dateFrom, dateTo)
 {
     response = await fetch("/news?q=" + code + "&from=" + dateFrom + "&to=" + dateTo)
     result = await response.json()
+    newsfeed = result.feed
+    
+    newslist = ''
 
-    console.log(result["feed"])
-    document.getElementById("news_panel").innerHTML = result["feed"]
+    for(item of newsfeed){
+        newslist += `<div class="h-100 news-card rounded-xl shadow-xl p-5 bg-linear-65 from-purple-700 to-pink-700">
+                <div class="w-full h-3/20 ">
+                    <h1 class="font-bold text-slate-50"> `+ item.title +` </h1>
+                </div>
 
-    //for(item of result["feed"]){
-    //    
-    //}
+                <div class="w-full h-14/20">
+                    <div class=" w-full flex">
+                        <div class="mt-5 h-full w-2/3 text-left text-slate-100">
+                            <p class="px-5"> `+ item.summary +` </p>
+                        </div>
+                        <div class="mt-5 h-full w-1/3 text-left text-slate-100">
+                            <img src= `+ item.banner_image +` alt="News Icon" srcset="">
+                        </div>
+                    </div>
+
+                    <div class="w-full flex place-content-evenly mt-3 text-white">
+                        <p class="block">Sentiment: `+ item.overall_sentiment_label +`</p>   
+                        <p class="block">Sentiment: `+ item.overall_sentiment_score +`</p>
+                    </div>
+                </div>
+
+                <div class=" w-full h-fit flex ">
+                    <div class="w-1/3 text-slate-100">
+                        <p> `+ item.source +` </p>
+                    </div>
+                    <div class="w-2/3 text-slate-100 text-sm text-left truncate">
+                        <a class="text-slate-100 text-decoration-line: underline" href= "`+ item.url +`" > `+ item.url +` </a>
+                    </div>
+                </div>
+            </div>`  
+    }
+
+    document.getElementById("news_panel").innerHTML = newslist
 }
