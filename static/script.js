@@ -277,7 +277,7 @@ async function get_news(code, dateFrom, dateTo)
                 for(item of newsfeed){
 
                     // track sent score
-                    total_sentiment_score += parseInt(item.total_sentiment_score)
+                    total_sentiment_score += parseFloat(item.total_sentiment_score)
 
                     newslist += `<div class="h-100 news-card rounded-xl shadow-xl p-5 bg-linear-65 from-purple-700 to-pink-700">
                             <div class="w-full h-3/20 ">
@@ -310,10 +310,24 @@ async function get_news(code, dateFrom, dateTo)
                             </div>
                         </div>`  
                 }
-                final_score = total_sentiment_score / newsfeed.length
+                final_score = parseFloat(total_sentiment_score / newsfeed.length)
                 let final_label;
 
-                // some conditional here to give correct label
+                if (final_score < -0.35 ){
+                    final_label = "Bearish"
+                } 
+                else if (final_score >= -0.35 && final_score < -0.15 ){
+                    final_label = "Somewhat Bearish"
+                }
+                else if (final_score >= -0.15 && final_score < 0.15 ){
+                    final_label = "Neutral"
+                }
+                else if (final_score >= 0.15 && final_score < 0.35 ){
+                    final_label = "Somewhat Bullish"
+                }
+                else if (final_score >= 0.35 ){
+                    final_label = "Bullish"
+                }
 
                 sent_panel.style.visibility = "visible"
                 document.getElementById("sentiment-label").innerHTML = final_label
