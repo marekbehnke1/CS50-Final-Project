@@ -749,6 +749,11 @@ def buy():
     #update users holdings table
     holdings = curs.execute("SELECT * FROM holdings WHERE userid = ?", (userid,)).fetchall()
     
+    # if user has no holdings
+    if len(holdings) == 0:
+        curs.execute("INSERT INTO holdings (userid, stock, quantity) VALUES(?, ?, ?)", (userid, code, quant))        
+        db.commit()
+
     for item in holdings:
         # Update held stock quant if user already has stock
         if code == item[2]:
@@ -758,10 +763,10 @@ def buy():
             curs.execute("UPDATE holdings SET quantity = ? WHERE stock = ? AND userid = ?", (new_quant, code, userid))
             db.commit()
             break
-        # Update held stock quant if user does not aleady have stock
-        else:
-            curs.execute("INSERT INTO holdings (userid, stock, quantity) VALUES(?, ?, ?)", (userid, code, quant))
-            db.commit()
+    # Update held stock quant if user does not aleady have that stock
+    else:
+        curs.execute("INSERT INTO holdings (userid, stock, quantity) VALUES(?, ?, ?)", (userid, code, quant))
+        db.commit()
             
 
     db.close()
