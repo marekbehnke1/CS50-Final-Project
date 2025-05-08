@@ -250,7 +250,6 @@ async function get_news(code, dateFrom, dateTo)
     response = await fetch("/news?q=" + code + "&from=" + dateFrom + "&to=" + dateTo)
     result = await response.json()
     newsfeed = result.feed
-    console.log(result)
     newspanel = document.getElementById("news_panel")
     sent_panel = document.getElementById("overall-sentiment-panel")
     
@@ -272,12 +271,13 @@ async function get_news(code, dateFrom, dateTo)
             }
             else{
 
-                let total_sentiment_score; 
+                // Had to initialise this to 0
+                let total_sentiment_score = 0 
 
                 for(item of newsfeed){
 
                     // track sent score
-                    total_sentiment_score += parseFloat(item.total_sentiment_score)
+                    total_sentiment_score += item.overall_sentiment_score
 
                     newslist += `<div class="h-100 news-card rounded-xl shadow-xl p-5 bg-linear-65 from-purple-700 to-pink-700">
                             <div class="w-full h-3/20 ">
@@ -331,7 +331,7 @@ async function get_news(code, dateFrom, dateTo)
 
                 sent_panel.style.visibility = "visible"
                 document.getElementById("sentiment-label").innerHTML = final_label
-                document.getElementById("sentiment-score").innerHTML = final_score
+                document.getElementById("sentiment-score").innerHTML = final_score.toFixed(5)
             }
         }
         else{
