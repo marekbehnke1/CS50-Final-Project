@@ -668,8 +668,11 @@ def deposit():
 @app.route("/buy", methods=["POST", "GET"])
 @login_required
 def buy():
+    userid = session["user_id"]
+    db = sqlite3.connect("database.db")
+    curs = db.cursor()
 
-    code = request.form.get("code")
+    code = request.form.get("code").upper()
     quant = request.form.get("buy_quant")
 
     if not code:
@@ -679,8 +682,34 @@ def buy():
         flash("Please enter a quantity", "error")
         return redirect("/")
     
-    # check stock code exists
-    # get current price of stock
+    code_list = curs.execute("SELECT ticker FROM stocks WHERE ticker LIKE ?", (code + "%",)).fetchall()
+
+    # check if ticker code exists in db
+    if not code_list or not code in code_list[0]:
+        flash("Please enter a valid code", "error")
+        return redirect("/")
+    
+    # check if quant has any non numeric characters
+    if not quant.isnumeric():
+        flash("Please enter a valid quantity", "error")
+        print("quantity should not be alphabetical")
+        return redirect("/")
+    
+
+    result = next((item for item in IEXdata if item["ticker"] == code), None)
+
+    #print(result["tngoLast"])
+
+    totalprice = int(quant) * float(result["tngoLast"])
+    balance = curs.execute("SELECT balance FROM users WHERE userid = ?", (userid,)).fetchone()[0]
+
+    # check balance
+    if not totalprice <= balance:
+        flash("Insufficient Funds", "error")
+        return redirect("/")
+    
+    flash("purchase succesfull", "success")
+
 
     # would be good to have a colour change check thing for the stock code input field
     
@@ -692,7 +721,7 @@ def buy():
 @login_required
 def sell():
 
-    code = request.form.get("code")
+    code = request.form.get("code").upper()
     quant = request.form.get("sell_quant")
 
     if not code:

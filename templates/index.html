@@ -110,24 +110,24 @@
             </div>
             
                 <div id="trade-window" class="w-full h-50 flex my-5">
-                    <div class="h-full w-1/2 bg-slate-500">
+                    <div class="h-full w-1/2 bg-linear-to-tl/hsl from-slate-900 to-indigo-900 rounded-lg mr-2 ml-4 shadow-xl">
                         <form action="/buy" method="post" class="flex-col">
                             <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="code" id="buy_code" placeholder="Ticker Code">
                             <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="buy_quant" id="buy_quant" placeholder="Quantity">
-                            <input class="block rounded-lg border w-28 text-center py-1 my-2 mx-auto hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 hover:cursor-pointer" type="submit" value="Buy">
+                            <input class="block rounded-lg border border-white text-white w-28 text-center py-1 my-2 mx-auto hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 hover:cursor-pointer" type="submit" value="Buy">
                         </form>
                     </div>
-                    <div class="h-full w-1/2 bg-slate-400">
+                    <div class="h-full w-1/2 bg-linear-to-tr/hsl from-slate-900 to-indigo-900 rounded-lg ml-2 mr-4 shadow-xl">
                         <form action="/sell" method="post" class="flex-col">
                             <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="code" id="sell_code" placeholder="Ticker Code">
                             <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="sell_quant" id="sell_quant" placeholder="Quantity">
-                            <input class="block rounded-lg border w-28 text-center py-1 my-2 mx-auto hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 hover:cursor-pointer" type="submit" value="Sell">
+                            <input class="block rounded-lg border border-white text-white w-28 text-center py-1 my-2 mx-auto hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 hover:cursor-pointer" type="submit" value="Sell">
                         </form>
                     </div>
                 </div>
                 
             
-            <div class="w-full justify-center flex" id="data-container">
+            <div class="w-full justify-center flex px-4" id="data-container">
                 <div class="w-1/2 text-slate-200 flex justify-center" id="data-left">
                     <table class="table-fixed">
                         <tr class="py-2 border-y border-solid border-slate-500">
@@ -174,10 +174,7 @@
                 </div>
             </div>
         </div>
-        <div class="w-full h-20 text-slate-50 bg-slate-600 rounded-lg mt-10 mb-5" id="overall-sentiment-panel">
-            <div class="w-full text-center" id=""></div>
-            <div class="w-full text-center" id=""></div>
-
+        <div class="w-full h-fit text-slate-50 bg-slate-600 rounded-lg mt-10 mb-5" id="overall-sentiment-panel">
             <p class="font-bold">Overall Market Sentiment:</p>
             <p id="sentiment-label"></p>
             <p id="sentiment-score"></p>

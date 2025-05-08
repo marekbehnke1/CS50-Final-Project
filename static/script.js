@@ -2,7 +2,7 @@
 let remove_fav = document.getElementsByClassName("remove_favourite")
 let add_fav = document.getElementsByClassName("add_favourite")
 let stock_links = document.getElementsByClassName("ticker-code")
-let sent_panel = document.getElementById("overall-sentiment-panel")
+
 
 
 // attaches all event listeners for the page
@@ -47,6 +47,21 @@ async function update_page(){
 
     // update the add fav icon in centre
     center_fav_icon_update(await get_fav())
+
+    let data_container = document.getElementById("data-container")
+    let sent_panel = document.getElementById("overall-sentiment-panel")
+    let ticker_code = document.getElementById("current-ticker").value
+
+    if (!ticker_code)
+    {
+        data_container.style.display = "none"
+        sent_panel.style.display = "none"
+    }
+    else{
+        data_container.style.display = "flex"
+        sent_panel.style.display = "block"
+    }
+
 
 }
 
@@ -251,25 +266,27 @@ async function get_news(code, dateFrom, dateTo)
     result = await response.json()
     newsfeed = result.feed
     newspanel = document.getElementById("news_panel")
-    sent_panel = document.getElementById("overall-sentiment-panel")
+    let sent_panel = document.getElementById("overall-sentiment-panel")
+    
     
     newslist = ''
     // check newsfeed exists
     if (!newsfeed){
-        newspanel.innerHTML = '<p> News feed not available </p>'
-        sent_panel.style.visibility = "hidden"
-        console.log("should be logging this")
+        
+        sent_panel.innerHTML = `<p>Newsfeed not available</p>`
     }
     else{
         // check if the returned object is an iterable object
         if (Symbol.iterator in Object(newsfeed)){
             // check the returned object items to display
             if(newsfeed.length <= 0){
-                newspanel.innerHTML = '<p> News feed not available </p>'
-                sent_panel.style.visibility = "hidden"
-                console.log("should be logging this")
-            }
+    
+                sent_panel.innerHTML = `<p>Newsfeed not available</p>`
+                    }
             else{
+                sent_panel.innerHTML = `<p class="font-bold">Overall Market Sentiment:</p>
+                                        <p id="sentiment-label"></p>
+                                        <p id="sentiment-score"></p>`
 
                 // Had to initialise this to 0
                 let total_sentiment_score = 0 
@@ -329,16 +346,13 @@ async function get_news(code, dateFrom, dateTo)
                     final_label = "Bullish"
                 }
 
-                sent_panel.style.visibility = "visible"
                 document.getElementById("sentiment-label").innerHTML = final_label
                 document.getElementById("sentiment-score").innerHTML = final_score.toFixed(5)
             }
         }
         else{
-            newspanel.innerHTML = '<p> News feed not available </p>'
-            sent_panel.style.visibility = "hidden"
-            console.log("should be logging this")
-        }
+            sent_panel.innerHTML = `<p>Newsfeed not available</p>`
+            }
     }
 
     newspanel.innerHTML = newslist
