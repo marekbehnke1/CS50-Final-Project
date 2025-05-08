@@ -6,6 +6,14 @@
 if i kil terminal
 .venv\scripts\activate\ps1
 
+NEXT STEPS:
+[] portfolio page - design card template
+[] design data structure to populate it
+[] styling pass on portfolio page
+[] finish adding func. to buy/sell panels
+[] styling pass on home page
+
+
 TODO
 # [] Front End
      [] Landing Page
@@ -26,24 +34,27 @@ TODO
         [x] favourite button turn to a - if stock is already in favs list
 
      [] Portfolio Page
-        [] stocks interested in?
-        [] stocks to watch? 
+        [] account stats
+        [] stock holding cards
 
      [x] Account Page
         [x] update password
         [x] update account details
-        
+        [] account page needs revisiting
+
      [x] Login page
         [x]finish register button
         [x]flash bar
 
      [x] Register Page
         [x]flash bar
+
+    [] Leaderboards
         
      [] Styling
         [] finish styling
-        [] all page links on all pages - active one is a different colour
-            Their position needs to be consistent too
+        [x] all page links on all pages
+        [x] Their position needs to be consistent too
 
 # [] Back End
     [] Database configuration
@@ -53,7 +64,7 @@ TODO
 
     [] Page Code 
         [x] Login Functionality
-            []find a better way of returning db results
+            [x]find a better way of returning db results
 
         [x] Registration functionality
             [x] loop throgh a dict to check empty form fields and give appropriate error
@@ -68,14 +79,17 @@ TODO
             [x] need to find a way to use the + to add to favourites using JS, so page doesnt have to reload
 
         [] portfolio page
-            [x] retrieve favourites
-            [] display more interesting data
+            [] portfolio stats
+            [] data for stock holding cards
+            [x] deposit money
 
-    [] API Connection 
+        [] Leaderboards
+
+    [x] API Connection 
         [x]Tiingo
             https://www.tiingo.com/documentation/general/connecting
         [x] API call on load and save data in memory to limit api calls
-            []check for any additional api calls needed
+            [x]check for any additional api calls needed
         [x] Double check some of the variable naming conventions in the retrieve & sort  functions
 # [] Bugs
     [x] makes 10 of the same api call when you click a stock link on the side panels

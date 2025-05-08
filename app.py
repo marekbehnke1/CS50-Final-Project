@@ -607,6 +607,8 @@ def portfolio():
 
     favourites = curs.execute("SELECT * FROM favourites WHERE userid = ?", (userid,)).fetchall()
 
+    ########## Need to replace this with more detail about stock holdings etc ###############
+    
     favouriteData = []
     for favourite in favourites:
             #generator expression to pull entries from IEXdata
@@ -618,25 +620,34 @@ def portfolio():
     balance = curs.execute("SELECT balance FROM users WHERE userid = ?", (userid,)).fetchone()[0]
     deposits = curs.execute("SELECT * FROM transactions WHERE userid = ? AND transtype = 'deposit' LIMIT 8", (userid,)).fetchall()
     transactions = curs.execute("SELECT * FROM transactions WHERE userid = ? AND NOT transtype = 'deposit'", (userid,)).fetchall()
-
-    
+ 
     totaldepo = 0
     for item in deposits:
         totaldepo += item[2]
 
     ## Include some stuff with total transaction spend etc
 
-    account_stats = {
-        "balance" : balance,
-        "totaldepo" : totaldepo
-    }
     ### Portfolio Info ###
     holdings = curs.execute("SELECT * FROM holdings WHERE userid = ?", (userid,)).fetchall()
 
-    ### History Info ###
-            
+    total_value = 0
+
+    # total value of all stocks currently held
+    for stock in holdings:
+        result = next((item for item in IEXdata if item["ticker"] == stock[2]), None)
+        total_value += result["tngoLast"] * stock[3]
+
+    total_profit = total_value - totaldepo
+
+    account_stats = {
+        "balance" : balance,
+        "totaldepo" : totaldepo,
+        "totalvalue" : total_value,
+        "totalprofit" : total_profit
+    }
+        
     db.close()
-    return render_template("/portfolio.html", favourites = favouriteData, balance = balance, transactions = transactions, deposits = deposits, account_stats = account_stats)
+    return render_template("/portfolio.html", favourites = favouriteData, transactions = transactions, deposits = deposits, account_stats = account_stats)
 
 @app.route("/deposit", methods=["GET", "POST"])
 @login_required
@@ -754,21 +765,22 @@ def buy():
         curs.execute("INSERT INTO holdings (userid, stock, quantity) VALUES(?, ?, ?)", (userid, code, quant))        
         db.commit()
 
-    for item in holdings:
-        # Update held stock quant if user already has stock
-        if code == item[2]:
-            held_stock = curs.execute("SELECT quantity FROM holdings WHERE stock = ? AND userid = ?", (code, userid,)).fetchone()[0]
-            new_quant = held_stock + int(quant)
-
-            curs.execute("UPDATE holdings SET quantity = ? WHERE stock = ? AND userid = ?", (new_quant, code, userid))
-            db.commit()
-            break
-    # Update held stock quant if user does not aleady have that stock
+    # if user has holdings
     else:
-        curs.execute("INSERT INTO holdings (userid, stock, quantity) VALUES(?, ?, ?)", (userid, code, quant))
-        db.commit()
-            
+        for item in holdings:
+            # Update held stock quant if user already has stock
+            if code == item[2]:
+                held_stock = curs.execute("SELECT quantity FROM holdings WHERE stock = ? AND userid = ?", (code, userid,)).fetchone()[0]
+                new_quant = held_stock + int(quant)
 
+                curs.execute("UPDATE holdings SET quantity = ? WHERE stock = ? AND userid = ?", (new_quant, code, userid))
+                db.commit()
+                break
+        # Update held stock quant if user does not aleady have that stock
+        else:
+            curs.execute("INSERT INTO holdings (userid, stock, quantity) VALUES(?, ?, ?)", (userid, code, quant))
+            db.commit()
+            
     db.close()
     flash("Purchase Succesful", "success")
 

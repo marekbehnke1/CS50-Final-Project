@@ -69,7 +69,7 @@
             <div class="h-full w-1/2 text-slate-200">
                 <div class="w-full h-1/2 flex-col" id="deposit-panel">
 
-                    <p class="block">Account Balance: £{{ balance }}</p>
+                    <p class="block">Account Balance: £{{ account_stats["balance"] }}</p>
                     
                     <form action="/deposit" method="post" class="flex-col">
                         <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="amount" id="deposit_amount" placeholder="Deposit Amount">
@@ -82,8 +82,8 @@
                 <div class="h-1/2 text-centre" id="deposit-history-panel">
                     <p>Account Stats:</p>
                     <p>Total Amount Deposited: {{ account_stats["totaldepo"] }}</p>
-                    <p>Total Value of Holdings:</p>
-                    <p>Total Profit:</p>     
+                    <p>Total Value of Holdings: {{ account_stats["totalvalue"] }}</p>
+                    <p>Total Profit: {{ account_stats["totalprofit"] }} </p>     
                 </div>
             </div>
             
