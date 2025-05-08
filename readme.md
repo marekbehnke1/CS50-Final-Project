@@ -89,6 +89,7 @@ TODO
     [x] we now have a weird duplacte flashed messages thing going on
 
 
+
 https://stackoverflow.com/questions/74808530/send-data-from-javascript-%E2%86%92-python-and-back-without-reloading-the-page
 
 https://flask.palletsprojects.com/en/stable/patterns/javascript/

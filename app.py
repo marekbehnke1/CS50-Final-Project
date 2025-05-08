@@ -104,6 +104,22 @@ IEXdata = [
       "high": 999,
       "low": 333,
       "tngoLast": 444},
+      {"ticker": "BBW",
+      "mid": 58,
+      "open": 41,
+      "volume": 3456,
+      "timestamp": 543,
+      "high": 112,
+      "low": 41,
+      "tngoLast": 83},
+      {"ticker": "X",
+      "mid": 46,
+      "open": 67,
+      "volume": 32345,
+      "timestamp": 23,
+      "high": 1245,
+      "low": 41,
+      "tngoLast": 658},
       {"ticker": "INTU",
       "mid": 2340,
       "open": 2452,
@@ -209,8 +225,10 @@ def index():
 @app.route("/stock")
 @login_required
 def info_page():
+    #
+    # this will work properly when we use the full iexdata set
+    #
 
-    # because the code is being sent via GET, the info is accesible via the below statement
     query = request.args.get("q")
     if query:
         # this is a generator expression
@@ -228,10 +246,13 @@ def info_page():
         curs = db.cursor()
 
         infoText = curs.execute("SELECT info FROM stocks WHERE ticker = ?", (query,)).fetchone()[0]
+
+        print(infoText)
         # check if info text exists in db
         if not infoText: 
 
             metadata = retrieve_metadata(query)
+            
             infoText = metadata["description"]
             # check if API info text exists and provide default
             if not infoText:
@@ -255,6 +276,7 @@ def info_page():
 
     else:
         result = []
+
     return jsonify(result)
 
 @app.route("/search")
@@ -597,6 +619,7 @@ def portfolio():
     balance = curs.execute("SELECT balance FROM users WHERE userid = ?", (userid,)).fetchone()[0]
     deposits = curs.execute("SELECT * FROM transactions WHERE userid = ? AND transtype = 'deposit' LIMIT 8", (userid,)).fetchall()
     transactions = curs.execute("SELECT * FROM transactions WHERE userid = ? AND NOT transtype = 'deposit'", (userid,)).fetchall()
+    print(transactions)
 
     
     totaldepo = 0
@@ -641,7 +664,7 @@ def deposit():
             return redirect("/portfolio")
 
         # If transaction not recorded succesfully
-        if not curs.execute("INSERT INTO transactions (userid, amount, transtype) VALUES (?, ?, ?)", (userid, deposit, "deposit",)):
+        if not curs.execute("INSERT INTO transactions (userid, value, transtype) VALUES (?, ?, ?)", (userid, deposit, "deposit",)):
             db.close()
             flash("Transaction could not be processed", "error")
             return redirect("/portfolio")
@@ -695,10 +718,8 @@ def buy():
         print("quantity should not be alphabetical")
         return redirect("/")
     
-
+    # get last trade price from iexdata
     result = next((item for item in IEXdata if item["ticker"] == code), None)
-
-    #print(result["tngoLast"])
 
     totalprice = int(quant) * float(result["tngoLast"])
     balance = curs.execute("SELECT balance FROM users WHERE userid = ?", (userid,)).fetchone()[0]
@@ -708,8 +729,27 @@ def buy():
         flash("Insufficient Funds", "error")
         return redirect("/")
     
-    flash("purchase succesfull", "success")
+    updated_balance = balance - totalprice
+    
+    #submit changes to db
+    try:
+        curs.execute("UPDATE users SET balance = ? WHERE userid = ?", (updated_balance, userid,))
+        curs.execute("INSERT INTO transactions (userid, value, transtype, item, quantity) VALUES (?, ?, ?, 'purchase', ?)", (userid, totalprice, code, quant,))
+    except:
+        flash("Something went wrong with the purchase", "error")
+        return redirect("/")
+    db.commit()
 
+    #update users holdings table
+
+    #check if user has stock in that company
+        # if they do, update stock quant
+    #if not, create record
+        #update quant
+
+
+    flash("purchase succesfull", "success")
+    db.close()
 
     # would be good to have a colour change check thing for the stock code input field
     
