@@ -247,7 +247,6 @@ def info_page():
 
         infoText = curs.execute("SELECT info FROM stocks WHERE ticker = ?", (query,)).fetchone()[0]
 
-        print(infoText)
         # check if info text exists in db
         if not infoText: 
 
@@ -619,7 +618,6 @@ def portfolio():
     balance = curs.execute("SELECT balance FROM users WHERE userid = ?", (userid,)).fetchone()[0]
     deposits = curs.execute("SELECT * FROM transactions WHERE userid = ? AND transtype = 'deposit' LIMIT 8", (userid,)).fetchall()
     transactions = curs.execute("SELECT * FROM transactions WHERE userid = ? AND NOT transtype = 'deposit'", (userid,)).fetchall()
-    print(transactions)
 
     
     totaldepo = 0
@@ -715,7 +713,6 @@ def buy():
     # check if quant has any non numeric characters
     if not quant.isnumeric():
         flash("Please enter a valid quantity", "error")
-        print("quantity should not be alphabetical")
         return redirect("/")
     
     # get last trade price from iexdata
