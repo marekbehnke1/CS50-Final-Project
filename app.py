@@ -690,8 +690,6 @@ def deposit():
 @login_required
 def buy():
     userid = session["user_id"]
-    db = sqlite3.connect("database.db")
-    curs = db.cursor()
 
     code = request.form.get("code").upper()
     quant = request.form.get("buy_quant")
@@ -703,17 +701,26 @@ def buy():
         flash("Please enter a quantity", "error")
         return redirect("/")
     
+    # check if quant has any non numeric characters
+    if not quant.isnumeric():
+        flash("Please enter a valid quantity", "error")
+        return redirect("/")
+    
+    if quant == "0":
+        flash("You cant buy nothing!", "error")
+        return redirect("/")
+    
+    db = sqlite3.connect("database.db")
+    curs = db.cursor()
+
     code_list = curs.execute("SELECT ticker FROM stocks WHERE ticker LIKE ?", (code + "%",)).fetchall()
 
     # check if ticker code exists in db
     if not code_list or not code in code_list[0]:
         flash("Please enter a valid code", "error")
+        db.close()
         return redirect("/")
     
-    # check if quant has any non numeric characters
-    if not quant.isnumeric():
-        flash("Please enter a valid quantity", "error")
-        return redirect("/")
     
     # get last trade price from iexdata
     result = next((item for item in IEXdata if item["ticker"] == code), None)
@@ -724,6 +731,7 @@ def buy():
     # check balance
     if not totalprice <= balance:
         flash("Insufficient Funds", "error")
+        db.close()
         return redirect("/")
     
     updated_balance = balance - totalprice
@@ -734,6 +742,7 @@ def buy():
         curs.execute("INSERT INTO transactions (userid, value, transtype, item, quantity) VALUES (?, ?, ?, 'purchase', ?)", (userid, totalprice, code, quant,))
     except:
         flash("Something went wrong with the purchase", "error")
+        db.close()
         return redirect("/")
     db.commit()
 
@@ -755,8 +764,8 @@ def buy():
             db.commit()
             
 
-    flash("purchase succesfull", "success")
     db.close()
+    flash("Purchase Succesful", "success")
 
     # would be good to have a colour change check thing for the stock code input field
     
@@ -765,6 +774,7 @@ def buy():
 @app.route("/sell", methods=["POST", "GET"]) 
 @login_required
 def sell():
+    userid = session["user_id"]
 
     code = request.form.get("code").upper()
     quant = request.form.get("sell_quant")
@@ -776,7 +786,60 @@ def sell():
         flash("Please enter a quantity", "error")
         return redirect("/")
     
+    # check if quant has any non numeric characters
+    if not quant.isnumeric():
+        flash("Please enter a valid quantity", "error")
+        return redirect("/")
+    
+    if quant == "0":
+        flash("You cant sell nothing!", "error")
+        return redirect("/")
+    
+    db = sqlite3.connect("database.db")
+    curs = db.cursor()
 
+    # get list of stocks we hold
+    code_list = curs.execute("SELECT stock FROM holdings WHERE userid = ?", (userid,)).fetchall()
+
+    # check if ticker code exists in list of our holdings
+    if not code_list or not code in code_list[0]:
+        flash("Please enter a valid code", "error")
+        db.close()
+        return redirect("/")
+    
+    held_quant = curs.execute("SELECT quantity FROM holdings WHERE stock = ? AND userid = ?", (code, userid,)).fetchone()[0]
+    
+    # preview sale price?
+
+    # check quant
+    if int(quant) > held_quant:
+        flash("You do not hold enough stock to sell this amount", "error")
+        db.close()
+        redirect("/")
+
+    # remove stock from holdings - deleting entry if quant is 0
+    new_held_quant = held_quant - int(quant)
+    if new_held_quant == 0:
+        curs.execute("DELETE FROM holdings WHERE userid = ? AND stock = ?", (userid, code,))
+    else:
+        curs.execute("UPDATE holdings SET quantity = ? WHERE userid = ? AND stock = ?", (new_held_quant, userid, code,))
+        
+    # get last trade price from iexdata
+    result = next((item for item in IEXdata if item["ticker"] == code), None)
+
+    totalprice = int(quant) * float(result["tngoLast"])
+    
+    # increase account balance
+    balance = curs.execute("SELECT balance FROM users WHERE userid = ?", (userid,)).fetchone()[0]
+    new_balance = balance + totalprice
+    curs.execute("UPDATE users SET balance = ? WHERE userid = ?", (new_balance, userid,))
+
+    # record in transaction log
+    curs.execute("INSERT INTO transactions (userid, value, transtype, item, quantity) VALUES(?, ?, 'sell', ?, ?)", (userid, totalprice, code, quant,))
+    db.commit()
+
+    db.close()        
+    flash("Sale Succesful", "success")
 
     return redirect("/")
 
