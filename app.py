@@ -741,20 +741,28 @@ def buy():
     db.commit()
 
     #update users holdings table
+    holdings = curs.execute("SELECT * FROM holdings WHERE userid = ?", (userid,)).fetchall()
+    
+    for item in holdings:
+        # Update held stock quant if user already has stock
+        if code == item[2]:
+            held_stock = curs.execute("SELECT quantity FROM holdings WHERE stock = ? AND userid = ?", (code, userid,)).fetchone()[0]
+            new_quant = held_stock + int(quant)
 
-    #check if user has stock in that company
-        # if they do, update stock quant
-    #if not, create record
-        #update quant
-
+            curs.execute("UPDATE holdings SET quantity = ? WHERE stock = ? AND userid = ?", (new_quant, code, userid))
+            db.commit()
+            break
+        # Update held stock quant if user does not aleady have stock
+        else:
+            curs.execute("INSERT INTO holdings (userid, stock, quantity) VALUES(?, ?, ?)", (userid, code, quant))
+            db.commit()
+            
 
     flash("purchase succesfull", "success")
     db.close()
 
     # would be good to have a colour change check thing for the stock code input field
     
-
-
     return redirect("/")
 
 @app.route("/sell", methods=["POST", "GET"]) 
