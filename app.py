@@ -736,6 +736,11 @@ def buy():
     # get last trade price from iexdata
     result = next((item for item in IEXdata if item["ticker"] == code), None)
 
+    # if the stock price cannot be retrieved
+    if not result:
+        flash("This stock could not be found", "error")
+        return redirect("/")
+    
     totalprice = int(quant) * float(result["tngoLast"])
     balance = curs.execute("SELECT balance FROM users WHERE userid = ?", (userid,)).fetchone()[0]
 

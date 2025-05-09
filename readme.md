@@ -12,7 +12,7 @@ NEXT STEPS:
 [] styling pass on portfolio page
 [] finish adding func. to buy/sell panels
 [] styling pass on home page
-
+[] text overflow on news feed card titles
 
 TODO
 # [] Front End
