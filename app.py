@@ -47,7 +47,7 @@ IEXdata = [
       "timestamp": 567,
       "high": 999,
       "low": 333,
-      "tngoLast": 444},
+      "tngoLast": 600},
       {"ticker": "TSLA",
       "mid": 370,
       "open": 120,
@@ -605,16 +605,7 @@ def portfolio():
     db = sqlite3.connect("database.db")
     curs = db.cursor()
 
-    favourites = curs.execute("SELECT * FROM favourites WHERE userid = ?", (userid,)).fetchall()
-
     ########## Need to replace this with more detail about stock holdings etc ###############
-    
-    favouriteData = []
-    for favourite in favourites:
-            #generator expression to pull entries from IEXdata
-            favouriteData.append(
-                next((item for item in IEXdata if item["ticker"] == favourite[2]), None)
-            )
 
     ### Account Info ###
     balance = curs.execute("SELECT balance FROM users WHERE userid = ?", (userid,)).fetchone()[0]
@@ -649,7 +640,7 @@ def portfolio():
 
         #total profit
         curr_value = result["tngoLast"] * quant
-        item_profit = total_invested - curr_value
+        item_profit = curr_value - total_invested
 
         # Populate the holdings grid
         holdings_grid.append({
@@ -675,7 +666,7 @@ def portfolio():
     
         
     db.close()
-    return render_template("/portfolio.html", favourites = favouriteData, transactions = transactions, deposits = deposits, account_stats = account_stats, holdings_grid = holdings_grid)
+    return render_template("/portfolio.html", transactions = transactions, deposits = deposits, account_stats = account_stats, holdings_grid = holdings_grid)
 
 @app.route("/deposit", methods=["GET", "POST"])
 @login_required
