@@ -110,14 +110,14 @@
             </div>
             
                 <div id="trade-window" class="w-full h-50 flex my-5">
-                    <div class="h-full w-1/2 bg-linear-to-tl/hsl from-slate-900 to-indigo-900 rounded-lg mr-2 ml-4 shadow-xl">
+                    <div class="h-full w-1/2 bg-radial-[at_100%_100%] from-slate-900 from-10% via-slate-950 via-50% to-black to-100% rounded-lg mr-2 ml-4 shadow-xl">
                         <form action="/buy" method="post" class="flex-col">
                             <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="code" id="buy_code" placeholder="Ticker Code">
                             <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="buy_quant" id="buy_quant" placeholder="Quantity">
                             <input class="block rounded-lg border border-white text-white w-28 text-center py-1 my-2 mx-auto hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 hover:cursor-pointer" type="submit" value="Buy">
                         </form>
                     </div>
-                    <div class="h-full w-1/2 bg-linear-to-tr/hsl from-slate-900 to-indigo-900 rounded-lg ml-2 mr-4 shadow-xl">
+                    <div class="h-full w-1/2 bg-radial-[at_0%_100%] from-slate-900 from-10% via-slate-950 via-50% to-black to-100% rounded-lg ml-2 mr-4 shadow-xl">
                         <form action="/sell" method="post" class="flex-col">
                             <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="code" id="sell_code" placeholder="Ticker Code">
                             <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="sell_quant" id="sell_quant" placeholder="Quantity">

@@ -6,13 +6,13 @@
 if i kil terminal
 .venv\scripts\activate\ps1
 
-NEXT STEPS:
-[] portfolio page - design card template
-[] design data structure to populate it
-[] styling pass on portfolio page
-[] finish adding func. to buy/sell panels
-[] styling pass on home page
-[] text overflow on news feed card titles
+# NEXT STEPS:
+    [] portfolio page - design card template
+    [x] design data structure to populate it
+    [] styling pass on portfolio page
+    [] finish adding func. to buy/sell panels
+    [] styling pass on home page
+    [] text overflow on news feed card titles
 
 TODO
 # [] Front End

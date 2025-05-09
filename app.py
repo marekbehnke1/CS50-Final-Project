@@ -632,12 +632,38 @@ def portfolio():
 
     total_value = 0
 
+    holdings_grid = []
     # total value of all stocks currently held
     for stock in holdings:
-        result = next((item for item in IEXdata if item["ticker"] == stock[2]), None)
-        total_value += result["tngoLast"] * stock[3]
+        #just for clarity
+        code = stock[2]
+        quant = stock[3]
 
+        result = next((item for item in IEXdata if item["ticker"] == code), None)
+        total_value += result["tngoLast"] * quant
+
+
+        #some calcs for holdings data
+        #total invested
+        total_invested = curs.execute("SELECT SUM(value) FROM transactions WHERE userid = ? AND transtype = 'purchase' AND item = ?", (userid, code)).fetchone()[0]
+
+        #total profit
+        curr_value = result["tngoLast"] * quant
+        item_profit = total_invested - curr_value
+
+        # Populate the holdings grid
+        holdings_grid.append({
+            "code" : code,
+            "quant" : stock[3],
+            "unitval" : result["tngoLast"],
+            "itemval" : result["tngoLast"] * quant,
+            "iteminvest" : total_invested,
+            "itemprofit" : item_profit
+        })
+        
     total_profit = total_value - totaldepo
+
+    print(holdings_grid)
 
     account_stats = {
         "balance" : balance,
@@ -645,9 +671,11 @@ def portfolio():
         "totalvalue" : total_value,
         "totalprofit" : total_profit
     }
+
+    
         
     db.close()
-    return render_template("/portfolio.html", favourites = favouriteData, transactions = transactions, deposits = deposits, account_stats = account_stats)
+    return render_template("/portfolio.html", favourites = favouriteData, transactions = transactions, deposits = deposits, account_stats = account_stats, holdings_grid = holdings_grid)
 
 @app.route("/deposit", methods=["GET", "POST"])
 @login_required
@@ -755,7 +783,7 @@ def buy():
     #submit changes to db
     try:
         curs.execute("UPDATE users SET balance = ? WHERE userid = ?", (updated_balance, userid,))
-        curs.execute("INSERT INTO transactions (userid, value, transtype, item, quantity) VALUES (?, ?, ?, 'purchase', ?)", (userid, totalprice, code, quant,))
+        curs.execute("INSERT INTO transactions (userid, value, transtype, item, quantity) VALUES (?, ?,'purchase', ?, ?)", (userid, totalprice, code, quant,))
     except:
         flash("Something went wrong with the purchase", "error")
         db.close()
