@@ -4,7 +4,7 @@ import gviz_api
 
 import datetime
 
-from helpers import login_required, retrieve_iex, sort_data, retrieve_history, dict_factory, retrieve_metadata, retrieve_news
+from helpers import login_required, retrieve_iex, sort_data, retrieve_history, dict_factory, retrieve_metadata, retrieve_news, retrieve_stock_data
 
 from flask import Flask, render_template, session, request, redirect, flash, jsonify
 from flask_session import Session
@@ -245,33 +245,40 @@ def info_page():
         db = sqlite3.connect("database.db")
         curs = db.cursor()
 
+        # these wont load while using test data
         infoText = curs.execute("SELECT info FROM stocks WHERE ticker = ?", (query,)).fetchone()[0]
+        company_name = curs.execute("SELECT name FROM stocks WHERE ticker = ?", (query,)).fetchone()[0]
 
         # check if info text exists in db
-        if not infoText: 
+        if not infoText or not company_name: 
 
             metadata = retrieve_metadata(query)
             
             infoText = metadata["description"]
+            company_name = metadata["name"]
             # check if API info text exists and provide default
             if not infoText:
                 infoText = "No information was available for this stock"
+            if not company_name:
+                company_name = "No information available for this stock"
+
 
             #if ticker exists in db, add metadata to it
             if curs.execute("SELECT * FROM stocks WHERE ticker = ?", (query,)).fetchone()[0]:
 
-                curs.execute("UPDATE stocks SET info = ? WHERE ticker = ?", (infoText, query,))
+                curs.execute("UPDATE stocks SET info = ?, name = ? WHERE ticker = ?", (infoText, company_name, query,))
                 db.commit()
                 db.close()
 
             #if ticker is not in the db, create a record for it
             else:
-                curs.execute("INSERT INTO stocks (ticker, exchange, type, currency, info) VALUES (?, ?, ?, ?, ?)", (query, metadata["exchangeCode"], 'Stock', 'USD', infoText,))
+                curs.execute("INSERT INTO stocks (ticker, exchange, type, currency, info, name) VALUES (?, ?, ?, ?, ?)", (query, metadata["exchangeCode"], 'Stock', 'USD', infoText, company_name))
                 db.commit()
                 db.close()
 
         # add metadata to result
-        result.update({'info' : infoText})
+        result.update({'info' : infoText,
+                       'name' : company_name})
 
     else:
         result = []
@@ -621,10 +628,12 @@ def portfolio():
     ### Portfolio Info ###
     holdings = curs.execute("SELECT * FROM holdings WHERE userid = ?", (userid,)).fetchall()
 
+ 
     total_value = 0
 
     holdings_grid = []
-    # total value of all stocks currently held
+
+    # populating data for stock holdings
     for stock in holdings:
         #just for clarity
         code = stock[2]
@@ -632,6 +641,21 @@ def portfolio():
 
         result = next((item for item in IEXdata if item["ticker"] == code), None)
         total_value += result["tngoLast"] * quant
+
+        # update daily price check in stocks table
+
+        # DATA FOR GRAPH
+
+        # gives the most recent update date
+        date_result = curs.execute("SELECT datelog FROM pricelog WHERE code = ? ORDER BY datelog desc", (code,)).fetchone()[0]
+
+        if date_result:
+
+            last_update = datetime.date.fromisoformat(date_result)
+            if last_update < datetime.date.today():
+
+                updated_price = retrieve_stock_data(code)
+                curs.execute("INSERT INTO pricelog (code, price) VALUES (?, ?)", (code, updated_price["prevClose"]))
 
 
         #some calcs for holdings data
@@ -653,20 +677,53 @@ def portfolio():
         })
         
     total_profit = total_value - totaldepo
-
-    print(holdings_grid)
-
+    
     account_stats = {
         "balance" : balance,
         "totaldepo" : totaldepo,
         "totalvalue" : total_value,
         "totalprofit" : total_profit
     }
-
-    
         
     db.close()
     return render_template("/portfolio.html", transactions = transactions, deposits = deposits, account_stats = account_stats, holdings_grid = holdings_grid)
+
+@app.route("/portfoliograph")
+@login_required
+def portfolio_graph():
+    userid = session["user_id"]
+    code = request.args.get("code")
+
+    db = sqlite3.connect("database.db")
+    curs = db.cursor()
+
+    # select results starting from the timelog of the users first purchase of the stock
+    #### This wont work well if a user sells all their stock and then rebuys
+    start_date = curs.execute("SELECT timelog FROM transactions WHERE item = ? AND userid = ? AND transtype = 'purchase' ORDER BY timelog LIMIT 1", (code, userid,)).fetchall()
+    price_results = curs.execute("SELECT price, datelog FROM pricelog WHERE code = ? AND datelog >= ? ORDER BY datelog asc", (code, start_date[0][0])).fetchall()
+
+    db.close()
+    
+    data = []
+    for item in price_results:
+        data.append(
+            {
+                "date" : item[1],
+                "price" : item[0]
+            }
+        )
+
+    description = {
+        "date" : ("string", "Date"),
+        "price" : ("number", "Price")
+    }
+
+    data_table = gviz_api.DataTable(description)
+    data_table.LoadData(data)
+
+    graph_data = data_table.ToJSon(columns_order=("date", "price"))
+
+    return graph_data
 
 @app.route("/deposit", methods=["GET", "POST"])
 @login_required
@@ -804,11 +861,21 @@ def buy():
         else:
             curs.execute("INSERT INTO holdings (userid, stock, quantity) VALUES(?, ?, ?)", (userid, code, quant))
             db.commit()
-            
+
+    ## first entry into pricelog table ##
+
+    pricelog = curs.execute("SELECT * FROM pricelog WHERE code = ?", (code,)).fetchall()  
+
+    # if stock is not in pricelog table, create and log first price
+    if not pricelog:
+        stock_data = retrieve_stock_data(code)
+        pricelog_price = stock_data[0]["prevClose"]
+
+        curs.execute("INSERT INTO pricelog (code, price) VALUES(?, ?)", (code, pricelog_price))
+        db.commit()
+
     db.close()
     flash("Purchase Succesful", "success")
-
-    # would be good to have a colour change check thing for the stock code input field
     
     return redirect("/")
 

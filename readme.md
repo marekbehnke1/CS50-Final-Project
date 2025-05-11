@@ -7,13 +7,15 @@ if i kil terminal
 .venv\scripts\activate\ps1
 
 # NEXT STEPS:
-    [] portfolio page - design card template
-        [] Configure some sort of basic tracking, so you can see a small graph for each stock in the portfolio card?
-        [] When its added to holding, start tracking price once each day so you see how its doing?
+    [x] portfolio page - design card template
+        [x] Configure some sort of basic tracking, so you can see a small graph for each stock in the portfolio card
+        [x] When its added to holding, start tracking price once each day so you see how its doing
     [x] design data structure to populate it
     [] styling pass on portfolio page
     [] finish adding func. to buy/sell panels
     [] styling pass on home page
+        [] re-do the items in side panels
+        [] include company name - bigger tiles
     [] text overflow on news feed card titles
 
 TODO

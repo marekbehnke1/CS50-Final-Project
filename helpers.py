@@ -79,6 +79,13 @@ def retrieve_news(ticker, dateFrom, dateTo):
 
     return data
 
+def retrieve_stock_data(code):
+    
+    headers = {
+    'Content-Type': 'application/json'
+    }
+    requestResponse = requests.get("https://api.tiingo.com/iex/?tickers=" + code + "&token=877c60a71d24e500a3767c3875e6845c35df8564", headers=headers)
+    return requestResponse.json()
 
 #converts db results into dictionaries
 def dict_factory(cursor, row):

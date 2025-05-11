@@ -92,7 +92,7 @@
             </div>
 
             <div class="h-5/8 w-full bg-slate-700 flex-col " id="main-panel-chart">
-                
+                <p class = "table_field text-white font-bold" id="name"></p>
                 <div id="centre-fav-container" class="flex justify-end w-full">
                     <input type="hidden" id="current-ticker">
                     <svg id="centre-fav-add" class="hover:fill-slate-200 cursor-pointer m-4" fill="#475569" height="30px" width="30px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <polygon points="455,212.5 242.5,212.5 242.5,0 212.5,0 212.5,212.5 0,212.5 0,242.5 212.5,242.5 212.5,455 242.5,455 242.5,242.5 455,242.5 "></polygon> </g></svg> 
@@ -103,8 +103,11 @@
                         <!-- This is where the graph goes -->
                     </div>
                 </div>    
-                
+                <p>Timeframe</p>
+                <label for="dateFrom">From: </label>
                 <input type="date" class="chartDates border-slate-950 border-solid rounded-md border my-5" placeholder="Date from" id="dateFrom">
+                
+                <label for="dateTo">To: </label>
                 <input type="date" class="chartDates border-slate-950 border-solid rounded-md border my-5" placeholder="Date to" id="dateTo">
                 
             </div>
@@ -190,7 +193,7 @@
             <thead>
                 <tr class="h-12">
                     <th class="w-4/9">Ticker</th>
-                    <th class="w-4/9">Biggest Gain</th>
+                    <th class="w-4/9">Top Winners</th>
                     <th class="w-1/9"></th>
                 </tr>
             </thead>
@@ -220,7 +223,7 @@
             <thead>
                 <tr class="h-12">
                     <th class="w-4/9">Ticker</th>
-                    <th class="w-4/9">Biggest Loss</th>
+                    <th class="w-4/9">Top Losers</th>
                     <th class="w-1/9"></th>
                 </tr>
             </thead>

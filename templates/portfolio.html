@@ -8,35 +8,44 @@
         {% for item in holdings_grid %}
             <div class="bg-radial-[at_0%_100%] from-slate-900 from-10% via-slate-950 via-50% to-black to-100% h-100 rounded-2xl p-4 shadow-xl text-white ">
                 <div class="w-full text-center pb-4 border-b-1 border-white"> <h1 class="font-bold">{{ item.code }}</h1> </div>
-                <div class="w-1/3 ">
-                    <table class="w-full text-left">
+                <div class="w-full flex">
+                    <table class="w-1/2 text-left">
                         <tbody>
                             <tr class="">
-                                <td class="py-4">Stock Held:</td>
-                                <td class="py-4">{{ item.quant }}</td>
+                                <td class="py-2">Stock Held:</td>
+                                <td class="py-2">{{ item.quant }}</td>
                             </tr>
                             <tr class="">
-                                <td class="py-4">Curr Price:</td>
-                                <td class="py-4">{{ item.unitval }}</td>
+                                <td class="py-2">Curr Price:</td>
+                                <td class="py-2">{{ item.unitval }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="w-1/2 text-left">
+                        <tbody>
+                            <tr class="">
+                                <td class="py-2">Total Invested:</td>
+                                <td class="py-2">{{ item.itemval }}</td>
                             </tr>
                             <tr class="">
-                                <td class="py-4">Total Value:</td>
-                                <td class="py-4">{{ item.itemval }}</td>
-                            </tr>
-                            <tr class="">
-                                <td class="py-4">Total Invested:</td>
-                                <td class="py-4">{{ item.iteminvest }}</td>
-                            </tr>
-                            <tr class="">
-                                <td class="py-4">Total Profit:</td>
-                                <td class="py-4">{{ item.itemprofit }}</td>
+                                <td class="py-2">Total Value:</td>
+                                <td class="py-2">{{ item.itemval }}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="w-2/3"></div>
+                <div class="w-full h-fit portfolio_graph" id="{{item.code}}">
+                    <!-- Graph goes here -->
+                </div>
+                <div class="flex">
+                    <div class="w-1/2 text-center inline-block">
+                        <p>Total Profit: {{ item.itemprofit }}</p>
+                    </div>
+                    <div class="w-1/2 text-center inline-block">
+                        <p>+15%</p>
+                    </div>
 
-
+                </div>
             </div>
         {% endfor %}
 
@@ -133,4 +142,11 @@
         </div>
     </div>
 </div>
+
+<script>
+    google.charts.setOnLoadCallback(
+        function() {
+            portfolioGraph()
+    });
+</script>
 {% endblock %}
