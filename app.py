@@ -612,8 +612,6 @@ def portfolio():
     db = sqlite3.connect("database.db")
     curs = db.cursor()
 
-    ########## Need to replace this with more detail about stock holdings etc ###############
-
     ### Account Info ###
     balance = curs.execute("SELECT balance FROM users WHERE userid = ?", (userid,)).fetchone()[0]
     deposits = curs.execute("SELECT * FROM transactions WHERE userid = ? AND transtype = 'deposit' LIMIT 8", (userid,)).fetchall()
@@ -623,12 +621,9 @@ def portfolio():
     for item in deposits:
         totaldepo += item[2]
 
-    ## Include some stuff with total transaction spend etc
-
     ### Portfolio Info ###
     holdings = curs.execute("SELECT * FROM holdings WHERE userid = ?", (userid,)).fetchall()
 
- 
     total_value = 0
 
     holdings_grid = []
@@ -642,10 +637,7 @@ def portfolio():
         result = next((item for item in IEXdata if item["ticker"] == code), None)
         total_value += result["tngoLast"] * quant
 
-        # update daily price check in stocks table
-
         # DATA FOR GRAPH
-
         # gives the most recent update date
         date_result = curs.execute("SELECT datelog FROM pricelog WHERE code = ? ORDER BY datelog desc", (code,)).fetchone()[0]
 
@@ -653,18 +645,27 @@ def portfolio():
 
             last_update = datetime.date.fromisoformat(date_result)
             if last_update < datetime.date.today():
+                
+                ##### todo: Consolidate this to use 1 api call for all the data
 
-                updated_price = retrieve_stock_data(code)
-                curs.execute("INSERT INTO pricelog (code, price) VALUES (?, ?)", (code, updated_price["prevClose"]))
+                updated_price_info = retrieve_stock_data(code)
 
+                prev_close = updated_price_info[0]["prevClose"]
+                last_prev_close = curs.execute("SELECT price FROM pricelog WHERE code = ? ORDER BY datelog desc", (code,)).fetchone()[0]
 
-        #some calcs for holdings data
+                # check if the new value is different to the old one
+                if not prev_close == last_prev_close:
+                    curs.execute("INSERT INTO pricelog (code, price) VALUES (?, ?)", (code, prev_close))
+                    db.commit()
+
         #total invested
         total_invested = curs.execute("SELECT SUM(value) FROM transactions WHERE userid = ? AND transtype = 'purchase' AND item = ?", (userid, code)).fetchone()[0]
 
         #total profit
         curr_value = result["tngoLast"] * quant
         item_profit = curr_value - total_invested
+
+        #todo: The % calculation for profit
 
         # Populate the holdings grid
         holdings_grid.append({

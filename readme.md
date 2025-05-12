@@ -84,7 +84,7 @@ TODO
 
         [] portfolio page
             [] portfolio stats
-            [] data for stock holding cards
+            [x] data for stock holding cards
             [x] deposit money
 
         [] Leaderboards
