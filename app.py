@@ -626,8 +626,32 @@ def portfolio():
 
     total_value = 0
 
-    holdings_grid = []
+  #  # this loop checks which stock items need updating
+  #  # it then creates a string which can be passed to the API call
+  #  stock_list = ""
+  #  for stock in holdings:
+  #      code = stock[2]
+  #      date_result = curs.execute("SELECT datelog FROM pricelog WHERE code = ? ORDER BY datelog desc", (code,)).fetchone()[0]
+#
+  #      if date_result:
+  #          last_update = datetime.date.fromisoformat(date_result)
+  #          if last_update < datetime.date.today():
+  #              
+#
+  #              stock_list += code + ","    
+  #              last_prev_close = curs.execute("SELECT price FROM pricelog WHERE code = ? ORDER BY datelog desc", (code,)).fetchone()[0]
+#
+  #              # check if the new value is different to the old one
+  #              if not prev_close == last_prev_close:
+  #                  curs.execute("INSERT INTO pricelog (code, price) VALUES (?, ?)", (code, prev_close))
+  #                  db.commit()
+  #  
+#
+#
+  #  stock_list = stock_list.rstrip(",")
+  #  #print(stock_list)
 
+    holdings_grid = []
     # populating data for stock holdings
     for stock in holdings:
         #just for clarity
@@ -647,6 +671,8 @@ def portfolio():
             if last_update < datetime.date.today():
                 
                 ##### todo: Consolidate this to use 1 api call for all the data
+                # can use a gen exp to search all the data previously called.
+                # but this will always use an api call regardless of its needed or not
 
                 updated_price_info = retrieve_stock_data(code)
 
