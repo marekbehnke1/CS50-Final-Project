@@ -624,33 +624,35 @@ def portfolio():
     ### Portfolio Info ###
     holdings = curs.execute("SELECT * FROM holdings WHERE userid = ?", (userid,)).fetchall()
 
+    # This next for loop determines which stocks need updating by compairing their last update to the current date
+    stock_list = ""
+    updated_price_info = []
+    for stock in holdings:
+        code = stock[2]
+        date_result = curs.execute("SELECT datelog FROM pricelog WHERE code = ? ORDER BY datelog desc", (code,)).fetchone()[0]
+
+        # check which stocks havent been updated yet today
+        if date_result:
+            last_update = datetime.date.fromisoformat(date_result)
+            if last_update < datetime.date.today():
+                stock_list += code + "," 
+
+    # list of stocks not updated today
+    stock_list = stock_list.rstrip(",")
+
+    # this next block checks to see if the stock market has opened, and will therefore have new data
+    # and then requests data for the list of stocks generated above
+    if stock_list:        
+        now = datetime.datetime.now().strftime("%H:%M:%S")
+        target = '14:30:00'
+        if now > target:
+            
+            #API call - returns list of dictionaries
+            updated_price_info = retrieve_stock_data(stock_list)
+    else:
+        print("no stock needs updating")
+
     total_value = 0
-
-  #  # this loop checks which stock items need updating
-  #  # it then creates a string which can be passed to the API call
-  #  stock_list = ""
-  #  for stock in holdings:
-  #      code = stock[2]
-  #      date_result = curs.execute("SELECT datelog FROM pricelog WHERE code = ? ORDER BY datelog desc", (code,)).fetchone()[0]
-#
-  #      if date_result:
-  #          last_update = datetime.date.fromisoformat(date_result)
-  #          if last_update < datetime.date.today():
-  #              
-#
-  #              stock_list += code + ","    
-  #              last_prev_close = curs.execute("SELECT price FROM pricelog WHERE code = ? ORDER BY datelog desc", (code,)).fetchone()[0]
-#
-  #              # check if the new value is different to the old one
-  #              if not prev_close == last_prev_close:
-  #                  curs.execute("INSERT INTO pricelog (code, price) VALUES (?, ?)", (code, prev_close))
-  #                  db.commit()
-  #  
-#
-#
-  #  stock_list = stock_list.rstrip(",")
-  #  #print(stock_list)
-
     holdings_grid = []
     # populating data for stock holdings
     for stock in holdings:
@@ -658,31 +660,22 @@ def portfolio():
         code = stock[2]
         quant = stock[3]
 
+        # pull data for each item from main API call
         result = next((item for item in IEXdata if item["ticker"] == code), None)
         total_value += result["tngoLast"] * quant
 
-        # DATA FOR GRAPH
-        # gives the most recent update date
-        date_result = curs.execute("SELECT datelog FROM pricelog WHERE code = ? ORDER BY datelog desc", (code,)).fetchone()[0]
+        # DATA FOR GRAPH       
+        # This block iterates through the updated price data from above and checks if it differs from what is already stored
+        # if it is different, the stored data is updated.
+        if updated_price_info:
+            portfolio_item = next((item for item in updated_price_info if item["ticker"] == code), None)
 
-        if date_result:
+            prev_close = portfolio_item["prevClose"]
+            last_prev_close = curs.execute("SELECT price FROM pricelog WHERE code = ? ORDER BY datelog desc", (code,)).fetchone()[0]
 
-            last_update = datetime.date.fromisoformat(date_result)
-            if last_update < datetime.date.today():
-                
-                ##### todo: Consolidate this to use 1 api call for all the data
-                # can use a gen exp to search all the data previously called.
-                # but this will always use an api call regardless of its needed or not
-
-                updated_price_info = retrieve_stock_data(code)
-
-                prev_close = updated_price_info[0]["prevClose"]
-                last_prev_close = curs.execute("SELECT price FROM pricelog WHERE code = ? ORDER BY datelog desc", (code,)).fetchone()[0]
-
-                # check if the new value is different to the old one
-                if not prev_close == last_prev_close:
-                    curs.execute("INSERT INTO pricelog (code, price) VALUES (?, ?)", (code, prev_close))
-                    db.commit()
+            if not prev_close == last_prev_close:
+                curs.execute("INSERT INTO pricelog (code, price) VALUES (?, ?)", (code, prev_close))
+                db.commit()
 
         #total invested
         total_invested = curs.execute("SELECT SUM(value) FROM transactions WHERE userid = ? AND transtype = 'purchase' AND item = ?", (userid, code)).fetchone()[0]
@@ -691,7 +684,15 @@ def portfolio():
         curr_value = result["tngoLast"] * quant
         item_profit = curr_value - total_invested
 
-        #todo: The % calculation for profit
+       # This block determines the % gain since you first purchased that stock
+        start_date = curs.execute("SELECT timelog FROM transactions WHERE item = ? AND userid = ? AND transtype = 'purchase' ORDER BY timelog LIMIT 1", (code, userid,)).fetchone()[0]
+        # this is a result of having an overly complex timestamp in the transactions log..
+        start_date_obj = datetime.datetime.strptime(start_date[:10], '%d-%m-%Y')
+
+        price_init = curs.execute("SELECT price FROM pricelog WHERE code = ? AND datelog >= ? ORDER BY datelog asc LIMIT 1", (code, start_date_obj.strftime('%Y-%m-%d'))).fetchone()[0]
+        price_end = curs.execute("SELECT price FROM pricelog WHERE code = ? ORDER BY datelog desc LIMIT 1", (code,)).fetchone()[0]
+        
+        change_perc = ((price_end / price_init)-1)*100
 
         # Populate the holdings grid
         holdings_grid.append({
@@ -700,7 +701,8 @@ def portfolio():
             "unitval" : result["tngoLast"],
             "itemval" : result["tngoLast"] * quant,
             "iteminvest" : total_invested,
-            "itemprofit" : item_profit
+            "itemprofit" : item_profit,
+            "change" : round(change_perc, 4)
         })
         
     total_profit = total_value - totaldepo
@@ -726,8 +728,11 @@ def portfolio_graph():
 
     # select results starting from the timelog of the users first purchase of the stock
     #### This wont work well if a user sells all their stock and then rebuys
-    start_date = curs.execute("SELECT timelog FROM transactions WHERE item = ? AND userid = ? AND transtype = 'purchase' ORDER BY timelog LIMIT 1", (code, userid,)).fetchall()
-    price_results = curs.execute("SELECT price, datelog FROM pricelog WHERE code = ? AND datelog >= ? ORDER BY datelog asc", (code, start_date[0][0])).fetchall()
+    start_date = curs.execute("SELECT timelog FROM transactions WHERE item = ? AND userid = ? AND transtype = 'purchase' ORDER BY timelog LIMIT 1", (code, userid,)).fetchone()[0]
+    
+    # this is a result of having an overly complex timestamp in the transactions log..
+    start_date_obj = datetime.datetime.strptime(start_date[:10], '%d-%m-%Y')
+    price_results = curs.execute("SELECT price, datelog FROM pricelog WHERE code = ? AND datelog >= ? ORDER BY datelog asc", (code, start_date_obj.strftime('%Y-%m-%d'))).fetchall()
 
     db.close()
     

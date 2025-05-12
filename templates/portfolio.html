@@ -41,9 +41,15 @@
                     <div class="w-1/2 text-center inline-block">
                         <p>Total Profit: {{ item.itemprofit }}</p>
                     </div>
-                    <div class="w-1/2 text-center inline-block">
-                        <p>+15%</p>
-                    </div>
+                    {% if item.change >= 0 %}
+                        <div class="w-1/2 text-center inline-block text-green-500">
+                            <p>{{ item.change }}%</p>
+                        </div>
+                    {% else %}
+                        <div class="w-1/2 text-center inline-block text-red-500">
+                            <p>{{ item.change }}%</p>
+                        </div>
+                    {% endif %}
 
                 </div>
             </div>
