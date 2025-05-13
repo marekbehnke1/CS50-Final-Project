@@ -639,7 +639,6 @@ def portfolio():
 
     # list of stocks not updated today
     stock_list = stock_list.rstrip(",")
-    print(stock_list)
 
     # this next block checks to see if the stock market has opened, and will therefore have new data
     # and then requests data for the list of stocks generated above
@@ -747,7 +746,6 @@ def portfolio_graph():
     if not price_results:
         price_results = curs.execute("SELECT price, datelog FROM pricelog WHERE code = ? AND datelog <= ? ORDER BY datelog asc", (code, start_date_obj.strftime('%Y-%m-%d'))).fetchall()
    
-    print(price_results)
     db.close()
     
     data = []
