@@ -25,122 +25,115 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Make initial API call and save data in variable
-IEXdata = retrieve_iex()
+#IEXdata = retrieve_iex()
 
 # global userinfo
 userInfo = []
 
 ##test data
-#IEXdata = [
-#    {"ticker": "AAPL",
-#     "mid": 200,
-#     "open": 100,
-#     "volume": 1000,
-#     "timestamp": 567,
-#     "high": 999,
-#     "low": 333,
-#     "tngoLast": 444},
-#     {"ticker": "NVDA",
-#      "mid": 300,
-#      "open": 500,
-#      "volume": 100000,
-#      "timestamp": 567,
-#      "high": 999,
-#      "low": 333,
-#      "tngoLast": 600},
-#      {"ticker": "TSLA",
-#      "mid": 370,
-#      "open": 120,
-#      "volume": 4540,
-#      "timestamp": 567,
-#      "high": 999,
-#      "low": 333,
-#      "tngoLast": 444},
-#      {"ticker": "META",
-#      "mid": 254,
-#      "open": 1230,
-#      "volume": 3423,
-#      "timestamp": 567,
-#      "high": 999,
-#      "low": 333,
-#      "tngoLast": 444},
-#      {"ticker": "COKE",
-#      "mid": 8245,
-#      "open": 3458,
-#      "volume": 45674,
-#      "timestamp": 567,
-#      "high": 999,
-#      "low": 333,
-#      "tngoLast": 444},
-#      {"ticker": "ORLY",
-#      "mid": 765,
-#      "open": 325,
-#      "volume": 5678,
-#      "timestamp": 567,
-#      "high": 999,
-#      "low": 333,
-#      "tngoLast": 444},
-#      {"ticker": "SEB",
-#      "mid": 34577,
-#      "open": 3457,
-#      "volume": 87656,
-#      "timestamp": 567,
-#      "high": 999,
-#      "low": 333,
-#      "tngoLast": 444},
-#      {"ticker": "COST",
-#      "mid": 3456,
-#      "open": 6657,
-#      "volume": 334536,
-#      "timestamp": 567,
-#      "high": 999,
-#      "low": 333,
-#      "tngoLast": 444},
-#      {"ticker": "BLK",
-#      "mid": 2343,
-#      "open": 5645,
-#      "volume": 3453453,
-#      "timestamp": 567,
-#      "high": 999,
-#      "low": 333,
-#      "tngoLast": 444},
-#      {"ticker": "BBW",
-#      "mid": 58,
-#      "open": 41,
-#      "volume": 3456,
-#      "timestamp": 543,
-#      "high": 112,
-#      "low": 41,
-#      "tngoLast": 83},
-#      {"ticker": "X",
-#      "mid": 46,
-#      "open": 67,
-#      "volume": 32345,
-#      "timestamp": 23,
-#      "high": 1245,
-#      "low": 41,
-#      "tngoLast": 658},
-#      {"ticker": "INTU",
-#      "mid": 2340,
-#      "open": 2452,
-#      "volume": 780,
-#      "timestamp": 567,
-#      "high": 999,
-#      "low": 333,
-#      "tngoLast": 444}]
+IEXdata = [
+    {"ticker": "AAPL",
+     "mid": 200,
+     "open": 100,
+     "volume": 1000,
+     "timestamp": 567,
+     "high": 999,
+     "low": 333,
+     "tngoLast": 444},
+     {"ticker": "NVDA",
+      "mid": 300,
+      "open": 500,
+      "volume": 100000,
+      "timestamp": 567,
+      "high": 999,
+      "low": 333,
+      "tngoLast": 600},
+      {"ticker": "TSLA",
+      "mid": 370,
+      "open": 120,
+      "volume": 4540,
+      "timestamp": 567,
+      "high": 999,
+      "low": 333,
+      "tngoLast": 444},
+      {"ticker": "META",
+      "mid": 254,
+      "open": 1230,
+      "volume": 3423,
+      "timestamp": 567,
+      "high": 999,
+      "low": 333,
+      "tngoLast": 444},
+      {"ticker": "COKE",
+      "mid": 8245,
+      "open": 3458,
+      "volume": 45674,
+      "timestamp": 567,
+      "high": 999,
+      "low": 333,
+      "tngoLast": 444},
+      {"ticker": "ORLY",
+      "mid": 765,
+      "open": 325,
+      "volume": 5678,
+      "timestamp": 567,
+      "high": 999,
+      "low": 333,
+      "tngoLast": 444},
+      {"ticker": "SEB",
+      "mid": 34577,
+      "open": 3457,
+      "volume": 87656,
+      "timestamp": 567,
+      "high": 999,
+      "low": 333,
+      "tngoLast": 444},
+      {"ticker": "COST",
+      "mid": 3456,
+      "open": 6657,
+      "volume": 334536,
+      "timestamp": 567,
+      "high": 999,
+      "low": 333,
+      "tngoLast": 444},
+      {"ticker": "BLK",
+      "mid": 2343,
+      "open": 5645,
+      "volume": 3453453,
+      "timestamp": 567,
+      "high": 999,
+      "low": 333,
+      "tngoLast": 444},
+      {"ticker": "BBW",
+      "mid": 58,
+      "open": 41,
+      "volume": 3456,
+      "timestamp": 543,
+      "high": 112,
+      "low": 41,
+      "tngoLast": 83},
+      {"ticker": "X",
+      "mid": 46,
+      "open": 67,
+      "volume": 32345,
+      "timestamp": 23,
+      "high": 1245,
+      "low": 41,
+      "tngoLast": 658},
+      {"ticker": "INTU",
+      "mid": 2340,
+      "open": 2452,
+      "volume": 780,
+      "timestamp": 567,
+      "high": 999,
+      "low": 333,
+      "tngoLast": 444}]
 
 #### Routes #####
 @app.route("/")
 @login_required
 def index():
     user_id = session["user_id"]
-
-    # set the data to sort
-    volumeData = {}
-    for item in IEXdata:
-        volumeData[item["ticker"]] = item["volume"]
-
-    volumeDataSorted = sort_data("volume", 15, volumeData)
 
     # set data to sort
     differenceData = {}
@@ -157,8 +150,31 @@ def index():
 
         differenceData[item["ticker"]] = open - last
 
-    differenceDataSorted = sort_data("difference", 20, differenceData)
-    differenceDataReverse = sort_data("difference", 20, differenceData, False)
+        
+    db = sqlite3.connect("database.db")
+    curs = db.cursor()
+
+    differenceDataSorted = sort_data("difference", 8, differenceData)
+    for item in differenceDataSorted:
+        company_name = curs.execute("SELECT name FROM stocks WHERE ticker = ?", (item["ticker"],)).fetchall()[0][0]
+        if not company_name:
+            company_name = retrieve_metadata(item["ticker"])["name"]
+            curs.execute("UPDATE stocks SET name = ? WHERE ticker = ?", (company_name, item["ticker"]))
+            db.commit()
+        item.update({"name" : company_name})
+
+    #print(differenceDataSorted)
+
+    differenceDataReverse = sort_data("difference", 8, differenceData, False)
+    for item in differenceDataReverse:
+        company_name = curs.execute("SELECT name FROM stocks WHERE ticker = ?", (item["ticker"],)).fetchall()[0][0]
+        if not company_name:
+            company_name = retrieve_metadata(item["ticker"])["name"]
+            curs.execute("UPDATE stocks SET name = ? WHERE ticker = ?", (company_name, item["ticker"]))
+            db.commit()
+        item.update({"name" : company_name})
+
+    #print(differenceDataReverse)
 
     # retrieve favourites
     db = sqlite3.connect("database.db")
@@ -166,7 +182,8 @@ def index():
     #convert to list of dict
     db.row_factory = dict_factory
     favouritesList = []
-    for row in db.execute("SELECT ticker, change FROM favourites where userid = ?", (user_id,)):
+    #for row in db.execute("SELECT ticker, change FROM favourites where userid = ?", (user_id,)):
+    for row in db.execute("SELECT DISTINCT favourites.ticker, change, name FROM favourites INNER JOIN stocks on favourites.ticker = stocks.ticker WHERE userid = ?", (user_id,)):
         favouritesList.append(row)
 
     db.close()
@@ -218,7 +235,7 @@ def index():
         db.close()
 
     if user_id:
-        return render_template("index.html", volumeData = volumeDataSorted, differenceData = differenceDataSorted, differenceDataReverse = differenceDataReverse, favouritesList = favouritesList)
+        return render_template("index.html", differenceData = differenceDataSorted, differenceDataReverse = differenceDataReverse, favouritesList = favouritesList)
     else:
         redirect("/login")
 
@@ -363,7 +380,7 @@ def retrieve_favourite():
     #convert query results to dict
     db.row_factory = dict_factory
     user_favourites = []
-    for row in db.execute("SELECT ticker, change FROM favourites where userid = ?", (user_id,)):
+    for row in db.execute("SELECT DISTINCT favourites.ticker, change, name FROM favourites INNER JOIN stocks on favourites.ticker = stocks.ticker WHERE userid = ?", (user_id,)):
         user_favourites.append(row)
     db.close()
 
@@ -664,7 +681,6 @@ def portfolio():
         result = next((item for item in IEXdata if item["ticker"] == code), None)
         total_value += result["tngoLast"] * quant
 
-        # DATA FOR GRAPH       
         # This block iterates through the updated price data from above and checks if it differs from what is already stored
         # if it is different, the stored data is updated.
         if updated_price_info:
@@ -696,7 +712,7 @@ def portfolio():
         try:
             price_init = curs.execute("SELECT price FROM pricelog WHERE code = ? AND datelog >= ? ORDER BY datelog asc LIMIT 1", (code, start_date_obj.strftime('%Y-%m-%d'))).fetchone()[0]
         except:
-            price_init = curs.execute("SELECT price FROM pricelog WHERE code = ? AND datelog <= ? ORDER BY datelog asc LIMIT 1", (code, start_date_obj.strftime('%Y-%m-%d'))).fetchone()[0]
+            price_init = curs.execute("SELECT price FROM pricelog WHERE code = ? AND datelog <= ? ORDER BY datelog desc LIMIT 1", (code, start_date_obj.strftime('%Y-%m-%d'))).fetchone()[0]
 
         price_end = curs.execute("SELECT price FROM pricelog WHERE code = ? ORDER BY datelog desc LIMIT 1", (code,)).fetchone()[0]
         change_perc = ((price_end / price_init)-1)*100
@@ -706,7 +722,7 @@ def portfolio():
             "code" : code,
             "quant" : stock[3],
             "unitval" : result["tngoLast"],
-            "itemval" : result["tngoLast"] * quant,
+            "itemval" : round(result["tngoLast"] * quant, 2),
             "iteminvest" : round(total_invested, 2),
             "itemprofit" : round(item_profit, 2),
             "change" : round(change_perc, 4)
@@ -743,7 +759,7 @@ def portfolio_graph():
     
     # this needs to reflect the weird error from portfolio - if a user purchases stock that hasnt been updated yet that day it wont show anything
     if not price_results:
-        price_results = curs.execute("SELECT price, datelog FROM pricelog WHERE code = ? AND datelog <= ? ORDER BY datelog asc", (code, start_date_obj.strftime('%Y-%m-%d'))).fetchall()
+        price_results = curs.execute("SELECT price, datelog FROM pricelog WHERE code = ? AND datelog <= ? ORDER BY datelog desc", (code, start_date_obj.strftime('%Y-%m-%d'))).fetchall()
    
     db.close()
     

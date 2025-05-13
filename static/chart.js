@@ -17,7 +17,7 @@ function drawChart(chartData, code){
             fallingColor: {stroke: 'white', strokeWidth: 0, fill: '#ec4899'},
             risingColor: {stroke: 'white', strokeWidth: 0, fill: '#0ea5e9'},
         },
-        backgroundColor: {fill: '#334155'}, 
+        backgroundColor: {fill: 'transparent'}, 
 
         hAxis: {
                 gridlines: {color: 'white'},

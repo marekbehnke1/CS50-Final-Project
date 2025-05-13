@@ -13,10 +13,15 @@ if i kil terminal
     [x] design data structure to populate it
     [] styling pass on portfolio page
     [] finish adding func. to buy/sell panels
-        [] buy sell - let you choose either amount or no. of shared to purchase and it will calculate the other variable    
+        [] buy sell - let you choose either amount or no. of shared to purchase and it will calculate the other variable   
+
     [] styling pass on home page
         [] re-do the items in side panels
         [] include company name - bigger tiles
+        [] need to fettle with the way links are attached and retrieve the ticker code - so i can have the whole link icon be a link, not just the small code
+        [] finish alternate right side panel
+
+
     [] text overflow on news feed card titles
     [] do more testing with the real api data - some of the formatting goes mental with loads of text
 

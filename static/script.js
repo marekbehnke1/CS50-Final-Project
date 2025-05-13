@@ -219,15 +219,23 @@ function add_link(){
 
 // just an object that represebts the fav list item
 function fav_element(icon, item){
-    let fav_item = '<tr class="border-y h-10 border-solid border-collapse border-slate-400 bg-slate-600 hover:bg-slate-700 stock-item">' + 
-                        '<td class="ticker-code cursor-pointer">' + item["ticker"] + '</td>' + 
-                        '<td class="flex align-middle justify-evenly">' + '<p>' + item["change"] + ' %' + '</p>' + icon +'</td>' +
-                        '<td>' + '<input type="hidden" name="q" value="' + item["ticker"] + '">' +
-                            '<form class="fav-form" action="/favourite" method="get">' + 
-                                '<svg class="cursor-pointer remove_favourite" width="20px" height="20px" viewBox="0 0 24 24" fill="" xmlns="http://www.w3.org/2000/svg"><g> <path class="hover:stroke-slate-200" d="M6 12L18 12" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>' + 
-                            '</form>' + 
-                        '</td>'+
-                    '</tr>'
+    let fav_item = `<div class="stock-item flex w-full text-white justify-between hover:bg-slate-600/20">
+                        <div class="cursor-pointer w-3/5 text-left py-5 pl-5">
+                            <div class="text-base font-bold">`+ item["name"] +`</div>
+                            <div class="text-sm ticker-code">`+ item["ticker"] +`</div>
+                        </div>
+                        <div class="w-1/5 py-5">
+                            `+ item["change"] +`% `+ icon +`
+                        </div>
+                        <div class="w-1/10 py-5">
+                            <input type="hidden" name="q" value="`+ item["ticker"] +`">
+                            <form class="fav-form flex" action="/favourite" method="get">
+
+                                <svg class="cursor-pointer remove_favourite stock-list-item" width="20px" height="20px" viewBox="0 0 24 24" fill="" xmlns="http://www.w3.org/2000/svg"><g> <path class="hover:stroke-slate-200" d="M6 12L18 12" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                            </form>
+
+                        </div>
+                    </div>`
     return fav_item
 }
 // returns a promise of the favourites list
