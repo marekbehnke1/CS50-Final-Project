@@ -25,109 +25,109 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Make initial API call and save data in variable
-#IEXdata = retrieve_iex()
+IEXdata = retrieve_iex()
 
 # global userinfo
 userInfo = []
 
-#test data
-IEXdata = [
-    {"ticker": "AAPL",
-     "mid": 200,
-     "open": 100,
-     "volume": 1000,
-     "timestamp": 567,
-     "high": 999,
-     "low": 333,
-     "tngoLast": 444},
-     {"ticker": "NVDA",
-      "mid": 300,
-      "open": 500,
-      "volume": 100000,
-      "timestamp": 567,
-      "high": 999,
-      "low": 333,
-      "tngoLast": 600},
-      {"ticker": "TSLA",
-      "mid": 370,
-      "open": 120,
-      "volume": 4540,
-      "timestamp": 567,
-      "high": 999,
-      "low": 333,
-      "tngoLast": 444},
-      {"ticker": "META",
-      "mid": 254,
-      "open": 1230,
-      "volume": 3423,
-      "timestamp": 567,
-      "high": 999,
-      "low": 333,
-      "tngoLast": 444},
-      {"ticker": "COKE",
-      "mid": 8245,
-      "open": 3458,
-      "volume": 45674,
-      "timestamp": 567,
-      "high": 999,
-      "low": 333,
-      "tngoLast": 444},
-      {"ticker": "ORLY",
-      "mid": 765,
-      "open": 325,
-      "volume": 5678,
-      "timestamp": 567,
-      "high": 999,
-      "low": 333,
-      "tngoLast": 444},
-      {"ticker": "SEB",
-      "mid": 34577,
-      "open": 3457,
-      "volume": 87656,
-      "timestamp": 567,
-      "high": 999,
-      "low": 333,
-      "tngoLast": 444},
-      {"ticker": "COST",
-      "mid": 3456,
-      "open": 6657,
-      "volume": 334536,
-      "timestamp": 567,
-      "high": 999,
-      "low": 333,
-      "tngoLast": 444},
-      {"ticker": "BLK",
-      "mid": 2343,
-      "open": 5645,
-      "volume": 3453453,
-      "timestamp": 567,
-      "high": 999,
-      "low": 333,
-      "tngoLast": 444},
-      {"ticker": "BBW",
-      "mid": 58,
-      "open": 41,
-      "volume": 3456,
-      "timestamp": 543,
-      "high": 112,
-      "low": 41,
-      "tngoLast": 83},
-      {"ticker": "X",
-      "mid": 46,
-      "open": 67,
-      "volume": 32345,
-      "timestamp": 23,
-      "high": 1245,
-      "low": 41,
-      "tngoLast": 658},
-      {"ticker": "INTU",
-      "mid": 2340,
-      "open": 2452,
-      "volume": 780,
-      "timestamp": 567,
-      "high": 999,
-      "low": 333,
-      "tngoLast": 444}]
+##test data
+#IEXdata = [
+#    {"ticker": "AAPL",
+#     "mid": 200,
+#     "open": 100,
+#     "volume": 1000,
+#     "timestamp": 567,
+#     "high": 999,
+#     "low": 333,
+#     "tngoLast": 444},
+#     {"ticker": "NVDA",
+#      "mid": 300,
+#      "open": 500,
+#      "volume": 100000,
+#      "timestamp": 567,
+#      "high": 999,
+#      "low": 333,
+#      "tngoLast": 600},
+#      {"ticker": "TSLA",
+#      "mid": 370,
+#      "open": 120,
+#      "volume": 4540,
+#      "timestamp": 567,
+#      "high": 999,
+#      "low": 333,
+#      "tngoLast": 444},
+#      {"ticker": "META",
+#      "mid": 254,
+#      "open": 1230,
+#      "volume": 3423,
+#      "timestamp": 567,
+#      "high": 999,
+#      "low": 333,
+#      "tngoLast": 444},
+#      {"ticker": "COKE",
+#      "mid": 8245,
+#      "open": 3458,
+#      "volume": 45674,
+#      "timestamp": 567,
+#      "high": 999,
+#      "low": 333,
+#      "tngoLast": 444},
+#      {"ticker": "ORLY",
+#      "mid": 765,
+#      "open": 325,
+#      "volume": 5678,
+#      "timestamp": 567,
+#      "high": 999,
+#      "low": 333,
+#      "tngoLast": 444},
+#      {"ticker": "SEB",
+#      "mid": 34577,
+#      "open": 3457,
+#      "volume": 87656,
+#      "timestamp": 567,
+#      "high": 999,
+#      "low": 333,
+#      "tngoLast": 444},
+#      {"ticker": "COST",
+#      "mid": 3456,
+#      "open": 6657,
+#      "volume": 334536,
+#      "timestamp": 567,
+#      "high": 999,
+#      "low": 333,
+#      "tngoLast": 444},
+#      {"ticker": "BLK",
+#      "mid": 2343,
+#      "open": 5645,
+#      "volume": 3453453,
+#      "timestamp": 567,
+#      "high": 999,
+#      "low": 333,
+#      "tngoLast": 444},
+#      {"ticker": "BBW",
+#      "mid": 58,
+#      "open": 41,
+#      "volume": 3456,
+#      "timestamp": 543,
+#      "high": 112,
+#      "low": 41,
+#      "tngoLast": 83},
+#      {"ticker": "X",
+#      "mid": 46,
+#      "open": 67,
+#      "volume": 32345,
+#      "timestamp": 23,
+#      "high": 1245,
+#      "low": 41,
+#      "tngoLast": 658},
+#      {"ticker": "INTU",
+#      "mid": 2340,
+#      "open": 2452,
+#      "volume": 780,
+#      "timestamp": 567,
+#      "high": 999,
+#      "low": 333,
+#      "tngoLast": 444}]
 
 #### Routes #####
 @app.route("/")
@@ -639,6 +639,7 @@ def portfolio():
 
     # list of stocks not updated today
     stock_list = stock_list.rstrip(",")
+    print(stock_list)
 
     # this next block checks to see if the stock market has opened, and will therefore have new data
     # and then requests data for the list of stocks generated above
@@ -668,7 +669,11 @@ def portfolio():
         # This block iterates through the updated price data from above and checks if it differs from what is already stored
         # if it is different, the stored data is updated.
         if updated_price_info:
-            portfolio_item = next((item for item in updated_price_info if item["ticker"] == code), None)
+            portfolio_item = next((item for item in updated_price_info if item['ticker'] == code), None)
+            if not portfolio_item:
+                # if there is no updated data in the API call, break the loop
+                # This can happen if someone else has updated part of the stock from your holdings list
+                continue
 
             prev_close = portfolio_item["prevClose"]
             last_prev_close = curs.execute("SELECT price FROM pricelog WHERE code = ? ORDER BY datelog desc", (code,)).fetchone()[0]
@@ -689,9 +694,13 @@ def portfolio():
         # this is a result of having an overly complex timestamp in the transactions log..
         start_date_obj = datetime.datetime.strptime(start_date[:10], '%d-%m-%Y')
 
-        price_init = curs.execute("SELECT price FROM pricelog WHERE code = ? AND datelog >= ? ORDER BY datelog asc LIMIT 1", (code, start_date_obj.strftime('%Y-%m-%d'))).fetchone()[0]
+        # if the most applicable price for price_init does not exist, it should use the most recent value available
+        try:
+            price_init = curs.execute("SELECT price FROM pricelog WHERE code = ? AND datelog >= ? ORDER BY datelog asc LIMIT 1", (code, start_date_obj.strftime('%Y-%m-%d'))).fetchone()[0]
+        except:
+            price_init = curs.execute("SELECT price FROM pricelog WHERE code = ? AND datelog <= ? ORDER BY datelog asc LIMIT 1", (code, start_date_obj.strftime('%Y-%m-%d'))).fetchone()[0]
+
         price_end = curs.execute("SELECT price FROM pricelog WHERE code = ? ORDER BY datelog desc LIMIT 1", (code,)).fetchone()[0]
-        
         change_perc = ((price_end / price_init)-1)*100
 
         # Populate the holdings grid
@@ -733,7 +742,12 @@ def portfolio_graph():
     # this is a result of having an overly complex timestamp in the transactions log..
     start_date_obj = datetime.datetime.strptime(start_date[:10], '%d-%m-%Y')
     price_results = curs.execute("SELECT price, datelog FROM pricelog WHERE code = ? AND datelog >= ? ORDER BY datelog asc", (code, start_date_obj.strftime('%Y-%m-%d'))).fetchall()
-
+    
+    # this needs to reflect the weird error from portfolio - if a user purchases stock that hasnt been updated yet that day it wont show anything
+    if not price_results:
+        price_results = curs.execute("SELECT price, datelog FROM pricelog WHERE code = ? AND datelog <= ? ORDER BY datelog asc", (code, start_date_obj.strftime('%Y-%m-%d'))).fetchall()
+   
+    print(price_results)
     db.close()
     
     data = []
