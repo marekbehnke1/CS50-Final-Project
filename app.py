@@ -682,11 +682,10 @@ def portfolio():
                 db.commit()
 
         #total invested
-        total_invested = curs.execute("SELECT SUM(value) FROM transactions WHERE userid = ? AND transtype = 'purchase' AND item = ?", (userid, code)).fetchone()[0]
-
+        total_invested = float(curs.execute("SELECT SUM(value) FROM transactions WHERE userid = ? AND transtype = 'purchase' AND item = ?", (userid, code)).fetchone()[0])
         #total profit
-        curr_value = result["tngoLast"] * quant
-        item_profit = curr_value - total_invested
+        curr_value = float(result["tngoLast"] * quant)
+        item_profit = float(curr_value - total_invested)
 
        # This block determines the % gain since you first purchased that stock
         start_date = curs.execute("SELECT timelog FROM transactions WHERE item = ? AND userid = ? AND transtype = 'purchase' ORDER BY timelog LIMIT 1", (code, userid,)).fetchone()[0]
@@ -708,8 +707,8 @@ def portfolio():
             "quant" : stock[3],
             "unitval" : result["tngoLast"],
             "itemval" : result["tngoLast"] * quant,
-            "iteminvest" : total_invested,
-            "itemprofit" : item_profit,
+            "iteminvest" : round(total_invested, 2),
+            "itemprofit" : round(item_profit, 2),
             "change" : round(change_perc, 4)
         })
         
