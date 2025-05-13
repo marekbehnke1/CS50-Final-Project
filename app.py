@@ -643,9 +643,9 @@ def portfolio():
     # this next block checks to see if the stock market has opened, and will therefore have new data
     # and then requests data for the list of stocks generated above
     if stock_list:        
-        now = datetime.datetime.now().strftime("%H:%M:%S")
-        target = '14:30:00'
-        if now > target:
+        nowUTC = datetime.datetime.now(datetime.timezone.utc).strftime("%H:%M:%S")
+        target = '14:00:00'
+        if nowUTC > target:
             
             #API call - returns list of dictionaries
             updated_price_info = retrieve_stock_data(stock_list)
