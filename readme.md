@@ -46,9 +46,9 @@ TODO
             [x] make button do button
         [x] favourite button turn to a - if stock is already in favs list
 
-     [] Portfolio Page
-        [] account stats
-        [] stock holding cards
+     [x] Portfolio Page
+        [x] account stats
+        [x] stock holding cards
 
      [x] Account Page
         [x] update password
@@ -92,7 +92,7 @@ TODO
             [x] need to find a way to use the + to add to favourites using JS, so page doesnt have to reload
 
         [] portfolio page
-            [] portfolio stats
+            [x] portfolio stats
             [x] data for stock holding cards
             [x] deposit money
 
@@ -114,7 +114,9 @@ TODO
         - i think this is to do with the js code added
     [x] Centre fav button not working now - as a result of my new fav button swap thing
     [x] we now have a weird duplacte flashed messages thing going on
-
+    [] need to make account balance not go over int limit
+        [] dont know why its doing this, as the check is in place?
+ 
 
 
 https://stackoverflow.com/questions/74808530/send-data-from-javascript-%E2%86%92-python-and-back-without-reloading-the-page
