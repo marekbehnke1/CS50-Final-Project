@@ -8,10 +8,6 @@ let stock_links = document.getElementsByClassName("ticker-code")
 // this is the new link class that applies after having rebuilt the various landing page lists
 let link_items = document.getElementsByClassName("stock-link")
 
-
-
-
-
 // attaches all event listeners for the page
 async function update_page(){
 

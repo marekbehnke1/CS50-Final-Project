@@ -21,9 +21,10 @@ if i kil terminal
         [x] need to fettle with the way links are attached and retrieve the ticker code - so i can have the whole link icon be a link, not just the small code
         [x] finish alternate right side panel
             [x] the swap is working - but i need to now remove some of the old code for it and include a marker so you know which one you are on
+                [] the old code is some of the stuff that generates the difference data on page load. - its gna be a bit weird to remove though
 
         [] redo search panel to fit new style
-        
+
         [x] find some good fonts - raleway
         [x] sort the colour change thing
 
