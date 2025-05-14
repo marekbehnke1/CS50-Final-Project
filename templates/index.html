@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block main %}
-<div class="flex bg-linear-to-b from-slate-900 to-black" id="screen-panel">
+<div class="flex " id="screen-panel">
 
     <div class="w-1/5 h-screen items-center justify-center text-center" id="left-panel">
     
@@ -9,31 +9,8 @@
             Watchlist
         </div>
         <div class="h-fit" id="favourite-list">
-            {% for item in favouritesList %}
-            <div class="stock-item flex w-full text-white justify-between hover:bg-slate-600/20">
-                <div class="cursor-pointer w-3/5 text-left py-5 pl-5">
-                    <div class="text-base font-bold">{{item.name}}</div>
-                    <div class="text-sm ticker-code">{{ item.ticker }}</div>
-                </div>
-                <div class="w-1/5 py-5">
-                    {{item.change}}%
-                        {% if item.change > 0 %}
-                            <svg class="block" width="20px" height="20px" viewBox="0 0 16.00 16.00" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(0)matrix(1, 0, 0, 1, 0, 0)" stroke="#0ea5e9"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round" stroke="#0ea5e9" stroke-width="0.032"></g><g> <path d="M6 8L2 8L2 6L8 5.24536e-07L14 6L14 8L10 8L10 16L6 16L6 8Z" fill="#0ea5e9"></path> </g></svg>
-                        {% else %}
-                            <svg class="block" width="20px" height="20px" viewBox="0 0 16.00 16.00" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(0)matrix(1, 0, 0, -1, 0, 0)" stroke="#ec4899"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round" stroke="#ec4899" stroke-width="0.032"></g><g> <path d="M6 8L2 8L2 6L8 5.24536e-07L14 6L14 8L10 8L10 16L6 16L6 8Z" fill="#ec4899"></path> </g></svg>
-                        {% endif %}
-                </div>
-                <div class="w-1/10 py-5">
-                    <input type="hidden" name="q" value="{{item.ticker}}">
-                    <form class="fav-form flex" action="/favourite" method="get">
-
-                        <svg class="cursor-pointer remove_favourite stock-list-item" width="20px" height="20px" viewBox="0 0 24 24" fill="" xmlns="http://www.w3.org/2000/svg"><g> <path class="hover:stroke-slate-200" d="M6 12L18 12" stroke="#475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg> 
-                    </form>
-
-                </div>
-            </div>      
-            {% endfor %}
-           
+            
+           <!-- This is created by JS -->
 
         </div>
     </div>
@@ -41,8 +18,8 @@
     <div class="w-3/5 text-center h-fit" id="main-panel">
 
         <div class="size-full" id="main-panel-center">
-            <div class="w-full h-12 bg-slate-500 flex justify-evenly relative" id="chart-search-panel">
-                <input type="search" class="border-slate-950 border-solid rounded-md border my-1 text-center" autofocus id="search" placeholder="Search code">
+            <div class="w-full h-12  flex justify-evenly relative" id="chart-search-panel">
+                <input type="search" class="border-slate-500 border-solid rounded-md border my-1 text-center text-white" autofocus id="search" placeholder="Search code">
                 <div class="bg-slate-300 w-2/8 h-auto absolute z-10 top-full" id="search-container">
                     
                     <ul id="search-results">
@@ -148,37 +125,38 @@
 
     </div>
     
-    <div class=" w-1/5 h-screen text-center " id="right-panel">
+    <div class=" w-1/5 h-screen text-center" id="right-panel">
         <div class="flex w-full">
-            <div class="w-1/2 text-white hover:bg-slate-600/20 p-5 cursor-pointer">
+            <div class="w-1/2 text-white hover:bg-slate-600/20 p-5 cursor-pointer difference-links" id="winners">
                 Biggest Winners
             </div>
-            <div class="w-1/2 text-white hover:bg-slate-600/20 p-5 cursor-pointer">
+            <div class="w-1/2 text-white hover:bg-slate-600/20 p-5 cursor-pointer difference-links" id="losers">
                 Biggest Losers
             </div>
         </div>
-
-        {% for item in differenceData %}
-
-        <div class="stock-item flex w-full text-white justify-between hover:bg-slate-600/20">
-            <div class="cursor-pointer w-3/5 text-left py-5 pl-5">
-                <div class="text-base font-bold">{{ item.name }}</div>
-                <div class="text-sm ticker-code">{{ item.ticker }}</div>
+        <div id="difference_panel">
+            {% for item in differenceData %}
+    
+            <div class="stock-item flex w-full text-white justify-between hover:bg-slate-600/20">
+                <div class="cursor-pointer w-3/5 text-left py-5 pl-5 stock-link">
+                    <div class="text-base font-bold">{{ item.name }}</div>
+                    <div class="text-xs item-code">{{ item.ticker }}</div>
+                </div>
+                <div class="w-1/5 py-5 text-green-500">
+                    + {{item.difference}} 
+                </div>
+                <div class="w-1/10 py-5">
+                    <input type="hidden" name="q" value="{{item.ticker}}">
+                    <form class="fav-form flex" action="/favourite" method="get">
+                        
+                        <svg class="hover:fill-slate-200 cursor-pointer add_favourite stock-list-item" fill="" height="20px" width="20px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <polygon points="455,212.5 242.5,212.5 242.5,0 212.5,0 212.5,212.5 0,212.5 0,242.5 212.5,242.5 212.5,455 242.5,455 242.5,242.5 455,242.5 "></polygon> </g></svg> 
+                    </form>
+    
+                </div>
             </div>
-            <div class="w-1/5 py-5">
-                {{item.difference}} 
-            </div>
-            <div class="w-1/10 py-5">
-                <input type="hidden" name="q" value="{{item.ticker}}">
-                <form class="fav-form flex" action="/favourite" method="get">
-                    
-                    <svg class="hover:fill-slate-200 cursor-pointer add_favourite stock-list-item" fill="" height="20px" width="20px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <polygon points="455,212.5 242.5,212.5 242.5,0 212.5,0 212.5,212.5 0,212.5 0,242.5 212.5,242.5 212.5,455 242.5,455 242.5,242.5 455,242.5 "></polygon> </g></svg> 
-                </form>
-
-            </div>
+    
+            {% endfor %}
         </div>
-
-        {% endfor %}
 
     <!--
         

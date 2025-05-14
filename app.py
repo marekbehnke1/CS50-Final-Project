@@ -239,6 +239,57 @@ def index():
     else:
         redirect("/login")
 
+@app.route("/differencepanel")
+@login_required
+def diff_panel():
+
+    differenceData = {}
+    for item in IEXdata:
+        if item["tngoLast"] == None:
+            last = 0
+        else:
+            last = item["tngoLast"]
+        if item["open"] == None:
+            open = 0
+        else:
+            open = item["open"]
+
+        differenceData[item["ticker"]] = open - last
+
+    list_type = request.args.get("q")
+    db = sqlite3.connect("database.db")
+    curs = db.cursor()
+
+    if list_type == "winners":
+
+        differenceDataSorted = sort_data("difference", 9, differenceData)
+        for item in differenceDataSorted:
+            company_name = curs.execute("SELECT name FROM stocks WHERE ticker = ?", (item["ticker"],)).fetchall()[0][0]
+            if not company_name:
+                company_name = retrieve_metadata(item["ticker"])["name"]
+                curs.execute("UPDATE stocks SET name = ? WHERE ticker = ?", (company_name, item["ticker"]))
+                db.commit()
+            item.update({"name" : company_name})
+
+        db.close()
+        return differenceDataSorted
+
+
+    elif list_type == "losers":
+
+        differenceDataReverse = sort_data("difference", 9, differenceData, False)
+        for item in differenceDataReverse:
+            company_name = curs.execute("SELECT name FROM stocks WHERE ticker = ?", (item["ticker"],)).fetchall()[0][0]
+            if not company_name:
+                company_name = retrieve_metadata(item["ticker"])["name"]
+                curs.execute("UPDATE stocks SET name = ? WHERE ticker = ?", (company_name, item["ticker"]))
+                db.commit()
+            item.update({"name" : company_name})
+
+        db.close()
+        return differenceDataReverse
+        
+
 @app.route("/stock")
 @login_required
 def info_page():

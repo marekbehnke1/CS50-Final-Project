@@ -1,7 +1,12 @@
 
 let remove_fav = document.getElementsByClassName("remove_favourite")
 let add_fav = document.getElementsByClassName("add_favourite")
+
+// this is now only applicable to the search box - may be worth removing once that is redone
 let stock_links = document.getElementsByClassName("ticker-code")
+
+// this is the new link class that applies after having rebuilt the various landing page lists
+let link_items = document.getElementsByClassName("stock-link")
 
 
 
@@ -14,10 +19,21 @@ async function update_page(){
     let stock_links = document.getElementsByClassName("ticker-code")
     let chart_dates = document.getElementsByClassName("chartDates")
     let centre_add_button = document.getElementById("centre-fav-add")
+    let diff_links = document.getElementsByClassName("difference-links")
 
+    // attach the links to swap the list on the right
+    for (item of diff_links){
+        item.addEventListener("click", update_differencedata)
+    }
+    
     // attach link listeners
     for (item of stock_links){
         item.addEventListener("click", add_link)
+    }
+
+    // new link method
+    for (item of link_items){
+        item.addEventListener("click", add_new_link)
     }
 
     // attach fav listeners
@@ -37,6 +53,7 @@ async function update_page(){
     for (item of chart_dates){
         item.addEventListener("input", date_listen)
     }
+
 
     let search_form = document.getElementById("search")
     // attach search box listener
@@ -190,7 +207,6 @@ async function update_favourites(){
                     break
                 }
     
-                //THIS WORKS NOW
                 else if(button.parentElement != null){
                     count += 1
                     // changes the button once it has checked the whole list and does not find a match.
@@ -217,12 +233,25 @@ function add_link(){
     get_news(code, dateFrom, dateTo)
 }
 
+// new version of link adding
+// maybe worth deprecating the old one soon
+function add_new_link(){
+    code = this.querySelector(".item-code").textContent.trim()
+    console.log(code)
+    dateFrom = document.getElementById("dateFrom").value    
+    dateTo = document.getElementById("dateTo").value
+    
+    document.getElementById("current-ticker").value = code
+    update_graph(code, dateTo, dateFrom)
+    get_news(code, dateFrom, dateTo)
+}
+
 // just an object that represebts the fav list item
 function fav_element(icon, item){
     let fav_item = `<div class="stock-item flex w-full text-white justify-between hover:bg-slate-600/20">
-                        <div class="cursor-pointer w-3/5 text-left py-5 pl-5">
+                        <div class="cursor-pointer w-3/5 text-left py-5 pl-5 stock-link">
                             <div class="text-base font-bold">`+ item["name"] +`</div>
-                            <div class="text-sm ticker-code">`+ item["ticker"] +`</div>
+                            <div class="text-sm item-code">`+ item["ticker"] +`</div>
                         </div>
                         <div class="w-1/5 py-5">
                             `+ item["change"] +`% `+ icon +`
@@ -364,4 +393,40 @@ async function get_news(code, dateFrom, dateTo)
     }
 
     newspanel.innerHTML = newslist
+}
+async function update_differencedata() {
+
+        let list_type = this.id
+
+        response = await fetch("/differencepanel?q=" + list_type)
+        result = await response.json()
+
+        console.log(result)
+
+        let diff_panel = document.getElementById("difference_panel")
+
+        diff_html = ''
+        for (item of result){
+        diff_html += `  <div class="stock-item flex w-full text-white justify-between hover:bg-slate-600/20">
+                            <div class="cursor-pointer w-3/5 text-left py-5 pl-5 stock-link">
+                                <div class="text-base font-bold">`+ item["name"] +`</div>
+                                <div class="text-xs item-code">`+ item["ticker"] +`</div>
+                            </div>
+                            <div class="w-1/5 py-5">
+                                 `+ item["difference"] +` 
+                            </div>
+                            <div class="w-1/10 py-5">
+                                <input type="hidden" name="q" value="`+ item["ticker"] +`">
+                                <form class="fav-form flex" action="/favourite" method="get">
+
+                                    <svg class="hover:fill-slate-200 cursor-pointer add_favourite stock-list-item" fill="" height="20px" width="20px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <polygon points="455,212.5 242.5,212.5 242.5,0 212.5,0 212.5,212.5 0,212.5 0,242.5 212.5,242.5 212.5,455 242.5,455 242.5,242.5 455,242.5 "></polygon> </g></svg> 
+                                </form>
+
+                            </div>
+                        </div>`
+        }
+
+        diff_panel.innerHTML = diff_html
+        update_favourites()
+    
 }
