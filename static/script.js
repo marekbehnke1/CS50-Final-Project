@@ -26,6 +26,7 @@ async function update_page(){
         item.addEventListener("click", update_differencedata)
     }
     
+    // ---- this is the old version and will be deprecated once i redo the search box -----
     // attach link listeners
     for (item of stock_links){
         item.addEventListener("click", add_link)
