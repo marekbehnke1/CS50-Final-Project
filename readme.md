@@ -16,12 +16,16 @@ if i kil terminal
         [] buy sell - let you choose either amount or no. of shared to purchase and it will calculate the other variable   
 
     [] styling pass on home page
-        [] re-do the items in side panels
+        [x] re-do the items in side panels
         [x] include company name - bigger tiles
         [x] need to fettle with the way links are attached and retrieve the ticker code - so i can have the whole link icon be a link, not just the small code
-        [] finish alternate right side panel
-            [] the swap is working - but i need to now remove some of the old code for it and include a marker so you know which one you are on
-        [] find some good fonts
+        [x] finish alternate right side panel
+            [x] the swap is working - but i need to now remove some of the old code for it and include a marker so you know which one you are on
+
+        [] redo search panel to fit new style
+        
+        [x] find some good fonts - raleway
+        [x] sort the colour change thing
 
 
     [] text overflow on news feed card titles
@@ -91,7 +95,7 @@ TODO
             [x] retrieve favourites on login
             [x] need to find a way to use the + to add to favourites using JS, so page doesnt have to reload
 
-        [] portfolio page
+        [x] portfolio page
             [x] portfolio stats
             [x] data for stock holding cards
             [x] deposit money
@@ -116,6 +120,7 @@ TODO
     [x] we now have a weird duplacte flashed messages thing going on
     [] need to make account balance not go over int limit
         [] dont know why its doing this, as the check is in place?
+    [x] the homepage colour thing is sort of fixed - still looks weird on big screens though
  
 
 

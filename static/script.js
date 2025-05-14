@@ -10,6 +10,8 @@ let link_items = document.getElementsByClassName("stock-link")
 
 
 
+
+
 // attaches all event listeners for the page
 async function update_page(){
 
@@ -72,12 +74,12 @@ async function update_page(){
 
     if (!ticker_code)
     {
-        data_container.style.display = "none"
-        sent_panel.style.display = "none"
+        data_container.style.visibility = "hidden"
+        sent_panel.style.visibility = "hidden"
     }
     else{
-        data_container.style.display = "flex"
-        sent_panel.style.display = "block"
+        data_container.style.visibility = "visible"
+        sent_panel.style.visibility = "visible"
     }
 
 
@@ -399,33 +401,49 @@ async function update_differencedata() {
 
         let list_type = this.id
 
+        if (this.id == "winners"){
+            this.style.borderBottom = "solid white 2px"
+            document.getElementById("losers").style.borderBottom = ""
+        }
+        else if (this.id == "losers"){
+            this.style.borderBottom = "solid white 2px"
+            document.getElementById("winners").style.borderBottom = ""
+        }
+
         response = await fetch("/differencepanel?q=" + list_type)
         result = await response.json()
 
-        console.log(result)
-
         let diff_panel = document.getElementById("difference_panel")
 
+        textcolor = ''
         diff_html = ''
         for (item of result){
-        diff_html += `  <div class="stock-item flex w-full text-white justify-between hover:bg-slate-600/20">
-                            <div class="cursor-pointer w-3/5 text-left py-5 pl-5 stock-link">
-                                <div class="text-base font-bold">`+ item["name"] +`</div>
-                                <div class="text-xs item-code">`+ item["ticker"] +`</div>
-                            </div>
-                            <div class="w-1/5 py-5">
-                                 `+ item["difference"] +` 
-                            </div>
-                            <div class="w-1/10 py-5">
-                                <input type="hidden" name="q" value="`+ item["ticker"] +`">
-                                <form class="fav-form flex" action="/favourite" method="get">
+            if (item["difference"] > 0 ){
+                textcolor = 'text-green-500'
+            }
+            else if (item["difference"] < 0){
+                textcolor = 'text-red-500'
+            }
 
-                                    <svg class="hover:fill-slate-200 cursor-pointer add_favourite stock-list-item" fill="" height="20px" width="20px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <polygon points="455,212.5 242.5,212.5 242.5,0 212.5,0 212.5,212.5 0,212.5 0,242.5 212.5,242.5 212.5,455 242.5,455 242.5,242.5 455,242.5 "></polygon> </g></svg> 
-                                </form>
 
-                            </div>
-                        </div>`
-        }
+            diff_html += `  <div class="stock-item flex w-full text-white justify-between hover:bg-slate-600/20">
+                                <div class="cursor-pointer w-3/5 text-left py-5 pl-5 stock-link">
+                                    <div class="text-base font-bold">`+ item["name"] +`</div>
+                                    <div class="text-xs item-code">`+ item["ticker"] +`</div>
+                                </div>
+                                <div class="w-1/5 py-5 `+ textcolor +`">
+                                     `+item["difference"]+` 
+                                </div>
+                                <div class="w-1/10 py-5">
+                                    <input type="hidden" name="q" value="`+ item["ticker"] +`">
+                                    <form class="fav-form flex" action="/favourite" method="get">
+
+                                        <svg class="hover:fill-slate-200 cursor-pointer add_favourite stock-list-item" fill="" height="20px" width="20px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455 455" xml:space="preserve"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <polygon points="455,212.5 242.5,212.5 242.5,0 212.5,0 212.5,212.5 0,212.5 0,242.5 212.5,242.5 212.5,455 242.5,455 242.5,242.5 455,242.5 "></polygon> </g></svg> 
+                                    </form>
+
+                                </div>
+                            </div>`
+            }
 
         diff_panel.innerHTML = diff_html
         update_favourites()

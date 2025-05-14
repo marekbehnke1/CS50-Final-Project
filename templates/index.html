@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 
 {% block main %}
-<div class="flex " id="screen-panel">
+<div class="flex bg-linear-to-b from-slate-900 to-black h-fit" id="screen-panel">
 
-    <div class="w-1/5 h-screen items-center justify-center text-center" id="left-panel">
+    <div class="w-1/5 h-fit items-center justify-center text-center" id="left-panel">
     
         <div class="text-white w-full">
             Watchlist
@@ -66,66 +66,16 @@
                     </div>
                 </div>
                 
-            
-            <div class="w-full justify-center flex px-4" id="data-container">
-                <div class="w-1/2 text-slate-200 flex justify-center" id="data-left">
-                    <table class="table-fixed">
-                        <tr class="py-2 border-y border-solid border-slate-500">
-                            <td>Ticker:</td>
-                            <td class="table_field" id="ticker"></td>
-                        </tr>
-                        <tr class="py-2 border-y border-solid border-slate-500">
-                            <td>Data Timestamp:</td>
-                            <td class="table_field" id="timestamp"></td>
-                        </tr>
-                        <tr class="py-2 border-y border-solid border-slate-500">
-                            <td>Last Price:</td>
-                            <td class="table_field" id="tngoLast"></td>
-                        </tr>
-                        <tr class="py-2 border-y border-solid border-slate-500">
-                            <td>Previous Close:</td>
-                            <td class="table_field" id="prevClose"></td>
-                        </tr>
-                        <tr class="py-2 border-y border-solid border-slate-500">
-                            <td>Open Price:</td>
-                            <td class="table_field" id="open"></td>
-                        </tr>
-                        <tr class="py-2 border-y border-solid border-slate-500">
-                            <td>High:</td>
-                            <td class="table_field" id="high"></td>
-                        </tr>
-                        <tr class="py-2 border-y border-solid border-slate-500">
-                            <td>Low:</td>
-                            <td class="table_field" id="low"></td>
-                        </tr>
-                        <tr class="py-2 border-y border-solid border-slate-500">
-                            <td>Mid:</td>
-                            <td class="table_field" id="mid"></td>
-                        </tr>
-                        <tr class="py-2 border-y border-solid border-slate-500">
-                            <td>Volume</td>
-                            <td class="table_field" id="volume"></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="w-1/2 text-slate-200" id="data-right">
-                    <!-- STOCK INFO META DATA HERE -->
-                     <p class="table_field" id="info">Stock meta data</p>
-                </div>
-            </div>
-        </div>
-        <div class="w-full h-fit shadow-lg text-slate-50 bg-radial-[at_100%_100%] from-slate-900 from-10% via-slate-950 via-50% to-black to-100% rounded-lg mt-10 mb-5" id="overall-sentiment-panel">
-            <p class="font-bold">Overall Market Sentiment:</p>
-            <p id="sentiment-label"></p>
-            <p id="sentiment-score"></p>
-        </div>
-        <div class="w-full  h-fit grid grid-cols-2 auto-cols-max gap-5 my-5" id="news_panel">
+            <!---->
 
+            <!---->
         </div>
 
+
+        <!---->
     </div>
     
-    <div class=" w-1/5 h-screen text-center" id="right-panel">
+    <div class=" w-1/5 h-fit  text-center" id="right-panel">
         <div class="flex w-full">
             <div class="w-1/2 text-white hover:bg-slate-600/20 p-5 cursor-pointer difference-links" id="winners">
                 Biggest Winners
@@ -137,14 +87,13 @@
         
         <div id="difference_panel">
             {% for item in differenceData %}
-    
             <div class="stock-item flex w-full text-white justify-between hover:bg-slate-600/20">
                 <div class="cursor-pointer w-3/5 text-left py-5 pl-5 stock-link">
                     <div class="text-base font-bold">{{ item.name }}</div>
                     <div class="text-xs item-code">{{ item.ticker }}</div>
                 </div>
                 <div class="w-1/5 py-5 text-green-500">
-                    + {{item.difference}} 
+                    {{item.difference}} 
                 </div>
                 <div class="w-1/10 py-5">
                     <input type="hidden" name="q" value="{{item.ticker}}">
@@ -155,10 +104,71 @@
     
                 </div>
             </div>
-    
             {% endfor %}
         </div>
 
+    </div>
+
+</div>
+
+<div class="w-full h-fit flex justify-center bg-black" id="screen-bottom">
+    <div class="w-3/5">
+        <div class="w-full justify-center flex px-4" id="data-container" style="visibility: hidden;">
+            <div class="w-1/2 text-slate-200 flex justify-center" id="data-left">
+
+                <table class="table-fixed text-center">
+                    <tr class="py-2 border-y border-solid border-slate-500">
+                        <td>Ticker:</td>
+                        <td class="table_field" id="ticker"></td>
+                    </tr>
+                    <tr class="py-2 border-y border-solid border-slate-500">
+                        <td>Data Timestamp:</td>
+                        <td class="table_field" id="timestamp"></td>
+                    </tr>
+                    <tr class="py-2 border-y border-solid border-slate-500">
+                        <td>Last Price:</td>
+                        <td class="table_field" id="tngoLast"></td>
+                    </tr>
+                    <tr class="py-2 border-y border-solid border-slate-500">
+                        <td>Previous Close:</td>
+                        <td class="table_field" id="prevClose"></td>
+                    </tr>
+                    <tr class="py-2 border-y border-solid border-slate-500">
+                        <td>Open Price:</td>
+                        <td class="table_field" id="open"></td>
+                    </tr>
+                    <tr class="py-2 border-y border-solid border-slate-500">
+                        <td>High:</td>
+                        <td class="table_field" id="high"></td>
+                    </tr>
+                    <tr class="py-2 border-y border-solid border-slate-500">
+                        <td>Low:</td>
+                        <td class="table_field" id="low"></td>
+                    </tr>
+                    <tr class="py-2 border-y border-solid border-slate-500">
+                        <td>Mid:</td>
+                        <td class="table_field" id="mid"></td>
+                    </tr>
+                    <tr class="py-2 border-y border-solid border-slate-500">
+                        <td>Volume</td>
+                        <td class="table_field" id="volume"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="w-1/2 text-slate-200 text-center" id="data-right">
+                <!-- STOCK INFO META DATA HERE -->
+                    <p class="table_field" id="info">Stock meta data</p>
+            </div>
+        </div>
+
+        <div class="w-full h-fit shadow-lg text-slate-50 text-center bg-radial-[at_100%_100%] from-slate-900 from-10% via-slate-950 via-50% to-black to-100% rounded-lg mt-10 mb-5" id="overall-sentiment-panel" style="visibility: hidden;">
+            <p class="font-bold">Overall Market Sentiment:</p>
+            <p id="sentiment-label"></p>
+            <p id="sentiment-score"></p>
+        </div>
+        <div class="w-full h-fit grid grid-cols-2 auto-cols-max gap-5 my-5" id="news_panel">
+
+        </div>
     </div>
 </div>
 
@@ -167,6 +177,7 @@
     window.onload = (event) => {
         update_page();
         update_favourites();
+        document.getElementById("winners").style.borderBottom = "solid white 2px"
     };
 </script>
 

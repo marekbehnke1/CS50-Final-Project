@@ -13,6 +13,9 @@
         //google.charts.setOnLoadCallback(drawChart);
     </script>
     <link rel="stylesheet" href="static/style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+    </style>
     <title>Document</title>
 </head>
 {% with message = get_flashed_messages(with_categories=true) %}
@@ -24,7 +27,7 @@
 </header>
 {% endif %}
 {% endwith %}
-<body class="bg-linear-to-b from-slate-900 to-black">
+<body class="bg-gradient-to-b from-slate-900 from-10% to-black to-100% font-[Raleway]">
 
     <div class="w-full justify-center flex" id="menuContainer">
         <div class="w-2/5 justify-end flex" id="menu">
