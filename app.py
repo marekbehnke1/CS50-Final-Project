@@ -557,7 +557,7 @@ def register():
 
         # check if any error occured on db entry
         try:
-            curs.execute("INSERT INTO users (username, fname, lname, email, hash) VALUES (?, ?, ?, ?, ?)",
+            curs.execute("INSERT INTO users (username, fname, lname, email, hash, balance) VALUES (?, ?, ?, ?, ?, 10000)",
                         (new_user["username"], new_user["first name"], new_user["last name"], new_user["email"], hash))
         except:
             db.close()
@@ -786,7 +786,8 @@ def portfolio():
         "balance" : balance,
         "totaldepo" : totaldepo,
         "totalvalue" : total_value,
-        "totalprofit" : total_profit
+        "totalprofit" : total_profit,
+        "leaderboard" : "TODO!"
     }
         
     db.close()
@@ -835,54 +836,6 @@ def portfolio_graph():
     graph_data = data_table.ToJSon(columns_order=("date", "price"))
 
     return graph_data
-
-@app.route("/deposit", methods=["GET", "POST"])
-@login_required
-def deposit():
-    userid = session["user_id"]
-
-    if request.method == "POST":
-        db = sqlite3.connect("database.db")
-        curs = db.cursor()
-        password = request.form.get("password")
-
-        deposit = request.form.get("amount")
-        if not deposit.isnumeric():
-            db.close()
-            flash("Please enter a valid amount to deposit", "error")
-            return redirect("/portfolio")
-        
-        hash = curs.execute("SELECT hash FROM users WHERE userid = ?", (userid,)).fetchone()[0]
-
-        if not check_password_hash(hash, password):
-            db.close()
-            flash("Incorrect Password", "error")
-            return redirect("/portfolio")
-
-        # If transaction not recorded succesfully
-        if not curs.execute("INSERT INTO transactions (userid, value, transtype) VALUES (?, ?, ?)", (userid, deposit, "deposit",)):
-            db.close()
-            flash("Transaction could not be processed", "error")
-            return redirect("/portfolio")
-            
-        # update balance
-        balance = curs.execute("SELECT balance FROM users WHERE userid = ?", (userid,)).fetchone()[0]
-
-        if not balance:
-            balance = 0
-        updated_balance = balance + int(deposit)
-
-        # limit on balance to not upset sql
-        if updated_balance > 10e20:
-            db.close()
-            flash("Transaction could not be processed", "error")
-            return redirect("/portfolio")
-
-        curs.execute("UPDATE users SET balance = ? WHERE userid = ?", (updated_balance, userid,))
-        db.commit()
-        db.close()
-                
-    return redirect("/portfolio")
 
 @app.route("/buy", methods=["POST", "GET"])
 @login_required

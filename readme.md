@@ -11,7 +11,7 @@ if i kil terminal
         [x] Configure some sort of basic tracking, so you can see a small graph for each stock in the portfolio card
         [x] When its added to holding, start tracking price once each day so you see how its doing
     [x] design data structure to populate it
-    [] styling pass on portfolio page
+    [x] styling pass on portfolio page
     [x] finish adding func. to buy/sell panels
         [x] buy sell - let you choose either amount or no. of shared to purchase and it will calculate the other variable   
         [x] preview buy/sell price
@@ -30,9 +30,10 @@ if i kil terminal
         [x] find some good fonts - raleway
         [x] sort the colour change thing
 
+    [] need to load a default stock - maybe a random one somehow?
 
     [x] text overflow on news feed card titles
-    [] do more testing with the real api data - some of the formatting goes mental with loads of text
+    [x] do more testing with the real api data - some of the formatting goes mental with loads of text
 
 TODO
 # [] Front End
