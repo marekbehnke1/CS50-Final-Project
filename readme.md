@@ -12,8 +12,10 @@ if i kil terminal
         [x] When its added to holding, start tracking price once each day so you see how its doing
     [x] design data structure to populate it
     [] styling pass on portfolio page
-    [] finish adding func. to buy/sell panels
-        [] buy sell - let you choose either amount or no. of shared to purchase and it will calculate the other variable   
+    [x] finish adding func. to buy/sell panels
+        [x] buy sell - let you choose either amount or no. of shared to purchase and it will calculate the other variable   
+        [x] preview buy/sell price
+        [] maybe i should make the buy/sell thing return in a way that the price/stocks go green/red if you can/can't trade them?
 
     [] styling pass on home page
         [x] re-do the items in side panels

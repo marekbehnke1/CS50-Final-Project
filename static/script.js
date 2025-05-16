@@ -18,6 +18,8 @@ async function update_page(){
     let chart_dates = document.getElementsByClassName("chartDates")
     let centre_add_button = document.getElementById("centre-fav-add")
     let diff_links = document.getElementsByClassName("difference-links")
+    let buy_preview_fields = document.getElementsByClassName("buy-preview-fields")
+    let sell_preview_fields = document.getElementsByClassName("sell-preview-fields")
 
     // attach the links to swap the list on the right
     for (item of diff_links){
@@ -53,6 +55,19 @@ async function update_page(){
         item.addEventListener("input", date_listen)
     }
 
+    let buy_button = document.getElementById("buy-menu-button")
+    buy_button.addEventListener("click", buy_menu_listen)
+    
+    for (item of buy_preview_fields){
+        item.addEventListener("input", buy_preview_listen)
+    }
+
+    let sell_button = document.getElementById("sell-menu-button")
+    sell_button.addEventListener("click", sell_menu_listen)
+
+    for (item of sell_preview_fields){
+        item.addEventListener("input", sell_preview_listen)
+    }
 
     let search_form = document.getElementById("search")
     // attach search box listener
@@ -132,8 +147,20 @@ async function update_graph(code, dateTo, dateFrom) {
 
     let table_response = await fetch('/stock?q=' + code);
     let table_info = await table_response.json()
+    let graph_items = document.getElementsByClassName("graph_date_items")
+    let trade_code = document.getElementsByClassName("trade_code")
+
+    for (item of graph_items){
+        item.style.visibility = "visible"
+    }
+
+    for (item of trade_code){
+        item.value = code
+    }
+    
 
     company_name = table_info["name"]
+
 
     drawChart(chartData, code, company_name)
     update_table(code, table_info)
@@ -149,6 +176,7 @@ async function update_table(code, table_info){
         item.innerHTML = table_info[item.id]
 
     }
+
 }
 
 //Search
@@ -450,4 +478,64 @@ async function update_differencedata() {
         diff_panel.innerHTML = diff_html
         update_favourites()
     
+}
+
+function buy_menu_listen(){
+    buy_menu = document.getElementById("buy-menu-container")
+
+    if (buy_menu.style.display == "block"){
+        buy_menu.style.display = "none"
+    }
+    else if (buy_menu.style.display == "none"){
+        buy_menu.style.display = "block"
+    }
+}
+
+function sell_menu_listen(){
+    sell_menu = document.getElementById("sell-menu-container")
+    
+    if (sell_menu.style.display == "block"){
+        sell_menu.style.display = "none"
+    }
+    else if (sell_menu.style.display == "none"){
+        sell_menu.style.display = "block"
+    }
+}
+
+function preview_listen(){
+
+}
+
+async function buy_preview_listen() {
+    code = document.getElementById("buy_code").value
+    type = document.getElementById("buy_type").value
+    quant = document.getElementById("buy_quant").value
+    transaction = "buy"
+
+    preview(code, type, quant, transaction)
+}
+async function sell_preview_listen() {
+    code = document.getElementById("sell_code").value
+    type = document.getElementById("sell_type").value
+    quant = document.getElementById("sell_quant").value
+    transaction = "sell"
+    
+    preview(code, type, quant, transaction)
+}
+
+async function preview(code, type, quant, transaction) {
+
+    if (code && type && quant){
+            response = await fetch("/preview?code=" + code + "&type=" + type + "&quant=" + quant)
+            result = await response.json()
+        
+        if (transaction == "buy"){
+            document.getElementById("buy-preview").innerText = result
+        }
+        else if (transaction == "sell"){
+            document.getElementById("sell-preview").innerText = result
+        }
+    } else {
+        document.getElementById(transaction + "-preview").innerText = ""
+    }
 }

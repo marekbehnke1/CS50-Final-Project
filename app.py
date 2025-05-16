@@ -891,12 +891,17 @@ def buy():
 
     code = request.form.get("code").upper()
     quant = request.form.get("buy_quant")
+    trans_type = request.form.get("type")
 
+    print(type("shares"))
     if not code:
         flash("Please enter a code to purchase", "error")
         return redirect("/")
     if not quant:
         flash("Please enter a quantity", "error")
+        return redirect("/")
+    if not trans_type or trans_type not in ("value", "shares"):
+        flash("Please select a transaction type", "error")
         return redirect("/")
     
     # check if quant has any non numeric characters
@@ -928,7 +933,25 @@ def buy():
         flash("This stock could not be found", "error")
         return redirect("/")
     
-    totalprice = int(quant) * float(result["tngoLast"])
+    if trans_type == "value":
+
+        # the amount to spend is entered in the quant field
+        totalprice = float(quant)
+
+        num_shares = totalprice/result["tngoLast"]
+
+        # Check if the number of shares is > 1 and a whole number
+        if num_shares > 0 and num_shares % 1 == 0:
+            quant = num_shares
+            totalprice = int(quant) * float(result["tngoLast"])
+        else:
+            flash("Cannot purchase a fraction of a share", "error")
+            db.close()
+            return redirect("/")
+
+    if trans_type == "shares":
+        totalprice = int(quant) * float(result["tngoLast"])
+
     balance = curs.execute("SELECT balance FROM users WHERE userid = ?", (userid,)).fetchone()[0]
 
     # check balance
@@ -997,12 +1020,16 @@ def sell():
 
     code = request.form.get("code").upper()
     quant = request.form.get("sell_quant")
+    trans_type = request.form.get("type")
 
     if not code:
         flash("Please enter a code to sell", "error")
         return redirect("/")
     if not quant:
         flash("Please enter a quantity", "error")
+        return redirect("/")
+    if not trans_type or trans_type not in ("value", "shares"):
+        flash("Please select a transaction type", "error")
         return redirect("/")
     
     # check if quant has any non numeric characters
@@ -1026,15 +1053,34 @@ def sell():
         db.close()
         return redirect("/")
     
+    # get last trade price from iexdata
+    result = next((item for item in IEXdata if item["ticker"] == code), None)
+
+    if trans_type == "shares":
+        totalprice = int(quant) * float(result["tngoLast"])
+
+    if trans_type == "value":
+        # the amount to spend is entered in the quant field
+        totalprice = float(quant)
+
+        num_shares = totalprice/result["tngoLast"]
+
+        # Check if the number of shares is > 1 and a whole number
+        if num_shares > 0 and num_shares % 1 == 0:
+            quant = num_shares
+            totalprice = int(quant) * float(result["tngoLast"])
+        else:
+            flash("Cannot purchase a fraction of a share", "error")
+            db.close()
+            return redirect("/")
+        
     held_quant = curs.execute("SELECT quantity FROM holdings WHERE stock = ? AND userid = ?", (code, userid,)).fetchone()[0]
-    
-    # preview sale price?
 
     # check quant
     if int(quant) > held_quant:
         flash("You do not hold enough stock to sell this amount", "error")
         db.close()
-        redirect("/")
+        return redirect("/")
 
     # remove stock from holdings - deleting entry if quant is 0
     new_held_quant = held_quant - int(quant)
@@ -1042,11 +1088,6 @@ def sell():
         curs.execute("DELETE FROM holdings WHERE userid = ? AND stock = ?", (userid, code,))
     else:
         curs.execute("UPDATE holdings SET quantity = ? WHERE userid = ? AND stock = ?", (new_held_quant, userid, code,))
-        
-    # get last trade price from iexdata
-    result = next((item for item in IEXdata if item["ticker"] == code), None)
-
-    totalprice = int(quant) * float(result["tngoLast"])
     
     # increase account balance
     balance = curs.execute("SELECT balance FROM users WHERE userid = ?", (userid,)).fetchone()[0]
@@ -1061,6 +1102,43 @@ def sell():
     flash("Sale Succesful", "success")
 
     return redirect("/")
+
+@app.route("/preview")
+@login_required
+def price_preview():
+
+    code = request.args.get("code").upper()
+    trans_type = request.args.get("type")
+    quant = request.args.get("quant")
+
+    result = ""
+
+    if not code or not trans_type or not quant:
+        result = "Invalid Data"
+        return jsonify(result)        
+    
+    if not quant.isnumeric():
+        result = "Invalid Data"
+        return jsonify(result)        
+
+    stock_item = next((item for item in IEXdata if item["ticker"] == code), None)
+    last_price = stock_item["tngoLast"]
+
+    if trans_type == "shares":
+
+        result = "£" + str(float(quant) * float(last_price))
+      
+    if trans_type == "value":
+
+        result = float(quant)/float(last_price)
+
+        if not result % 1 == 0:
+            result = "Cannot trade fractional shares"
+            return jsonify(result)
+        
+        result = str(round(result,3)) + " shares"
+
+    return jsonify(result)
 
 @app.route("/news")
 @login_required

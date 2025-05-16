@@ -39,30 +39,57 @@
                         <!-- This is where the graph goes -->
                     </div>
                 </div>    
-                <p class="text-white">Timeframe</p>
-                <label class="text-white" for="dateFrom">From: </label>
-                <input type="date" class="chartDates rounded-md my-5 text-white accent-white" placeholder="Date from" id="dateFrom">
+                <label class="text-white graph_date_items" for="dateFrom" id="dateFrom-label" style="visibility: hidden">From: </label>
+                <input type="date" class="chartDates rounded-md my-5 text-white accent-white graph_date_items" placeholder="Date from" id="dateFrom" style="visibility: hidden" style="visibility: hidden">
                 
-                <label class="text-white" for="dateTo">To: </label>
-                <input type="date" class="chartDates rounded-md my-5 text-white" placeholder="Date to" id="dateTo">
+                <label class="text-white graph_date_items" for="dateTo" id="dateTo-label" style="visibility: hidden">To: </label>
+                <input type="date" class="chartDates rounded-md my-5 text-white graph_date_items" placeholder="Date to" id="dateTo" style="visibility: hidden">
                 
             </div>
             
-                <div id="trade-window" class="w-full h-50 flex my-5">
-                    <div class="h-full w-1/2 border border-solid border-white/20 rounded-lg mr-2 ml-4 shadow-xl bg-radial-[at_100%_100%] from-slate-950 from-10% via-slate-900 via-50% to-black to-100%">
-                        <form action="/buy" method="post" class="flex-col">
-                            <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="code" id="buy_code" placeholder="Ticker Code">
-                            <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="buy_quant" id="buy_quant" placeholder="Quantity">
-                            <input class="block rounded-lg border border-white text-white w-28 text-center py-1 my-2 mx-auto hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 hover:cursor-pointer" type="submit" value="Buy">
-                        </form>
+                <div id="trade-window" class="w-full h-fit flex">
+
+                    <div class="w-1/2 mr-2 ml-4 my-5 h-fit justify-items-center flex-col">
+                        <p class="mb-5 block py-3 px-8 cursor-pointer text-white rounded-lg bg-sky-500 hover:bg-pink-500 w-fit" id="buy-menu-button">Buy</p>
+    
+                        <div id="buy-menu-container" style="display: none;" class="h-full w-full border border-solid border-white/20 rounded-lg shadow-xl bg-radial-[at_100%_100%] from-slate-950 from-10% via-slate-900 via-50% to-black to-100%">
+                            <form action="/buy" method="post" class="flex-col py-2 justify-items-center">
+                                <input class="trade_code block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border w-1/2 buy-preview-fields" type="text" name="code" id="buy_code" placeholder="Ticker Code">
+                                <select name="type" id="buy_type" class="text-white bg-slate-800 rounded-lg block py-1 my-2 w-1/2 text-center buy-preview-fields">
+                                    <option value="shares">Shares</option>
+                                    <option value="value">Value</option>
+                                </select>
+                                <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border w-1/2 buy-preview-fields" type="text" name="buy_quant" id="buy_quant" placeholder="Quantity">
+                                
+                                <p class="text-white py-2 my-1" id="buy-preview"> </p>
+
+                                <input class="block rounded-lg border border-white text-white w-28 text-center py-1 my-2 mx-auto hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-transparent hover:cursor-pointer" type="submit" value="Place Order">
+                            </form>
+
+                        </div>
                     </div>
-                    <div class="h-full w-1/2 border border-solid border-white/20 rounded-lg ml-2 mr-4 shadow-xl bg-radial-[at_100%_100%] from-slate-950 from-10% via-slate-900 via-50% to-black to-100%">
-                        <form action="/sell" method="post" class="flex-col">
-                            <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="code" id="sell_code" placeholder="Ticker Code">
-                            <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border" type="text" name="sell_quant" id="sell_quant" placeholder="Quantity">
-                            <input class="block rounded-lg border border-white text-white w-28 text-center py-1 my-2 mx-auto hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-0 hover:cursor-pointer" type="submit" value="Sell">
-                        </form>
+                    
+
+                    <div class="w-1/2 ml-2 mr-4 my-5 h-fit justify-items-center flex-col">
+                        <p class="mb-5 block py-3 px-8 cursor-pointer text-white rounded-lg bg-sky-500 hover:bg-pink-500 w-fit" id="sell-menu-button">Sell</p>
+    
+                        <div id="sell-menu-container" style="display: none;" class="h-full w-full border border-solid border-white/20 rounded-lg ml-2 mr-4 shadow-xl bg-radial-[at_100%_100%] from-slate-950 from-10% via-slate-900 via-50% to-black to-100%">
+                            <form action="/sell" method="post" class="flex-col py-2 justify-items-center">
+                                <input class="trade_code block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border w-1/2 sell-preview-fields" type="text" name="code" id="sell_code" placeholder="Ticker Code">
+                                <select name="type" id="sell_type" class="text-white bg-slate-800 rounded-lg block py-1 my-2 w-1/2 text-center sell-preview-fields">
+                                    <option value="shares">Shares</option>
+                                    <option value="value">Value</option>
+                                </select>
+                                <input class="block border-slate-700 bg-slate-800 rounded-lg py-1 my-2 mx-auto text-center text-slate-100 hover:border-pink-200 focus:border-pink-700 focus:border-solid focus:border w-1/2 sell-preview-fields" type="text" name="sell_quant" id="sell_quant" placeholder="Quantity">
+                                
+                                <p class="text-white py-2 my-1" id="sell-preview"> </p>
+
+                                <input class="block rounded-lg border border-white text-white w-28 text-center py-1 my-2 mx-auto hover:from-cyan-500 hover:bg-linear-to-r to-blue-500 hover:border-transparent hover:cursor-pointer" type="submit" value="Place Order">
+                            </form>
+
+                        </div>
                     </div>
+
                 </div>
                 
         </div>
@@ -163,6 +190,7 @@
 </div>
 
 <script>
+    
 
     window.onload = (event) => {
         update_page();
