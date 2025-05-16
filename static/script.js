@@ -101,6 +101,7 @@ function search_close(){
     setTimeout(function(){
         document.getElementById("search-results").innerHTML = "";
         document.getElementById("search").value ="";
+        document.getElementById("search-container").style.borderWidth = "";
     }, 100)
 }
 function date_listen(){
@@ -154,9 +155,10 @@ async function search(code){
 
     let html = '';
     for (let item of searchItems){
-        html += '<li class="search-link border-y border-slate-600 bg-slate-400 hover:bg-slate-600 cursor-pointer">' + item[1] + "</li>";
+        html += '<li class="search-link hover:bg-white/10 cursor-pointer ">' + item[1] + "</li>";
     } 
     document.getElementById("search-results").innerHTML = html;
+    document.getElementById("search-container").style.borderWidth = "1px"
 
     let search_links = document.getElementsByClassName("search-link")
     for(item of search_links){
