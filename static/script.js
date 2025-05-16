@@ -130,14 +130,18 @@ async function update_graph(code, dateTo, dateFrom) {
     let response = await fetch('/chart?q=' + code +'&to=' + dateTo + '&from=' + dateFrom)
     let chartData = await response.json()
 
-    drawChart(chartData, code)
-    update_table(code)
+    let table_response = await fetch('/stock?q=' + code);
+    let table_info = await table_response.json()
+
+    company_name = table_info["name"]
+
+    drawChart(chartData, code, company_name)
+    update_table(code, table_info)
     update_page()
 };
 
-async function update_table(code){
-    let response = await fetch('/stock?q=' + code);
-    let table_info = await response.json()
+async function update_table(code, table_info){
+    
     let table_fields = document.getElementsByClassName("table_field")
     
     for (item of table_fields){
@@ -334,14 +338,14 @@ async function get_news(code, dateFrom, dateTo)
                     // track sent score
                     total_sentiment_score += item.overall_sentiment_score
 
-                    newslist += `<div class="h-100 news-card rounded-xl shadow-xl p-5 bg-linear-65 from-purple-700 to-pink-700">
-                            <div class="w-full h-3/20 ">
-                                <h1 class="font-bold text-slate-50"> `+ item.title +` </h1>
+                    newslist += `<div class="h-fit news-card rounded-xl shadow-xl p-5 bg-linear-65 from-purple-700 to-pink-700">
+                            <div class="w-full h-fit text-ellipsis">
+                                <h1 class="font-bold text-slate-50 inline-block"> `+ item.title +` </h1>
                             </div>
             
                             <div class="w-full h-14/20">
                                 <div class=" w-full flex">
-                                    <div class="mt-5 h-full w-2/3 text-left text-slate-100">
+                                    <div class="mt-5 h-full w-2/3 text-left text-ellipsis text-slate-100">
                                         <p class="px-5"> `+ item.summary +` </p>
                                     </div>
                                     <div class="mt-5 h-full w-1/3 text-left text-slate-100">

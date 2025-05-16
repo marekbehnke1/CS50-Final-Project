@@ -1,4 +1,4 @@
-function drawChart(chartData, code){
+function drawChart(chartData, code, name){
 
     var options = {
         //width: 300,
@@ -10,7 +10,7 @@ function drawChart(chartData, code){
             height: '75%'
         },
         legend: 'none',
-        title: code,
+        title: name+': '+code,
         titleTextStyle: {color: 'white'},
         bar: {groupWidth: '100%'},
         candlestick: {
@@ -28,7 +28,13 @@ function drawChart(chartData, code){
         vAxis: {
                 gridlines: {color: 'white'},
                 textStyle: {color: 'white'}
-            }
+            },
+        titleTextStyle: {
+                color: "white",
+                fontName: "Raleway",
+                bold: true,
+                fontSize: 20
+        }
     };
     
     var chart = new google.visualization.CandlestickChart(document.getElementById("main-chart"));

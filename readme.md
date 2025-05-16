@@ -29,7 +29,7 @@ if i kil terminal
         [x] sort the colour change thing
 
 
-    [] text overflow on news feed card titles
+    [x] text overflow on news feed card titles
     [] do more testing with the real api data - some of the formatting goes mental with loads of text
 
 TODO
