@@ -7,6 +7,12 @@ if i kil terminal
 .venv\scripts\activate\ps1
 
 # NEXT STEPS:
+    []FINAL STEPS:
+        [] arrows not aligning on favourites
+        [] Leaderboard Page
+        [] Account Page restyle
+
+
     [x] portfolio page - design card template
         [x] Configure some sort of basic tracking, so you can see a small graph for each stock in the portfolio card
         [x] When its added to holding, start tracking price once each day so you see how its doing

@@ -1,1 +1,0 @@
-https://nickgeorge.net/programming/python-sqlite3-extract-to-dictionary/
