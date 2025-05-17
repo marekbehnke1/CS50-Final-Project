@@ -286,8 +286,8 @@ function fav_element(icon, item){
                             <div class="text-base font-bold">`+ item["name"] +`</div>
                             <div class="text-sm item-code">`+ item["ticker"] +`</div>
                         </div>
-                        <div class="w-1/5 py-5">
-                            `+ item["change"] +`% `+ icon +`
+                        <div class="w-1/5 py-5 flex">
+                            <p class="block mr-1">`+ item["change"] +`%</p> <span class="block ml-1"> `+ icon +`</span>
                         </div>
                         <div class="w-1/10 py-5">
                             <input type="hidden" name="q" value="`+ item["ticker"] +`">
@@ -500,10 +500,6 @@ function sell_menu_listen(){
     else if (sell_menu.style.display == "none"){
         sell_menu.style.display = "block"
     }
-}
-
-function preview_listen(){
-
 }
 
 async function buy_preview_listen() {

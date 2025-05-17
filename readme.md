@@ -8,11 +8,12 @@ if i kil terminal
 
 # NEXT STEPS:
     [] FINAL STEPS:
-        [] arrows not aligning on favourites
+        [x] arrows not aligning on favourites
         [] default graph load
         [x] Leaderboard Page
+            [x] Leaderboard rank on portfolio page
         [x] Account Page restyle
-        [] style the table on home screen
+        [x] style the table on home screen
 
 
     [x] portfolio page - design card template

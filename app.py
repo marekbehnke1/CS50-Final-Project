@@ -775,7 +775,21 @@ def portfolio():
             "itemprofit" : round(item_profit, 2),
             "change" : round(change_perc, 4)
         })
-        
+
+    dbleaderboard = curs.execute("SELECT username, balance FROM users ORDER by balance desc LIMIT 20").fetchall()
+    leaderboard = []
+    for item in dbleaderboard:
+        leaderboard.append(
+            [dbleaderboard.index(item)+1,item[0], item[1]]
+        )
+
+    uname = curs.execute("SELECT username from users where userid = ?", (userid,)).fetchone()[0]
+
+    for item in leaderboard:
+        if item[1] == uname:
+            rank = item[0]
+            break
+
     total_profit = total_value - totaldepo
     
     account_stats = {
@@ -783,7 +797,7 @@ def portfolio():
         "totaldepo" : totaldepo,
         "totalvalue" : total_value,
         "totalprofit" : total_profit,
-        "leaderboard" : "TODO!"
+        "leaderboard" : rank
     }
         
     db.close()
