@@ -535,3 +535,15 @@ async function preview(code, type, quant, transaction) {
         document.getElementById(transaction + "-preview").innerText = ""
     }
 }
+
+async function load_default() {
+    
+        response = await fetch("/differencepanel?q=winners")
+        result = await response.json()
+
+        code = result[0]["ticker"]
+        document.getElementById("current-ticker").value = code
+
+    update_graph(code,"", "")
+    get_news(code, "", "")
+}

@@ -9,7 +9,7 @@ if i kil terminal
 # NEXT STEPS:
     [] FINAL STEPS:
         [x] arrows not aligning on favourites
-        [] default graph load
+        [x] default graph load
         [x] Leaderboard Page
             [x] Leaderboard rank on portfolio page
         [x] Account Page restyle
