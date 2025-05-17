@@ -629,31 +629,27 @@ def change_password():
     else:
         return render_template("/password.html", userInfo = session["user_info"])
 
-@app.route("/accdetails", methods = ["GET", "POST"])
+@app.route("/emailupdate", methods = ["GET", "POST"])
 @login_required
-def details():
+def email():
 
     if request.method == "POST":
 
-        fname = request.form.get("fname")
-        lname = request.form.get("lname")
-        email = request.form.get("email")
+        email = request.form.get("newEmail")
         password = request.form.get("password")
 
-        if not fname:
-            fname = session["user_info"][0]["fname"]
-        if not lname:
-            lname = session["user_info"][0]["lname"]
         if not email:
-            fname = session["user_info"][0]["email"]
+            flash("Please enter a new email", "error")
+            return render_template("/emailupdate.html", userInfo = session["user_info"])
+                    
         if not password:
             flash("Please enter your password", "error")
-            return render_template("/accdetails.html", userInfo = session["user_info"])
+            return render_template("/emailupdate.html", userInfo = session["user_info"])
         
         # email regex
         if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
             flash ("Please enter a valid email", "error")
-            return render_template("/accdetails.html", userInfo = session["user_info"])
+            return render_template("/emailupdate.html", userInfo = session["user_info"])
         
         db = sqlite3.connect("database.db")
         curs = db.cursor()
@@ -661,17 +657,17 @@ def details():
         hash = curs.execute("SELECT hash FROM users WHERE userid = ?", (session["user_id"],)).fetchone()[0]
         if not check_password_hash(hash, password):
             flash("Incorrect Password", "error")
-            return render_template("/accdetails.html", userInfo = session["user_info"])
+            return render_template("/emailupdate.html", userInfo = session["user_info"])
         
-        curs.execute("UPDATE users SET fname = ?, lname = ?, email = ? WHERE userid = ?", (fname, lname, email, session["user_id"],))
+        curs.execute("UPDATE users SET email = ? WHERE userid = ?", (email, session["user_id"],))
         db.commit()
                 
         db.close()
 
-        flash("Details updated", "success")
-        return render_template("/info.html", userInfo = session["user_info"])
+        flash("Email updated", "success")
+        return redirect("/account")
     
-    return render_template("/accdetails.html", userInfo = session["user_info"])
+    return render_template("/emailupdate.html", userInfo = session["user_info"])
 
 @app.route("/portfolio", methods=["GET", "POST"])
 @login_required
@@ -1075,23 +1071,27 @@ def price_preview():
         return jsonify(result)        
 
     stock_item = next((item for item in IEXdata if item["ticker"] == code), None)
-    last_price = stock_item["tngoLast"]
+    try:
+        last_price = stock_item["tngoLast"]
+    except:
+        result = "Cannot find stock"
+        return jsonify(result)
+    else:
+        if trans_type == "shares":
 
-    if trans_type == "shares":
+            result = "£" + str(float(quant) * float(last_price))
 
-        result = "£" + str(float(quant) * float(last_price))
-      
-    if trans_type == "value":
+        if trans_type == "value":
 
-        result = float(quant)/float(last_price)
+            result = float(quant)/float(last_price)
 
-        if not result % 1 == 0:
-            result = "Cannot trade fractional shares"
-            return jsonify(result)
-        
-        result = str(round(result,3)) + " shares"
+            if not result % 1 == 0:
+                result = "Cannot trade fractional shares"
+                return jsonify(result)
 
-    return jsonify(result)
+            result = str(round(result,3)) + " shares"
+
+        return jsonify(result)
 
 @app.route("/news")
 @login_required
@@ -1114,6 +1114,20 @@ def news():
     newstext = retrieve_news(qCode, dateFrom, dateTo)
     return newstext
 
+@app.route("/leaderboard")
+@login_required
+def leaderboard():
+    
+    db = sqlite3.connect("database.db")
+    curs = db.cursor()
+
+    dbleaderboard = curs.execute("SELECT username, balance FROM users ORDER by balance desc LIMIT 20").fetchall()
+    leaderboard = []
+    for item in dbleaderboard:
+        leaderboard.append(
+            [dbleaderboard.index(item)+1,item[0], item[1]]
+        )
+    return render_template("/leaderboard.html", leaderboard = leaderboard)
 
 @app.route("/logout")
 def logout():

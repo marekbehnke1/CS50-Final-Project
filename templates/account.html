@@ -1,22 +1,27 @@
 {% extends "layout.html" %}
 {% block main %}
-<div class="w-full h-screen justify-center">
+<div class="w-full h-screen justify-center text-white">
 
     <div class="w-full h-9/10">
-        <div class="w-2/5 h-4/6 bg-slate-400 m-auto text-center rounded-3xl">
+        <div class="w-2/5 h-4/6 m-auto text-center rounded-3xl border border-white/20 bg-gradient-to-tr from-slate-900/30 to-slate-200/10 backdrop-blur-lg">
 
             <div class="flex w-full py-8">
                 <div class="w-1/3 border-r-1 border-solid border-slate-500 text-center" id="accountMenu">
                     <table class="table-fixed w-full"> 
                         <tbody>
                             <tr class="">
-                                <td>
+                                <td class="py-2">
+                                    <a href="/account" class="block py-1 my-1 hover:bg-slate-500"> Account Details</a>
+                                </td>
+                            </tr>
+                            <tr class="">
+                                <td class="py-2">
                                     <a href="/password" class="block py-1 my-1 hover:bg-slate-500"> Change Password</a>
                                 </td>
                             </tr>
                             <tr class="">
-                                <td>
-                                    <a href="/accdetails" class="block py-1 my-1 hover:bg-slate-500">Change Account Details</a>
+                                <td class="py-2">
+                                    <a href="/emailupdate" class="block py-1 my-1 hover:bg-slate-500">Change Email</a>
                                 </td>
                             </tr>
                         </tbody>

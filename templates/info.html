@@ -3,7 +3,7 @@
 {% block info %}
 
 <div class="w-full text-center justify-center">
-    <p>
+    <p class="font-bold">
         Account Details
     </p>
     <br>
@@ -11,16 +11,16 @@
     <table class="table-fixed w-full">
         <tbody>
             <tr class="">
-                <td class="">Contact Email:</td>
-                <td class="text-left">{{userInfo[0].email}}</td>
+                <td class="py-2 ">Contact Email:</td>
+                <td class="py-2 text-left">{{userInfo[0].email}}</td>
             </tr>
             <tr class="">
-                <td class="">Username:</td>
-                <td class="text-left">{{userInfo[0].username}}</td>
+                <td class="py-2 ">Username:</td>
+                <td class="py-2 text-left">{{userInfo[0].username}}</td>
             </tr>
             <tr class="">
-                <td class="">Name:</td>
-                <td class="text-left">{{userInfo[0].fname}} {{userInfo[0].lname}}</td>
+                <td class="py-2 ">Name:</td>
+                <td class="py-2 text-left">{{userInfo[0].fname}} {{userInfo[0].lname}}</td>
             </tr>
         </tbody>
     </table>

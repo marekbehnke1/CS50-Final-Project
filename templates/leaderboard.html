@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+<div class="h-screen w-full">
+    <div class="w-full h-fit text-white">
+            <div class="w-2/5 h-4/6 m-auto text-center rounded-3xl border border-white/20 bg-gradient-to-tr from-slate-900/30 to-slate-200/10 backdrop-blur-lg">
+    
+                <div class="flex w-full py-8">
+                    <div class="w-full border-r-1 border-solid border-white/30 text-center" id="leaderboardPanel">
+                        <div id="titlebar" class="w-full h-fit">
+                            <h1 class="font-bold pb-5">Leaderboards</h1>
+                        </div>
+    
+                        <table class="table-fixed w-full">
+                            <thead>
+                                <tr>
+                                    <td class="px-15 pb-5">Rank</td>
+                                    <td class="px-15 pb-5">Username</td>
+                                    <td class="px-15 pb-5">Balance</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in leaderboard %}
+                                <tr class="hover:bg-white/15">
+                                    <td class="py-3">{{item[0]}}</td>
+                                    <td class="py-3">{{item[1]}}</td>
+                                    <td class="py-3">£{{item[2]}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}

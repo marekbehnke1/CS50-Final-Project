@@ -7,10 +7,12 @@ if i kil terminal
 .venv\scripts\activate\ps1
 
 # NEXT STEPS:
-    []FINAL STEPS:
+    [] FINAL STEPS:
         [] arrows not aligning on favourites
-        [] Leaderboard Page
-        [] Account Page restyle
+        [] default graph load
+        [x] Leaderboard Page
+        [x] Account Page restyle
+        [] style the table on home screen
 
 
     [x] portfolio page - design card template

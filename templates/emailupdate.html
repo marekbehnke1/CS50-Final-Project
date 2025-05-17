@@ -1,0 +1,12 @@
+{% extends "account.html" %}
+
+{% block info %}
+
+<form action="/emailupdate" method="post" class="flex-col justify-center items-center space-y-6">
+    <p>Enter new email below</p>
+    <input type="text" placeholder="Enter your new email" name="newEmail" id="newEmail" class="outline-2 hover:outline-pink-500/80 focus:outline-offset-4 focus:bg-slate-500/35 focus:outline-pink-500 rounded-md outline-slate-700 text-center w-1/2">
+    <input type="password" placeholder="Enter your password" name="password" id="password" class="outline-2 hover:outline-pink-500/80 focus:outline-offset-4 focus:bg-slate-500/35 focus:outline-pink-500 rounded-md outline-slate-700 text-center w-1/2"> 
+    <input type="submit" value="Update Email" class="outline-2 w-1/2 rounded-md cursor-pointer mx-18 hover:bg-gradient-to-br from-sky-500 to-blue-500 hover:outline-none">
+</form>
+
+{% endblock %}
