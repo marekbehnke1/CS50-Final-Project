@@ -1,1 +1,6 @@
 Flask
+flask_session
+gviz_api
+sqlite3
+werkzeug.security
+re

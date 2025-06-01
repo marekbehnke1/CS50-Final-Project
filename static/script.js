@@ -535,7 +535,7 @@ async function preview(code, type, quant, transaction) {
         document.getElementById(transaction + "-preview").innerText = ""
     }
 }
-
+// loads the default graph
 async function load_default() {
     
         response = await fetch("/differencepanel?q=winners")

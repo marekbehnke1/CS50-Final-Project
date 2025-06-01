@@ -12,10 +12,6 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-#maybe include database connection func here?
-
-#function to return top 50 results of given field from iex exchange
-
 # pulls all iex data
 def retrieve_iex():
     # set api headers

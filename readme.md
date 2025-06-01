@@ -1,153 +1,114 @@
+# CS50 Stocks Game
+## Introduction
+The intention of this project was to create an online game where you could practise buying and selling stocks, using live stock market data without the worry of losing real money.  
+This was then gamified with the inclusion of a leaderboard, which tracks everyones total account balance, and the fact that every user starts with a set balance with no opportunity to deposit more.
+This incentivises people to actually trade stocks in order to win. 
 
-# Personal Stock Tracker
-#### Video Demo:  <URL HERE>
-#### Description:
+#### Future Additions
+If i were to commit more time to this project in the future, one of the main additions i would make would be the inclusion of leagues.  
+These would allow you to invite other users to a private league where you could play against each other for a set period of time.
 
-if i kil terminal
-.venv\scripts\activate\ps1
+#### Video Demo: <http://www.youtube.com>
+### Technologies
+The project was made as a fullstack webapp, using Flask, Sqlite3, Javascript, HTML & Tailwind CSS
+### Project Contents
+##### 1. HTML FIles  
+As the project uses Flask, and also Jjina the main layout for all of the main pages are contained within layout.html.  
+login.html & register.html do not use the layout template as their structure is significantly different from the other pages.  
+</br>
+Each html file corresponds to the relevant page on the site.
 
-# NEXT STEPS:
-    [] FINAL STEPS:
-        [x] arrows not aligning on favourites
-        [x] default graph load
-        [x] Leaderboard Page
-            [x] Leaderboard rank on portfolio page
-        [x] Account Page restyle
-        [x] style the table on home screen
+##### 2. Javascript Files
+There are 2 main js files within the project:
 
+###### 2.1 Chart.js & Portfoliochart.js
+These files contains the logic which displays the graphs on both the main index page and the smaller graphs on the portfolio page.  
+They use the Google Data visualisations API to display data as both a candlestick chart on the index page and as line graphs on the portfolio.  
+The data for the graphs is provided by the flask app, which itself pulls the data from a combination of information stored in the database (in the case of the portfolio) and information pulled from the tiingo web API (in the case of the index page).
 
-    [x] portfolio page - design card template
-        [x] Configure some sort of basic tracking, so you can see a small graph for each stock in the portfolio card
-        [x] When its added to holding, start tracking price once each day so you see how its doing
-    [x] design data structure to populate it
-    [x] styling pass on portfolio page
-    [x] finish adding func. to buy/sell panels
-        [x] buy sell - let you choose either amount or no. of shared to purchase and it will calculate the other variable   
-        [x] preview buy/sell price
-        [] maybe i should make the buy/sell thing return in a way that the price/stocks go green/red if you can/can't trade them?
+###### 2.2 script.js
+This is the main javascript file which is used to control many aspects of how the index page is displayed.  
+It has 2 main functions which it performs.  
+The first of which is to enable various elements on the page to be updated without reloading the page.  
+It does this through a variety of async functions which access both data from the tiingo and alphavantage web API's and from the database.  
+This includes things like dynamically creating new html elements for the page, a prime example of this is the news feed at the bottom of the page. This displays a series of cards, representing relevant news articles to the currently selected stock. 
+This data is pulled from the alphavantage API, processed and then displayed to the user.  
+The second main function it serves is to change the visual appearance of certain aspects of the page based on a condition.  
+For instance in the watchlist panel, a different icon is displayed based on whether a stock is trending positively or negatively in value.  
+Additionally the icon displayed next to the various stock items on the page changes based on whether you currently have that stock in your watchlist.
 
-    [] styling pass on home page
-        [x] re-do the items in side panels
-        [x] include company name - bigger tiles
-        [x] need to fettle with the way links are attached and retrieve the ticker code - so i can have the whole link icon be a link, not just the small code
-        [x] finish alternate right side panel
-            [x] the swap is working - but i need to now remove some of the old code for it and include a marker so you know which one you are on
-                [] the old code is some of the stuff that generates the difference data on page load. - its gna be a bit weird to remove though
+##### 3. Python Files
+There are 2 main python files which process all of the data for the website.  
+The helpers file contains, as the name suggests, a variety of utility functions which are then used throughout the main app. API connection functions, data processing functions and the function which checks if a user is logged in.
 
-        [x] redo search panel to fit new style
+###### 3.1 app.py
+This is the main part of the project which provides routes through will all other functions in the project access and process data.  
 
-        [x] find some good fonts - raleway
-        [x] sort the colour change thing
+###### 3.1.1 List of Routes
+1. "/"  
+This is the default route accessed once logged into the app.  
+This sets the initial data that is displayed to the user in both the "biggest winner/loser" panel on the right and the data shown in the watchlist panel on the left.  
+This data is then stored in the database, so that further refreshes of this page do not use more API calls.  
+As this site was made entirely using free API's which give you a limited amount of data and API calls to use, i have had to put various things in place in order to limit these.  
+If i did not have these restrictions, i would have data that is updated on a timer and would refresh continuously while the user is on the page.<br>
 
-    [] need to load a default stock - maybe a random one somehow?
+2. "/differencepanel  
+    Control of the winners/losers panel is taken over by javascript once the user has interacted with it.  
+    This route provides a way for the js file to retrieve the information it needs without having to interact with the other main page elements that are intially set through the "/" route. 
 
-    [x] text overflow on news feed card titles
-    [x] do more testing with the real api data - some of the formatting goes mental with loads of text
+3. "/stock"  
+    This route fills out the table & metadata panel which displays under the main graph when an individual stock item is selected.  
+    As different stocks are accessed, it checks to see if they have saved metadata in the database, and if they do not it updates it.  
+    This was done in order to limit API calls, as the stock metadate does not change.  
+    It adds the metadata to the main stock price data dictionary, so that it is all served to the page in one dictionary.
 
-TODO
-# [] Front End
-     [] Landing Page
-        [x] graphs
-            [x] graph working
-            [x] graph date selection working
-            [x] finish default values and error check for graph date update
-            [] default display for graph
-            [x] search for stock info to generate graphs
-            [x] Autocomplete search when searching for ticker codes
-                [x] need some error checking here for when a searched stock does not return a valid result
-                [x] clear the search box once item has been clicked
-            [x] add to favourite / remove from favourite
-            [] up/down arrows not vertically aligning
-            [x] info from tiingo on the bottom right panel
-        [x] add favourite button for when stocks are searched
-            [x] make button do button
-        [x] favourite button turn to a - if stock is already in favs list
+4. "/search"  
+    As the name suggests this route controls the search panel at the top of the page.  
+    It simply retrieves a list of stock items matching the search query as they are entered by the user.  
+    It is limited to 20 results so as not to overwhelm the page.  
+    The dynamic display element of this is controlled in script.js
 
-     [x] Portfolio Page
-        [x] account stats
-        [x] stock holding cards
+5. "/chart"  
+    This route processes the data into the format required by the gviz_api.  
+    It retrieves historical data from the tiingo api, as specificed by the dates entered by the user, falling back on a defualt if not dates are entered.  
+    This data is processed via gviz_api datatable function and then served to the page as Json.
 
-     [x] Account Page
-        [x] update password
-        [x] update account details
-        [] account page needs revisiting
+6. "/retrieveFavourite"  
+    This route simply retrieves the list of the users favourite stocks, which are displayed in the watchlist panel, and returns them as json to the page.  
 
-     [x] Login page
-        [x]finish register button
-        [x]flash bar
+7. "/favourite"  
+    This route is responsible for updating the users list of favourites saved in the database.  
+    This route is triggered when a user clicks either the + or - buttons next to a stock item on the homepage.  
+    It checks to see what type of request has been submitted and then performs the appropriate database action.
 
-     [x] Register Page
-        [x]flash bar
+8. "/login"  
+    As the name implies.  
+    Login information you submit is checked against users stored in the database.  
+    A session cookie is then created which allows the user to access all of the pages on the site.
+    
+9. "/register"  
+    Submits information to the databse in order to register you as a new user.  
+    Checks for usernames which already exists and fully checks your submitted information for errors.
 
-    [] Leaderboards
-        
-     [] Styling
-        [] finish styling
-        [x] all page links on all pages
-        [x] Their position needs to be consistent too
+10. "/account"  
+    Controls the data which is displayed to you when you access the account page and renders the correct template
 
-# [] Back End
-    [] Database configuration
-        raw python db api for now
-        [x] users db
-        [x] stocks table
-
-    [] Page Code 
-        [x] Login Functionality
-            [x]find a better way of returning db results
-
-        [x] Registration functionality
-            [x] loop throgh a dict to check empty form fields and give appropriate error
-
-        [x] Account page
-            [x] password change
-            [x] update account info
-
-        [x] Favourites
-            [x] add to favourites route
-            [x] retrieve favourites on login
-            [x] need to find a way to use the + to add to favourites using JS, so page doesnt have to reload
-
-        [x] portfolio page
-            [x] portfolio stats
-            [x] data for stock holding cards
-            [x] deposit money
-
-        [] Leaderboards
-
-    [x] API Connection 
-        [x]Tiingo
-            https://www.tiingo.com/documentation/general/connecting
-        [x] API call on load and save data in memory to limit api calls
-            [x]check for any additional api calls needed
-        [x] Double check some of the variable naming conventions in the retrieve & sort  functions
-# [] Bugs
-    [x] makes 10 of the same api call when you click a stock link on the side panels
-        - i think its linked to the updatePage function through the /chart route
-        - doesnt happen if no search, no date, no graph 
-        - happens if you have typed something into the search
-    [x] if you use the main window add/remove fav thing then load a chart - it does a million network requests
-        - the requests are going through stock and chart routes
-        - i think this is to do with the js code added
-    [x] Centre fav button not working now - as a result of my new fav button swap thing
-    [x] we now have a weird duplacte flashed messages thing going on
-    [] need to make account balance not go over int limit
-        [] dont know why its doing this, as the check is in place?
-    [x] the homepage colour thing is sort of fixed - still looks weird on big screens though
- 
+11. "/password"
+12. "/emailupdate"
+13. "/portfolio"
+14. "/portfoliograph"
+15. "/buy"
+16. "/sell"
+17. "/preview"
+18. "/news"
+19. "/leaderboard"
+20. "/logout"
 
 
-https://stackoverflow.com/questions/74808530/send-data-from-javascript-%E2%86%92-python-and-back-without-reloading-the-page
 
-https://flask.palletsprojects.com/en/stable/patterns/javascript/
+###### 3.2 helpers.py
+This file contains a variety of helper functions which are then used throughout app.py.  
+The functions in this file are the ones used to pull data from various API's, as this functionality is required in multiple places throughout app.py
 
-https://www.makeuseof.com/tag/python-javascript-communicate-json/
-
-google visualisations api 
-pip install gviz_api
-
-This will host the site locally
-flask run --host=0.0.0.0
-
-alphavantage api key
-LGMEY6AQKNGZO4TZ
+This file also includes the functions which are used to sort or otherwise process the data provided by these API's.
+##### 4. Database
