@@ -93,16 +93,51 @@ If i did not have these restrictions, i would have data that is updated on a tim
 10. "/account"  
     Controls the data which is displayed to you when you access the account page and renders the correct template
 
-11. "/password"
-12. "/emailupdate"
-13. "/portfolio"
-14. "/portfoliograph"
-15. "/buy"
-16. "/sell"
-17. "/preview"
-18. "/news"
-19. "/leaderboard"
-20. "/logout"
+11. "/password"  
+    allows you to update your password  
+
+12. "/emailupdate"  
+    allows you to update your email address
+
+13. "/portfolio"  
+    This route controls all of the data which is displayed to you on the portfolio page.  
+    It connects to the tiingo API in order to retrieve updated price information from the previous day for all stock you currently hold.  
+    In order to limit API calls it only does this once per day, once the stock market has opened and therefore, there is new information to be retrieved.  
+    This date is then saved to the database, so a historical record can be built up.  
+    This data is also shared across users who hold that stock, so that if the data is updated by someone, it does not need to be updated again for another user. This further limits the API calls which are needed.  
+    It then uses this data, and data from the main API call done when you login, to display more detailed information about the performance of your stock holdings.
+
+14. "/portfoliograph"  
+    This controls the processing of the data for each of the users stock holdings in order to display the graphs for each item.  
+    The graphs will begin tracking data from the date of the users first purchase of that stock item.  
+    Data is processed with the gviz_api
+
+15. "/buy"  
+    This route controls the process of purchasing a stock.  
+    It checks a users balance and updates their stock holdings appropriately.  
+    It also allows a user to purchase either by quantity of shares, or by value of shares, and performs all the conversions appropriately depending on their selection.  
+    It will not allow you to purchase partial shares.  
+    It ensures that unnesecary database entries are not created and only 1 entry per stock item exists for each user.
+
+16. "/sell"  
+    This performs the same functions as the /buy route, just in reverse.
+    It contains a variety of error checks which ensure that a user cannot sell more than they have, and removes entries fromt the databse if their total number of stocks held goes to 0.
+
+17. "/preview"  
+    This route provides the user with a dynamically updated price preview when buying or selling stocks.  
+    This route is only accessed by a javascript async request once a user enters the quantity or value of stocks they would like to purchase.
+
+18. "/news"  
+    This route provides the data for the newsfeed which is dynamically created when a user has selected the stock item they wish to view.  
+    It uses the alphavantage api to get data in Json format, which is then processed and returned to the page to be displayed as cards for each news article.  
+    It also calculates an overall "sentiment score" which is displayed above the newsfeed in order to give the user a quick overview on the general feeling towards a certain stock.
+
+19. "/leaderboard"  
+    This route simply pulls the required data from the database and displays the top 20 users along with their score, username and position.
+
+20. "/logout"  
+    As the name suggests.  
+    Logs you out and removes your current session cookie.
 
 
 
