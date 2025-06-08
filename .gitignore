@@ -2,4 +2,4 @@ tasks.md
 database-original.db
 __pycache__/
 flask_session/
-
+.gitignore
