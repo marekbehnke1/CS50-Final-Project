@@ -1,4 +1,5 @@
 tasks.md
-database.db
-
+database-original.db
+__pycache__/
+flask_session/
 

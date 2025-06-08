@@ -12,6 +12,8 @@ These would allow you to invite other users to a private league where you could 
 ## Technologies
 The project was made as a fullstack webapp, using Flask, Sqlite3, Javascript, HTML & Tailwind CSS
 ## Project Contents
+In order to run the project correctly, you will need an API key for both the Tiingo API and the alphavantage API  
+The connection functions for these API's are located in the helpers.py file
 ### 1. HTML FIles  
 As the project uses Flask, and also Jjina the main layout for all of the main pages are contained within layout.html.  
 login.html & register.html do not use the layout template as their structure is significantly different from the other pages.  
