@@ -2,10 +2,10 @@
 let remove_fav = document.getElementsByClassName("remove_favourite")
 let add_fav = document.getElementsByClassName("add_favourite")
 
-// this is now only applicable to the search box - may be worth removing once that is redone
+// this is now only applicable to the search box
 let stock_links = document.getElementsByClassName("ticker-code")
 
-// this is the new link class that applies after having rebuilt the various landing page lists
+// this is the new link class that applies to everything except search box
 let link_items = document.getElementsByClassName("stock-link")
 
 // attaches all event listeners for the page
@@ -26,7 +26,6 @@ async function update_page(){
         item.addEventListener("click", update_differencedata)
     }
     
-    // ---- this is the old version and will be deprecated once i redo the search box -----
     // attach link listeners
     for (item of stock_links){
         item.addEventListener("click", add_link)
@@ -198,8 +197,7 @@ async function search(code){
     }
 }
 
-//Functions:
-    // Update Favourites()
+// Update Favourites()
 async function update_favourites(){
 
     favourites_list = await get_fav()
@@ -267,7 +265,6 @@ function add_link(){
 }
 
 // new version of link adding
-// maybe worth deprecating the old one soon
 function add_new_link(){
     code = this.querySelector(".item-code").textContent.trim()
     console.log(code)
@@ -279,7 +276,7 @@ function add_new_link(){
     get_news(code, dateFrom, dateTo)
 }
 
-// just an object that represebts the fav list item
+// just an object that represents the fav list item
 function fav_element(icon, item){
     let fav_item = `<div class="stock-item flex w-full text-white justify-between hover:bg-slate-600/20">
                         <div class="cursor-pointer w-3/5 text-left py-5 pl-5 stock-link">
@@ -358,7 +355,6 @@ async function get_news(code, dateFrom, dateTo)
                                         <p id="sentiment-label"></p>
                                         <p id="sentiment-score"></p>`
 
-                // Had to initialise this to 0
                 let total_sentiment_score = 0 
 
                 for(item of newsfeed){

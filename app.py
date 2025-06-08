@@ -38,7 +38,6 @@ def index():
 
     # set data to sort
     differenceData = {}
-    # check if fields are empty & set to 0
     for item in IEXdata:
         if item["tngoLast"] == None:
             last = 0
@@ -79,7 +78,6 @@ def index():
     #convert to list of dict
     db.row_factory = dict_factory
     favouritesList = []
-    #for row in db.execute("SELECT ticker, change FROM favourites where userid = ?", (user_id,)):
     for row in db.execute("SELECT DISTINCT favourites.ticker, change, name FROM favourites INNER JOIN stocks on favourites.ticker = stocks.ticker WHERE userid = ?", (user_id,)):
         favouritesList.append(row)
 
@@ -103,7 +101,6 @@ def index():
     userLastUpdate = curs.execute("SELECT lastUpdate FROM users WHERE userid = ?", (user_id,)).fetchone()[0]
 
     if userLastUpdate != todayDate:
-        # set the update date to today
 
         # update favourites with current data
         for item in favouritesList:
@@ -191,15 +188,11 @@ def diff_panel():
 @app.route("/stock")
 @login_required
 def info_page():
-    #
-    # this will work properly when we use the full iexdata set
-    #
 
     query = request.args.get("q")
     if query:
-        # this is a generator expression
-        # it is looping through IEXdata for a dict where dict["ticker"] == the query
-        # and returning the dict
+
+        # loop through IEXdata for a dict where dict["ticker"] == the query
         result = next((item for item in IEXdata if item["ticker"] == query), None)
         if not result:
             result = {}
@@ -207,7 +200,6 @@ def info_page():
             return jsonify(result)
 
         # check database to see if meta data text exists
-        # if it does not, api call and update entry
         db = sqlite3.connect("database.db")
         curs = db.cursor()
 
@@ -260,7 +252,6 @@ def search():
     curs = db.cursor()
 
     if query:
-        # have limited to 20 with sql query
         result = curs.execute("SELECT * FROM stocks WHERE ticker LIKE ? LIMIT 20", (query + "%",)).fetchall()
     else:
         result = ()
@@ -313,7 +304,7 @@ def chart():
     ## initialise datatable
     data_table = gviz_api.DataTable(description)
     data_table.LoadData(data)
-#
+
     ## convert the data table into a json response
     chart_data = data_table.ToJSon(columns_order=("date", "low", "open", "close", "high"))
 
@@ -394,12 +385,10 @@ def login():
             flash("Please enter a password", "error")
             return render_template("login.html")
         
-        # Query database for username
         db = sqlite3.connect("database.db")
         cur = db.cursor()
 
         try:
-            # this is a horrible way of expressing this - need it to return a list or something
             userid = cur.execute("SELECT userid FROM users WHERE username = ?", (uname,)).fetchone()[0]
         except TypeError:
             db.close()
@@ -448,7 +437,6 @@ def register():
             return render_template("register.html")
         
         hash = generate_password_hash(new_user["password"])
-        # connect to database
         db = sqlite3.connect("database.db")
         curs = db.cursor()
 
@@ -586,7 +574,7 @@ def portfolio():
     ### Portfolio Info ###
     holdings = curs.execute("SELECT * FROM holdings WHERE userid = ?", (userid,)).fetchall()
 
-    # This next for loop determines which stocks need updating by compairing their last update to the current date
+    # determines which stocks need updating by comparing their last update to the current date
     stock_list = ""
     updated_price_info = []
     for stock in holdings:
@@ -603,7 +591,6 @@ def portfolio():
     stock_list = stock_list.rstrip(",")
 
     # this next block checks to see if the stock market has opened, and will therefore have new data
-    # and then requests data for the list of stocks generated above
     if stock_list:        
         nowUTC = datetime.datetime.now(datetime.timezone.utc).strftime("%H:%M:%S")
         target = '14:00:00'
@@ -626,8 +613,8 @@ def portfolio():
         result = next((item for item in IEXdata if item["ticker"] == code), None)
         total_value += result["tngoLast"] * quant
 
-        # This block iterates through the updated price data from above and checks if it differs from what is already stored
-        # if it is different, the stored data is updated.
+        # iterate through the updated price data from above and checks if it differs from what is already stored
+        # if it is different, update
         if updated_price_info:
             portfolio_item = next((item for item in updated_price_info if item['ticker'] == code), None)
             if not portfolio_item:
@@ -650,7 +637,6 @@ def portfolio():
 
        # This block determines the % gain since you first purchased that stock
         start_date = curs.execute("SELECT timelog FROM transactions WHERE item = ? AND userid = ? AND transtype = 'purchase' ORDER BY timelog LIMIT 1", (code, userid,)).fetchone()[0]
-        # this is a result of having an overly complex timestamp in the transactions log..
         start_date_obj = datetime.datetime.strptime(start_date[:10], '%d-%m-%Y')
 
         # if the most applicable price for price_init does not exist, it should use the most recent value available
@@ -710,14 +696,12 @@ def portfolio_graph():
     curs = db.cursor()
 
     # select results starting from the timelog of the users first purchase of the stock
-    #### This wont work well if a user sells all their stock and then rebuys
+    #### Todo: This wont work well if a user sells all their stock and then rebuys
     start_date = curs.execute("SELECT timelog FROM transactions WHERE item = ? AND userid = ? AND transtype = 'purchase' ORDER BY timelog LIMIT 1", (code, userid,)).fetchone()[0]
     
-    # this is a result of having an overly complex timestamp in the transactions log..
     start_date_obj = datetime.datetime.strptime(start_date[:10], '%d-%m-%Y')
     price_results = curs.execute("SELECT price, datelog FROM pricelog WHERE code = ? AND datelog >= ? ORDER BY datelog asc", (code, start_date_obj.strftime('%Y-%m-%d'))).fetchall()
     
-    # this needs to reflect the weird error from portfolio - if a user purchases stock that hasnt been updated yet that day it wont show anything
     if not price_results:
         price_results = curs.execute("SELECT price, datelog FROM pricelog WHERE code = ? AND datelog <= ? ORDER BY datelog desc", (code, start_date_obj.strftime('%Y-%m-%d'))).fetchall()
    
