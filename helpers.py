@@ -17,7 +17,11 @@ def retrieve_iex():
     # set api headers
     APIheaders = {
         'Content-Type':'application/json',
-        'Authorization':'Token 877c60a71d24e500a3767c3875e6845c35df8564'
+
+        ### API KEY NEEDED ###
+        'Authorization':'TIINGO API KEY HERE'
+        #######################
+        
     }
     # retrieve data from api and convert to json format
     Response = requests.get("https://api.tiingo.com/iex", headers=APIheaders).json()
@@ -35,7 +39,6 @@ def sort_data(option, records, data, direction=True):
     sorted_full_data = dict(sorted(data.items(), key=lambda item: item[1], reverse=direction))
     
     # creates a list, of the items from the dict, then slices it to 50 entries
-    # it is then converted straight into a dict
     sorted_trimmed_data = dict(list(sorted_full_data.items())[:records])
 
     # This then loops through the sorted, trimmed dict & returns a list of dicts.
@@ -68,7 +71,11 @@ def retrieve_news(ticker, dateFrom, dateTo):
 
     time_from = re.sub('-','',dateFrom)+ "T0000"
     time_to = re.sub('-','',dateTo) + "T0000"
-    key = "LGMEY6AQKNGZO4TZ"
+
+    ### API KEY NEEDED ###
+    key = "ALPHAVANTAGE API KEY HERE"
+    ########################
+
     url = 'https://www.alphavantage.co/query?function=NEWS_SENTIMENT&time_from='+ time_from +'&time_to='+ time_to +'&tickers='+ ticker +'&apikey=' + key
     r = requests.get(url)
     data = r.json()

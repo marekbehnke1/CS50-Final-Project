@@ -8,7 +8,7 @@ This incentivises people to actually trade stocks in order to win.
 If i were to commit more time to this project in the future, one of the main additions i would make would be the inclusion of leagues.  
 These would allow you to invite other users to a private league where you could play against each other for a set period of time.
 
-#### Video Demo: <http://www.youtube.com>
+#### Video Demo: <https://www.youtube.com/watch?v=XiWfWq87frU>
 ## Technologies
 The project was made as a fullstack webapp, using Flask, Sqlite3, Javascript, HTML & Tailwind CSS
 ## Project Contents
